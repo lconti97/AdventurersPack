@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TestData {
-    static final EquipmentStackEntity EQUIPMENT_STACK = new EquipmentStackEntity("sword", 1);
-    static final EquipmentStackEntity EQUIPMENT_STACK2 = new EquipmentStackEntity("gold", 2);
+    private static final EquipmentStackEntity EQUIPMENT_STACK_1 = new EquipmentStackEntity("sword", 1);
+    private static final EquipmentStackEntity EQUIPMENT_STACK_2 = new EquipmentStackEntity("gold", 2);
 
-    static final List<EquipmentStackEntity> EQUIPMENT_STACKS = Arrays.asList(EQUIPMENT_STACK, EQUIPMENT_STACK2);
+    static final List<EquipmentStackEntity> EQUIPMENT_STACKS = Arrays.asList(EQUIPMENT_STACK_1, EQUIPMENT_STACK_2);
 }

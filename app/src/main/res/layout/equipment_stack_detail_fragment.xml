@@ -21,6 +21,7 @@
         android:orientation="vertical">
 
         <include
+            android:id="@+id/equipment_stack_detail_item"
             layout="@layout/equipment_stack_item"
             app:equipmentStack="@{equipmentStackViewModel.equipmentStack}" />
 

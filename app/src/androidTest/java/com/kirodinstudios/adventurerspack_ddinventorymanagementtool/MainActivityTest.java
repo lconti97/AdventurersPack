@@ -6,7 +6,6 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
@@ -24,6 +23,13 @@ import java.util.concurrent.TimeoutException;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.core.AllOf.allOf;
 
 public class MainActivityTest {
 
@@ -69,8 +75,14 @@ public class MainActivityTest {
     @Test
     public void clickOnFirstItem_opensDetailView() throws Throwable {
         drain();
-        onView(ViewMatchers.withContentDescription(R.string.cd_equipment_stacks_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withContentDescription(R.string.cd_equipment_stacks_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        drain();
+        String secondEquipmentStackName = TestData.EQUIPMENT_STACKS.get(1).getName();
+        onView(allOf(
+                withId(R.id.equipment_stack_detail_item),
+                withChild(withText(secondEquipmentStackName))))
+                .check(matches((isDisplayed())));
     }
 
     private void drain() throws TimeoutException, InterruptedException {
