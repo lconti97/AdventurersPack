@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.databinding.ListFragmentBinding;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.databinding.EquipmentStackListFragmentBinding;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel.EquipmentStackListViewModel;
 
 
@@ -27,13 +27,13 @@ public class EquipmentStackListFragment extends Fragment {
         }
     };
     private EquipmentStackAdapter mEquipmentStackAdapter;
-    private ListFragmentBinding mBinding;
+    private EquipmentStackListFragmentBinding mBinding;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.list_fragment, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.equipment_stack_list_fragment, container, false);
 
         mEquipmentStackAdapter = new EquipmentStackAdapter(mEquipmentStackClickCallback);
         mBinding.equipmentStacksList.setAdapter(mEquipmentStackAdapter);

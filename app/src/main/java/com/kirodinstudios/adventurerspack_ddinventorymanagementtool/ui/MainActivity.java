@@ -127,12 +127,12 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     public void show(EquipmentStack equipmentStack) {
-        EquipmentStackFragment equipmentStackFragment = EquipmentStackFragment.forEquipmentStack(equipmentStack.getId());
+        EquipmentStackDetailFragment equipmentStackDetailFragment = EquipmentStackDetailFragment.forEquipmentStack(equipmentStack.getId());
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack("equipmentStack")
-                .replace(R.id.fragment_container, equipmentStackFragment, null)
+                .replace(R.id.fragment_container, equipmentStackDetailFragment, null)
                 .commit();
     }
 

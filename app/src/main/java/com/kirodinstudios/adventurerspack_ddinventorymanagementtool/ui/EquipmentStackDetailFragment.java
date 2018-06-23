@@ -10,17 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.databinding.EquipmentStackFragmentBinding;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.databinding.EquipmentStackDetailFragmentBinding;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel.EquipmentStackViewModel;
 
-public class EquipmentStackFragment extends Fragment {
+public class EquipmentStackDetailFragment extends Fragment {
 
     private static final String KEY_EQUIPMENT_STACK_ID = "equipment_stack_id";
 
-    private EquipmentStackFragmentBinding mBinding;
+    private EquipmentStackDetailFragmentBinding mBinding;
 
-    public static EquipmentStackFragment forEquipmentStack(int equipmentStackId) {
-        EquipmentStackFragment fragment = new EquipmentStackFragment();
+    public static EquipmentStackDetailFragment forEquipmentStack(int equipmentStackId) {
+        EquipmentStackDetailFragment fragment = new EquipmentStackDetailFragment();
         Bundle args = new Bundle();
         args.putInt(KEY_EQUIPMENT_STACK_ID, equipmentStackId);
         fragment.setArguments(args);
@@ -30,7 +30,7 @@ public class EquipmentStackFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.equipment_stack_fragment, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.equipment_stack_detail_fragment, container, false);
 
         return mBinding.getRoot();
     }
