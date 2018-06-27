@@ -1,6 +1,6 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.view.View;
 
 public class BindingAdapters {

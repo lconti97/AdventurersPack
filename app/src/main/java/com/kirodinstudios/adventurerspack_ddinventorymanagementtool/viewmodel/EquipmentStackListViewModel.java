@@ -1,10 +1,10 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.annotation.NonNull;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.BasicApp;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackEntity;

@@ -1,7 +1,7 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
