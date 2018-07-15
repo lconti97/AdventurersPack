@@ -87,6 +87,15 @@ public class MainActivityTest {
                 .check(matches((isDisplayed())));
     }
 
+    @Test
+    public void clickOnAddButton_navigatesToAddPage() throws Throwable {
+        onView(withId(R.id.add_equipment_stack_button))
+                .perform(click());
+        drain();
+        onView(withId(R.id.equipment_stack_add_fragment_layout))
+                .check(matches(isDisplayed()));
+    }
+
     private void drain() throws TimeoutException, InterruptedException {
         mCountingTaskExecutorRule.drainTasks(1, TimeUnit.MINUTES);
     }

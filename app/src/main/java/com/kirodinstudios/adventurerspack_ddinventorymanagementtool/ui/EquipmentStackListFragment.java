@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.OrientationHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.databinding.EquipmentStackListFragmentBinding;
@@ -21,11 +22,16 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel.Eq
 public class EquipmentStackListFragment extends Fragment {
 
     public static final String TAG = "EquipmentStackListFragment";
+
     private final EquipmentStackClickCallback mEquipmentStackClickCallback = equipmentStack -> {
         if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-            ((MainActivity) getActivity()).show(equipmentStack);
+            ((MainActivity) getActivity()).showEquipmentStackDetailFragment(equipmentStack);
         }
     };
+    private final View.OnClickListener mAddEquipmentStackOnClickListener = view -> {
+        ((MainActivity) getActivity()).showEquipmentStackAddFragment();
+    };
+
     private EquipmentStackAdapter mEquipmentStackAdapter;
     private EquipmentStackListFragmentBinding mBinding;
 
@@ -39,6 +45,7 @@ public class EquipmentStackListFragment extends Fragment {
         mBinding.equipmentStacksList.setAdapter(mEquipmentStackAdapter);
         mBinding.equipmentStacksList.addItemDecoration(new DividerItemDecoration(
                 mBinding.equipmentStacksList.getContext(), OrientationHelper.VERTICAL));
+        mBinding.setAddButtonOnClickListener(mAddEquipmentStackOnClickListener);
 
         return mBinding.getRoot();
     }
