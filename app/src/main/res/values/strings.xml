@@ -2,4 +2,7 @@
     <string name="app_name">Adventurer\'s Pack - D&amp;D Inventory Management Tool</string>
     <string name="cd_equipment_stacks_list">equipment</string>
     <string name="loading_equipment_stacks">Loading equipment</string>
+    <string name="name">Name</string>
+    <string name="count">Count</string>
+    <string name="equipment_stack_add_failure_message">Failed to save %s</string>
 </resources>

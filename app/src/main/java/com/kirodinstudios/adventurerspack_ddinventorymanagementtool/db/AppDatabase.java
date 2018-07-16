@@ -7,29 +7,37 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.AppExecutors;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Database(entities = {EquipmentStackEntity.class}, version = 1)
+@Database(entities = {EquipmentStack.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
+    private static final String LOG_TAG = "AppDatabase";
 
     private static AppDatabase Instance;
 
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
+    private Executor databaseThread;
 
     public synchronized static AppDatabase getInstance(final Context context, final AppExecutors executors) {
         if (Instance == null) {
             synchronized (AppDatabase.class) {
                 if (Instance == null) {
                     Instance = buildDatabase(context.getApplicationContext(), executors);
+                    Instance.databaseThread = executors.diskIO();
                     Instance.updateDatabaseCreated(context.getApplicationContext());
                 }
             }
@@ -48,7 +56,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
                             AppDatabase database = AppDatabase.getInstance(context, executors);
-                            List<EquipmentStackEntity> equipmentStackEntities = getPopulationEquipmentStacks();
+                            List<EquipmentStack> equipmentStackEntities = getPopulationEquipmentStacks();
                             database.equipmentStackDao().insertAll(equipmentStackEntities);
                             database.setDatabaseCreated();
                         });
@@ -57,10 +65,10 @@ public abstract class AppDatabase extends RoomDatabase {
                 .build();
     }
 
-    private static List<EquipmentStackEntity> getPopulationEquipmentStacks() {
+    private static List<EquipmentStack> getPopulationEquipmentStacks() {
         return Arrays.asList(
-                new EquipmentStackEntity("sword", 1),
-                new EquipmentStackEntity("gold", 200)
+                new EquipmentStack("sword", 1),
+                new EquipmentStack("gold", 200)
         );
     }
 
@@ -78,5 +86,20 @@ public abstract class AppDatabase extends RoomDatabase {
         if (context.getDatabasePath(DATABASE_NAME).exists()) {
             setDatabaseCreated();
         }
+    }
+
+    public void executeQuery(Callable queryFunction, Callable onFailure) {
+        databaseThread.execute(() -> {
+            try {
+                queryFunction.call();
+            } catch (Exception e) {
+                Log.e(LOG_TAG, Log.getStackTraceString(e));
+                try {
+                    onFailure.call();
+                } catch (Exception e1) {
+                    Log.e(LOG_TAG, Log.getStackTraceString(e));
+                }
+            }
+        });
     }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackEntity;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class DataRepository {
     private static DataRepository sInstance;
 
     private final AppDatabase mDatabase;
-    private MediatorLiveData<List<EquipmentStackEntity>> mObservableEquipmentStacks;
+    private MediatorLiveData<List<EquipmentStack>> mObservableEquipmentStacks;
 
     private DataRepository(final AppDatabase database) {
         mDatabase = database;
@@ -40,11 +40,11 @@ public class DataRepository {
     /**
      * Get the list of products from the database and get notified when the data changes.
      */
-    public LiveData<List<EquipmentStackEntity>> getEquipmentStacks() {
+    public LiveData<List<EquipmentStack>> getEquipmentStacks() {
         return mObservableEquipmentStacks;
     }
 
-    public LiveData<EquipmentStackEntity> getEquipmentStack(final int id) {
+    public LiveData<EquipmentStack> getEquipmentStack(final int id) {
         return mDatabase.equipmentStackDao().loadEquipmentStack(id);
     }
 }

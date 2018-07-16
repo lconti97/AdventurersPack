@@ -1,17 +1,18 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.databinding.EquipmentStackItemBinding;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.databinding.EquipmentStackListItemBinding;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class EquipmentStackAdapter extends RecyclerView.Adapter<EquipmentStackAdapter.EquipmentStackViewHolder> {
 
@@ -62,8 +63,8 @@ public class EquipmentStackAdapter extends RecyclerView.Adapter<EquipmentStackAd
 
     @Override
     public EquipmentStackViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        EquipmentStackItemBinding binding = DataBindingUtil
-                .inflate(LayoutInflater.from(parent.getContext()), R.layout.equipment_stack_item,
+        EquipmentStackListItemBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.equipment_stack_list_item,
                         parent, false);
         binding.setCallback(mEquipmentStackClickCallback);
 
@@ -83,9 +84,9 @@ public class EquipmentStackAdapter extends RecyclerView.Adapter<EquipmentStackAd
 
     static class EquipmentStackViewHolder extends RecyclerView.ViewHolder {
 
-        final EquipmentStackItemBinding binding;
+        final EquipmentStackListItemBinding binding;
 
-        EquipmentStackViewHolder(EquipmentStackItemBinding binding) {
+        EquipmentStackViewHolder(EquipmentStackListItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

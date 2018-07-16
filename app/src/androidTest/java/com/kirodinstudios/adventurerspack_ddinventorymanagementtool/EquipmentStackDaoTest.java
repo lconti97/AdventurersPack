@@ -8,7 +8,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackDao;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackEntity;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -47,7 +47,7 @@ public class EquipmentStackDaoTest {
 
     @Test
     public void getEquipmentStacksWhenNoEquipmentStacksInserted() throws InterruptedException {
-        List<EquipmentStackEntity> equipmentStackEntities = LiveDataTestUtil.getValue(equipmentStackDao.loadAll());
+        List<EquipmentStack> equipmentStackEntities = LiveDataTestUtil.getValue(equipmentStackDao.loadAll());
 
         assertTrue(equipmentStackEntities.isEmpty());
     }
@@ -56,7 +56,7 @@ public class EquipmentStackDaoTest {
     public void getEquipmentStacksAfterInserted() throws InterruptedException {
         equipmentStackDao.insertAll(TestData.EQUIPMENT_STACKS);
 
-        List<EquipmentStackEntity> equipmentStackEntities = LiveDataTestUtil.getValue(equipmentStackDao.loadAll());
+        List<EquipmentStack> equipmentStackEntities = LiveDataTestUtil.getValue(equipmentStackDao.loadAll());
 
         assertThat(equipmentStackEntities.size(), Matchers.is(2));
     }

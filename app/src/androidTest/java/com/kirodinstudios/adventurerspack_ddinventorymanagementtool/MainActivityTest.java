@@ -24,6 +24,8 @@ import java.util.concurrent.TimeoutException;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.action.ViewActions.typeTextIntoFocusedView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withChild;
@@ -88,11 +90,20 @@ public class MainActivityTest {
     }
 
     @Test
-    public void clickOnAddButton_navigatesToAddPage() throws Throwable {
+    public void canCreateEquipmentStack() throws Throwable {
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
         drain();
-        onView(withId(R.id.equipment_stack_add_fragment_layout))
+        onView(withId(R.id.equipment_stack_add_fragment_name))
+                .perform(typeText("xq"));
+        onView(withId(R.id.equipment_stack_add_fragment_count))
+                .perform(typeText("5"));
+        onView(withId(R.id.equipment_stack_add_fragment_done))
+                .perform(click());
+
+        onView(withId(R.id.equipment_stacks_list))
+                .check(matches(isDisplayed()));
+        onView(withText("xq"))
                 .check(matches(isDisplayed()));
     }
 

@@ -1,13 +1,13 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
-//        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "MainActivity";
 
@@ -23,6 +23,15 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.fragment_container, fragment, EquipmentStackListFragment.TAG)
                     .commit();
         }
+    }
+
+    public void showEquipmentStackListFragment() {
+        EquipmentStackListFragment equipmentStackListFragment = new EquipmentStackListFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, equipmentStackListFragment, null)
+                .commit();
     }
 
     public void showEquipmentStackAddFragment() {

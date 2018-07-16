@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.BasicApp;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.DataRepository;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackEntity;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
 
 public class EquipmentStackViewModel extends AndroidViewModel {
 
-    private final LiveData<EquipmentStackEntity> mObservableEquipmentStack;
+    private final LiveData<EquipmentStack> mObservableEquipmentStack;
     private final int mEquipmentStackId;
-    public ObservableField<EquipmentStackEntity> equipmentStack = new ObservableField<>();
+    public ObservableField<EquipmentStack> equipmentStack = new ObservableField<>();
 
     public EquipmentStackViewModel(@NonNull Application application, DataRepository repository,
                                    final int equipmentStackId) {
@@ -27,11 +27,11 @@ public class EquipmentStackViewModel extends AndroidViewModel {
         mObservableEquipmentStack = repository.getEquipmentStack(equipmentStackId);
     }
 
-    public LiveData<EquipmentStackEntity> getObservableEquipmentStack() {
+    public LiveData<EquipmentStack> getObservableEquipmentStack() {
         return mObservableEquipmentStack;
     }
 
-    public void setEquipmentStack(EquipmentStackEntity equipmentStack) {
+    public void setEquipmentStack(EquipmentStack equipmentStack) {
         this.equipmentStack.set(equipmentStack);
     }
 

@@ -1,24 +1,29 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db;
 
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
+
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.List;
-
 @Dao
 public interface EquipmentStackDao {
-    @Query("SELECT * FROM equipment_stacks")
-    LiveData<List<EquipmentStackEntity>> loadAll();
+    @Query("SELECT * FROM EquipmentStack")
+    LiveData<List<EquipmentStack>> loadAll();
 
-    @Query("SELECT * FROM equipment_stacks WHERE id = :id")
-    LiveData<EquipmentStackEntity> loadEquipmentStack(int id);
+    @Query("SELECT * FROM EquipmentStack WHERE id = :id")
+    LiveData<EquipmentStack> loadEquipmentStack(int id);
 
     @Insert
-    void insertAll(List<EquipmentStackEntity> equipmentStackEntities);
+    void insertAll(List<EquipmentStack> equipmentStackEntities);
+
+    @Insert
+    void insert(EquipmentStack equipmentStack);
 
     @Delete
-    void delete(EquipmentStackEntity equipmentStackEntity);
+    void delete(EquipmentStack equipmentStack);
 }
