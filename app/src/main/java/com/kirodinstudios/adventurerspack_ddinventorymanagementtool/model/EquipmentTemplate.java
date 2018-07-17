@@ -36,4 +36,9 @@ public class EquipmentTemplate {
     public void setEquipmentType(String equipmentType) {
         this.equipmentType = equipmentType;
     }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

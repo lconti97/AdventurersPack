@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -56,7 +57,15 @@ public class EquipmentStackAddFragment extends Fragment {
                 getContext(),
                 equipmentTemplates);
         nameAutoCompleteTextView.setAdapter(nameAutoCompleteTextViewAdapter);
-//        nameAutoCompleteTextView.setOnItemClickListener((clickedView) -> );
+        nameAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                EquipmentTemplate equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+                ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) typeSpinner.getAdapter();
+                int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
+                typeSpinner.setSelection(position, true);
+            }
+        });
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,

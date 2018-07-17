@@ -99,5 +99,11 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
                 Log.e(Constants.LOG_TAG, Log.getStackTraceString(e));
             }
         }
+
+        @Override
+        public String convertResultToString(Object object) {
+            EquipmentTemplate equipmentTemplate = (EquipmentTemplate) object;
+            return equipmentTemplate.getName();
+        }
     }
 }
