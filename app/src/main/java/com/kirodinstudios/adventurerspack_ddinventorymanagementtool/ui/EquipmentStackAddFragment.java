@@ -10,9 +10,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.EquipmentTemplateAdapter;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTypes;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel.EquipmentStackAddViewModel;
+
+import java.util.Arrays;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -43,14 +49,18 @@ public class EquipmentStackAddFragment extends Fragment {
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
 
-        nameAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                new String[] {"sword", "shield", "shit"}));
+        List<EquipmentTemplate> equipmentTemplates = Arrays.asList(
+                new EquipmentTemplate("Sword", EquipmentTypes.WEAPON),
+                new EquipmentTemplate("Shield", EquipmentTypes.SHIELD));
+        EquipmentTemplateAdapter nameAutoCompleteTextViewAdapter = new EquipmentTemplateAdapter(
+                getContext(),
+                equipmentTemplates);
+        nameAutoCompleteTextView.setAdapter(nameAutoCompleteTextViewAdapter);
 //        nameAutoCompleteTextView.setOnItemClickListener((clickedView) -> );
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
-                new String[] {"Weapon", "Armor"});
+                EquipmentTypes.EQUIPMENT_TYPES);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(spinnerAdapter);
 

@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name"
-            android:inputType="textCapSentences" />
+            android:inputType="textCapSentences"
+            android:completionThreshold="2"/>
 
 
     </com.google.android.material.textfield.TextInputLayout>
