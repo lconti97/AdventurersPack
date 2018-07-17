@@ -5,4 +5,6 @@
     <string name="name">Name</string>
     <string name="count">Count</string>
     <string name="equipment_stack_add_failure_message">Failed to save %s</string>
+    <string name="type">Type</string>
+    <string name="_1">1</string>
 </resources>

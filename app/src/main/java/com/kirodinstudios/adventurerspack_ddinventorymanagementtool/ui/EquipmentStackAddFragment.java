@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
@@ -17,26 +20,39 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class EquipmentStackAddFragment extends Fragment {
     private EquipmentStackAddViewModel equipmentStackViewModel;
-    private EditText nameEditText;
+    private AutoCompleteTextView nameAutoCompleteTextView;
     private EditText countEditText;
+    private Spinner typeSpinner;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.equipment_stack_add_fragment, container, false);
         equipmentStackViewModel = ViewModelProviders.of(this).get(EquipmentStackAddViewModel.class);
 
-        nameEditText = view.findViewById(R.id.equipment_stack_add_fragment_name);
+        nameAutoCompleteTextView = view.findViewById(R.id.equipment_stack_add_fragment_name);
         countEditText = view.findViewById(R.id.equipment_stack_add_fragment_count);
         FloatingActionButton addButton = view.findViewById(R.id.equipment_stack_add_fragment_done);
+        typeSpinner = view.findViewById(R.id.equipment_stack_add_fragment_type);
 
         addButton.setOnClickListener(view1 -> {
-            String name = nameEditText.getText().toString();
+            String name = nameAutoCompleteTextView.getText().toString();
             int count = Integer.valueOf(countEditText.getText().toString());
             EquipmentStack equipmentStack = new EquipmentStack(name, count);
 
             equipmentStackViewModel.addEquipmentStack(equipmentStack);
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
+
+        nameAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                new String[] {"sword", "shield", "shit"}));
+//        nameAutoCompleteTextView.setOnItemClickListener((clickedView) -> );
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item,
+                new String[] {"Weapon", "Armor"});
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(spinnerAdapter);
 
         return view;
     }
