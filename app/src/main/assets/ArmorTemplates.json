@@ -1,0 +1,145 @@
+[
+  {
+    "name": "Padded armor",
+    "description": "Padded Armor consists of quilted layers of cloth and batting.",
+    "costInGp": 5,
+    "weightInPounds": 8,
+    "armorClass": "11 + Dex modifier",
+    "armorCategory": "Light Armor",
+    "givesDisadvantageOnStealthChecks": true,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Leather armor",
+    "description": "The Breastplate and shoulder protectors of this armor are made of leather that has been stiffened by being boiled in oil. The rest of the armor is made of softer and more flexible materials.",
+    "costInGp": 10,
+    "weightInPounds": 10,
+    "armorClass": "11 + Dex modifier",
+    "armorCategory": "Light Armor",
+    "givesDisadvantageOnStealthChecks": false,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Studded leather armor",
+    "description": "Made from tough but flexible leather, studded leather is reinforced with close-set rivets or spikes.",
+    "costInGp": 45,
+    "weightInPounds": 13,
+    "armorClass": "12 + Dex modifier",
+    "armorCategory": "Light Armor",
+    "givesDisadvantageOnStealthChecks": false,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Hide armor",
+    "description": "This crude armor consists of thick furs and pelts. It is commonly worn by Barbarian tribes, evil humanoids, and other folk who lack access to the tools and materials needed to create better armor.",
+    "costInGp": 10,
+    "weightInPounds": 12,
+    "armorClass": "12 + Dex modifier (max 2)",
+    "armorCategory": "Medium Armor",
+    "givesDisadvantageOnStealthChecks": false,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Chain shirt",
+    "description": "Made of interlocking metal rings, a Chain Shirt is worn between layers of clothing or leather. This armor offers modest protection to the wearer%u2019s upper body and allows the sound of the rings rubbing against one another to be muffled by outer layers.",
+    "costInGp": 50,
+    "weightInPounds": 20,
+    "armorClass": "13 + Dex modifier (max 2)",
+    "armorCategory": "Medium Armor",
+    "givesDisadvantageOnStealthChecks": false,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Scale mail",
+    "description": "This armor consists of a coat and leggings (and perhaps a separate skirt) of leather covered with overlapping pieces of metal, much like the scales of a fish. The suit includes gauntlets.",
+    "costInGp": 50,
+    "weightInPounds": 45,
+    "armorClass": "14 + Dex modifier (max 2)",
+    "armorCategory": "Medium Armor",
+    "givesDisadvantageOnStealthChecks": true,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Breastplate armor",
+    "description": "This armor consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer%u2019s vital organs while leaving the wearer relatively unencumbered.",
+    "costInGp": 400,
+    "weightInPounds": 20,
+    "armorClass": "14 + Dex modifier (max 2)",
+    "armorCategory": "Medium Armor",
+    "givesDisadvantageOnStealthChecks": false,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Half plate armor",
+    "description": "Half Plate consists of shaped metal plates that cover most of the wearer%u2019s body. It does not include leg protection beyond simple greaves that are attached with leather straps.",
+    "costInGp": 750,
+    "weightInPounds": 40,
+    "armorClass": "15 + Dex modifier (max 2)",
+    "armorCategory": "Medium Armor",
+    "givesDisadvantageOnStealthChecks": true,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Ring mail",
+    "description": "This armor is Leather Armor with heavy rings sewn into it. The rings help reinforce the armor against blows from swords and axes. Ring Mail is inferior to Chain Mail, and it's usually worn only by those who can%u2019t afford better armor.",
+    "costInGp": 30,
+    "weightInPounds": 40,
+    "armorClass": 14,
+    "armorCategory": "Heavy Armor",
+    "givesDisadvantageOnStealthChecks": true,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  },
+  {
+    "name": "Chain mail",
+    "description": "Made of interlocking metal rings, Chain Mail includes a layer of quilted fabric worn underneath the mail to prevent chafing and to cushion the impact of blows. The suit includes gauntlets.",
+    "costInGp": 75,
+    "weightInPounds": 55,
+    "armorClass": 16,
+    "armorCategory": "Heavy Armor",
+    "givesDisadvantageOnStealthChecks": true,
+    "requiresMinimumStrength": true,
+    "minimumStrength": 13
+  },
+  {
+    "name": "Splint armor",
+    "description": "This armor is made of narrow vertical strips of metal riveted to a backing of leather that is worn over cloth padding. Flexible Chain Mail protects the joints.",
+    "costInGp": 200,
+    "weightInPounds": 60,
+    "armorClass": 17,
+    "armorCategory": "Heavy Armor",
+    "givesDisadvantageOnStealthChecks": true,
+    "requiresMinimumStrength": true,
+    "minimumStrength": 15
+  },
+  {
+    "name": "Plate armor",
+    "description": "Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor. Buckles and straps distribute the weight over the body.",
+    "costInGp": 1500,
+    "weightInPounds": 65,
+    "armorClass": 18,
+    "armorCategory": "Heavy Armor",
+    "givesDisadvantageOnStealthChecks": true,
+    "requiresMinimumStrength": true,
+    "minimumStrength": 15
+  },
+  {
+    "name": "Shield",
+    "description": "A Shield is made from wood or metal and is carried in one hand. Wielding a Shield increases your Armor Class by 2. You can benefit from only one Shield at a time.",
+    "costInGp": 10,
+    "weightInPounds": 6,
+    "armorClass": "+2",
+    "armorCategory": "Shield",
+    "givesDisadvantageOnStealthChecks": false,
+    "requiresMinimumStrength": false,
+    "minimumStrength": null
+  }
+]

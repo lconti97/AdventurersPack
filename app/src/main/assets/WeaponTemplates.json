@@ -1,0 +1,372 @@
+[
+  {
+    "name": "Club",
+    "costInGp": 0.1,
+    "damage": "1d4 bludgeoning",
+    "weightInPounds": 2,
+    "properties": "Light",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Dagger",
+    "costInGp": 2,
+    "damage": "1d4 piercing",
+    "weightInPounds": 1,
+    "properties": "Finesse, light, thrown (range 20/60)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Greatclub",
+    "costInGp": 0.2,
+    "damage": "1d8 bludgeoning",
+    "weightInPounds": 10,
+    "properties": "Two-handed",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Handaxe",
+    "costInGp": 5,
+    "damage": "1d6 slashing",
+    "weightInPounds": 2,
+    "properties": "Light, thrown (range 20/60)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Javelin",
+    "costInGp": 0.5,
+    "damage": "1d6 piercing",
+    "weightInPounds": 2,
+    "properties": "Thrown (range 30/120)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Light hammer",
+    "costInGp": 2,
+    "damage": "1d4 bludgeoning",
+    "weightInPounds": 2,
+    "properties": "Light, thrown (range 20/60)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Mace",
+    "costInGp": 5,
+    "damage": "1d6 bludgeoning",
+    "weightInPounds": 4,
+    "properties": null,
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Quarterstaff",
+    "costInGp": 0.2,
+    "damage": "1d6 bludgeoning",
+    "weightInPounds": 4,
+    "properties": "Versatile (1d8)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Sickle",
+    "costInGp": 1,
+    "damage": "1d4 slashing",
+    "weightInPounds": 2,
+    "properties": "Light",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Spear",
+    "costInGp": 1,
+    "damage": "1d6 piercing",
+    "weightInPounds": 3,
+    "properties": "Thrown (range 20/60), versatile (1d8)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Crossbow, light",
+    "costInGp": 25,
+    "damage": "1d8 piercing",
+    "weightInPounds": 5,
+    "properties": "Ammunition (range 80/320), loading, two-handed",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Dart",
+    "costInGp": 0.05,
+    "damage": "1d4 piercing",
+    "weightInPounds": 0.25,
+    "properties": "Finesse, thrown (range 20/60)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Shortbow",
+    "costInGp": 25,
+    "damage": "1d6 piercing",
+    "weightInPounds": 2,
+    "properties": "Ammunition (range 80/320), two-handed",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Sling",
+    "costInGp": 0.1,
+    "damage": "1d4 bludgeoning",
+    "weightInPounds": 0,
+    "properties": "Ammunition (range 30/120)",
+    "isSimpleWeapon": true,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Battleaxe",
+    "costInGp": 10,
+    "damage": "1d8 slashing",
+    "weightInPounds": 4,
+    "properties": "Versatile (1d10)",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Flail",
+    "costInGp": 10,
+    "damage": "1d8 bludgeoning",
+    "weightInPounds": 2,
+    "properties": null,
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Glaive",
+    "costInGp": 20,
+    "damage": "1d10 slashing",
+    "weightInPounds": 6,
+    "properties": "Heavy, reach, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Greataxe",
+    "costInGp": 30,
+    "damage": "1d12 slashing",
+    "weightInPounds": 7,
+    "properties": "Heavy, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Greatsword",
+    "costInGp": 50,
+    "damage": "2d6 slashing",
+    "weightInPounds": 6,
+    "properties": "Heavy, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Halberd",
+    "costInGp": 20,
+    "damage": "1d10 slashing",
+    "weightInPounds": 6,
+    "properties": "Heavy, reach, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Lance",
+    "costInGp": 10,
+    "damage": "1d12 piercing",
+    "weightInPounds": 6,
+    "properties": "Reach, special",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": "Special: You have disadvantage when you use a lance to Attack a target within 5 feet of you. Also, a lance requires two hands to wield when you aren't mounted."
+  },
+  {
+    "name": "Longsword",
+    "costInGp": 15,
+    "damage": "1d8 slashing",
+    "weightInPounds": 3,
+    "properties": "Versatile (1d10)",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Maul",
+    "costInGp": 10,
+    "damage": "2d6 bludgeoning",
+    "weightInPounds": 10,
+    "properties": "Heavy, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Morningstar",
+    "costInGp": 15,
+    "damage": "1d8 piercing",
+    "weightInPounds": 4,
+    "properties": null,
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Pike",
+    "costInGp": 5,
+    "damage": "1d10 piercing",
+    "weightInPounds": 18,
+    "properties": "Heavy, reach, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Rapier",
+    "costInGp": 25,
+    "damage": "1d8 piercing",
+    "weightInPounds": 2,
+    "properties": "Finesse",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Scimitar",
+    "costInGp": 25,
+    "damage": "1d6 slashing",
+    "weightInPounds": 3,
+    "properties": "Finesse, light",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Shortsword",
+    "costInGp": 10,
+    "damage": "1d6 piercing",
+    "weightInPounds": 2,
+    "properties": "Finesse, light",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Trident",
+    "costInGp": 5,
+    "damage": "1d6 piercing",
+    "weightInPounds": 4,
+    "properties": "Thrown (range 20/60), versatile (1d8)",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "War pick",
+    "costInGp": 5,
+    "damage": "1d8 piercing",
+    "weightInPounds": 2,
+    "properties": null,
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Warhammer",
+    "costInGp": 15,
+    "damage": "1d8 bludgeoning",
+    "weightInPounds": 2,
+    "properties": "Versatile (1d10)",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Whip",
+    "costInGp": 2,
+    "damage": "1d4 slashing",
+    "weightInPounds": 3,
+    "properties": "Finesse, reach",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": true,
+    "description": null
+  },
+  {
+    "name": "Blowgun",
+    "costInGp": 10,
+    "damage": "1 piercing",
+    "weightInPounds": 1,
+    "properties": "Ammunition (range 25/100), loading",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Crossbow, hand",
+    "costInGp": 75,
+    "damage": "1d6 piercing",
+    "weightInPounds": 3,
+    "properties": "Ammunition (range 30/120), light, loading",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Crossbow, heavy",
+    "costInGp": 50,
+    "damage": "1d10 piercing",
+    "weightInPounds": 18,
+    "properties": "Ammunition (range 100/400), heavy, loading, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Longbow",
+    "costInGp": 50,
+    "damage": "1d8 piercing",
+    "weightInPounds": 2,
+    "properties": "Ammunition (range 150/600), heavy, two-handed",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": false,
+    "description": null
+  },
+  {
+    "name": "Net",
+    "costInGp": 1,
+    "damage": null,
+    "weightInPounds": 3,
+    "properties": "Special, thrown (range 5/15)",
+    "isSimpleWeapon": false,
+    "isMeleeWeapon": false,
+    "description": "Special: A Large or smaller creature hit by a net is Restrained until it is freed. A net has no effect on creatures that are formless, or creatures that are Huge or larger. A creature can use its action to make a DC 10 Strength check, freeing itself or another creature within its reach on a success. Dealing 5 slashing damage to the net (AC 10) also frees the creature without harming it, ending the effect and destroying the net. When you use an action, Bonus Action, or reaction to Attack with a net, you can make only one Attack regardless of the number of attacks you can normally make."
+  }
+]

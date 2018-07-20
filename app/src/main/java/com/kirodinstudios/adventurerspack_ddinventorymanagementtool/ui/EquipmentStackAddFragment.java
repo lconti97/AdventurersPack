@@ -50,9 +50,9 @@ public class EquipmentStackAddFragment extends Fragment {
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
 
-        List<EquipmentTemplate> equipmentTemplates = Arrays.asList(
-                new EquipmentTemplate("Sword", EquipmentTypes.WEAPON),
-                new EquipmentTemplate("Shield", EquipmentTypes.SHIELD));
+        List<EquipmentTemplate> equipmentTemplates = Arrays.asList();
+//                new EquipmentTemplate("Sword", EquipmentTypes.WEAPON),
+//                new EquipmentTemplate("Shield", EquipmentTypes.SHIELD));
         EquipmentTemplateAdapter nameAutoCompleteTextViewAdapter = new EquipmentTemplateAdapter(
                 getContext(),
                 equipmentTemplates);

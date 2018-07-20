@@ -1,25 +1,28 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.AppExecutors;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.InitialEquipmentTemplateRepository;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {EquipmentStack.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -57,6 +60,8 @@ public abstract class AppDatabase extends RoomDatabase {
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
                             AppDatabase database = AppDatabase.getInstance(context, executors);
                             List<EquipmentStack> equipmentStackEntities = getPopulationEquipmentStacks();
+                            InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
+                            Collection<EquipmentTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
                             database.equipmentStackDao().insertAll(equipmentStackEntities);
                             database.setDatabaseCreated();
                         });
