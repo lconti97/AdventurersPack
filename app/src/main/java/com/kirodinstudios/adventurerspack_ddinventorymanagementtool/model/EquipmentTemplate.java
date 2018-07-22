@@ -1,7 +1,9 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+@Entity(tableName = "EquipmentTemplate")
 public class EquipmentTemplate {
     @PrimaryKey(autoGenerate = true)
     private long id;

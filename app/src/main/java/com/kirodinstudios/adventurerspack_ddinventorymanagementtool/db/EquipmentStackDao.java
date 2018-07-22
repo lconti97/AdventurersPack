@@ -1,6 +1,7 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
 import java.util.List;
 
@@ -19,10 +20,10 @@ public interface EquipmentStackDao {
     LiveData<EquipmentStack> loadEquipmentStack(int id);
 
     @Insert
-    void insertAll(List<EquipmentStack> equipmentStackEntities);
+    void insert(EquipmentTemplate equipmentTemplate);
 
-    @Insert
-    void insert(EquipmentStack equipmentStack);
+    @Insert()
+    void insert(EquipmentStack equipmentStack, EquipmentTemplate equipmentTemplate);
 
     @Delete
     void delete(EquipmentStack equipmentStack);

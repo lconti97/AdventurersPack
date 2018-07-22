@@ -1,22 +1,15 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "EquipmentStack", foreignKeys = @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "id", childColumns = "id"))
-public class EquipmentStack {
-    @PrimaryKey(autoGenerate = true)
+public class EquipmentStackModel {
     private int id;
-
     private String name;
     private int count;
+    private EquipmentTemplate equipmentTemplate;
 
-    public EquipmentStack() { }
-
-    public EquipmentStack(String name, int count) {
+    public EquipmentStackModel(String name, int count, EquipmentTemplate equipmentTemplate) {
         this.name = name;
         this.count = count;
+        this.equipmentTemplate = equipmentTemplate;
     }
 
     public int getId() {
