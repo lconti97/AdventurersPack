@@ -25,7 +25,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 public class EquipmentStackAddFragment extends Fragment {
-    private EquipmentStackAddViewModel equipmentStackViewModel;
+    private EquipmentStackAddViewModel viewModel;
     private AutoCompleteTextView nameAutoCompleteTextView;
     private EditText countEditText;
     private Spinner typeSpinner;
@@ -34,7 +34,7 @@ public class EquipmentStackAddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.equipment_stack_add_fragment, container, false);
-        equipmentStackViewModel = ViewModelProviders.of(this).get(EquipmentStackAddViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(EquipmentStackAddViewModel.class);
 
         nameAutoCompleteTextView = view.findViewById(R.id.equipment_stack_add_fragment_name);
         countEditText = view.findViewById(R.id.equipment_stack_add_fragment_count);
@@ -44,15 +44,14 @@ public class EquipmentStackAddFragment extends Fragment {
         addButton.setOnClickListener(view1 -> {
             String name = nameAutoCompleteTextView.getText().toString();
             int count = Integer.valueOf(countEditText.getText().toString());
-            EquipmentStack equipmentStack = new EquipmentStack(name, count, equipmentTemplate.getEquipmentTemplateId());
+            long equipmentTemplateId = equipmentTemplate.getEquipmentTemplateId();
+            EquipmentStack equipmentStack = new EquipmentStack(name, count, equipmentTemplateId);
 
-            equipmentStackViewModel.addEquipmentStack(equipmentStack);
+            viewModel.addEquipmentStack(equipmentStack);
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
 
-        LiveData<List<EquipmentTemplate>> equipmentTemplates = equipmentStackViewModel.getAllEquipmentTemplates();
-//                new EquipmentTemplate("Sword", EquipmentTypes.WEAPON),
-//                new EquipmentTemplate("Shield", EquipmentTypes.SHIELD));
+        LiveData<List<EquipmentTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
         equipmentTemplates.observe(this, equipmentTemplates1 -> {});
         EquipmentTemplateAdapter nameAutoCompleteTextViewAdapter = new EquipmentTemplateAdapter(
                 getContext(),

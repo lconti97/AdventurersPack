@@ -1,5 +1,8 @@
 //package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 //
+//import androidx.room.Entity;
+//import androidx.room.ForeignKey;
+//
 //@Entity(tableName = "ArmorTemplate",
 //        foreignKeys = @ForeignKey(
 //                entity = EquipmentTemplate.class,

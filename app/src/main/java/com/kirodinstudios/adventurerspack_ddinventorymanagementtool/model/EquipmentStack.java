@@ -15,6 +15,8 @@ public class EquipmentStack {
 
     private String name;
     private int count;
+
+    @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "equipmentTemplateId")
     private long equipmentTemplateId;
 
     public EquipmentStack(String name, int count, long equipmentTemplateId) {
