@@ -8,9 +8,7 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.InitialEquip
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -24,7 +22,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {EquipmentStack.class}, version = 1)
+@Database(entities = {EquipmentStack.class, EquipmentTemplate.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
@@ -59,10 +57,11 @@ public abstract class AppDatabase extends RoomDatabase {
                         super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
                             AppDatabase database = AppDatabase.getInstance(context, executors);
-                            List<EquipmentStack> equipmentStackEntities = getPopulationEquipmentStacks();
+
                             InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
                             Collection<EquipmentTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
-                            database.equipmentStackDao().insertAll(equipmentStackEntities);
+                            database.equipmentTemplateDao().insertAllTemplates(equipmentTemplates);
+
                             database.setDatabaseCreated();
                         });
                     }
@@ -70,14 +69,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 .build();
     }
 
-    private static List<EquipmentStack> getPopulationEquipmentStacks() {
-        return Arrays.asList(
-                new EquipmentStack("sword", 1),
-                new EquipmentStack("gold", 200)
-        );
-    }
-
     public abstract EquipmentStackDao equipmentStackDao();
+    public abstract EquipmentTemplateDao equipmentTemplateDao();
 
     private void setDatabaseCreated() {
         mIsDatabaseCreated.postValue(true);

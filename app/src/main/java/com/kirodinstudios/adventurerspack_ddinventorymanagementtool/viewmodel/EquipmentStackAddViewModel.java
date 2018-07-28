@@ -10,6 +10,7 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDataba
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackDao;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,7 @@ public class EquipmentStackAddViewModel extends AndroidViewModel {
 
     public void addEquipmentStack(EquipmentStack equipmentStack) {
         Callable addEquipmentStackCallable = () -> {
-            equipmentStackDao.insert(equipmentStack);
+            equipmentStackDao.insertAll(Arrays.asList(equipmentStack));
             return null;
         };
         Callable failureCallable = () -> {

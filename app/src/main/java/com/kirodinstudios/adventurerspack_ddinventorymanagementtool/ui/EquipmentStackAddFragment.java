@@ -30,6 +30,7 @@ public class EquipmentStackAddFragment extends Fragment {
     private AutoCompleteTextView nameAutoCompleteTextView;
     private EditText countEditText;
     private Spinner typeSpinner;
+    private EquipmentTemplate equipmentTemplate;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class EquipmentStackAddFragment extends Fragment {
         addButton.setOnClickListener(view1 -> {
             String name = nameAutoCompleteTextView.getText().toString();
             int count = Integer.valueOf(countEditText.getText().toString());
-            EquipmentStack equipmentStack = new EquipmentStack(name, count);
+            EquipmentStack equipmentStack = new EquipmentStack(name, count, equipmentTemplate.getEquipmentTemplateId());
 
             equipmentStackViewModel.addEquipmentStack(equipmentStack);
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
@@ -60,7 +61,7 @@ public class EquipmentStackAddFragment extends Fragment {
         nameAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                EquipmentTemplate equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+                equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
                 ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) typeSpinner.getAdapter();
                 int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
                 typeSpinner.setSelection(position, true);

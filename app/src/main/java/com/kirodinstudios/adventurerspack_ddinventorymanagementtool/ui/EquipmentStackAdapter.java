@@ -44,14 +44,14 @@ public class EquipmentStackAdapter extends RecyclerView.Adapter<EquipmentStackAd
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     EquipmentStack oldEquipmentStack = mEquipmentStacks.get(oldItemPosition);
                     EquipmentStack newEquipmentStack = equipmentStacks.get(newItemPosition);
-                    return oldEquipmentStack.getId() == newEquipmentStack.getId();
+                    return oldEquipmentStack.getEquipmentTemplateId() == newEquipmentStack.getEquipmentTemplateId();
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     EquipmentStack oldEquipmentStack = mEquipmentStacks.get(oldItemPosition);
                     EquipmentStack newEquipmentStack = mEquipmentStacks.get(newItemPosition);
-                    return oldEquipmentStack.getId() == newEquipmentStack.getId()
+                    return oldEquipmentStack.getEquipmentTemplateId() == newEquipmentStack.getEquipmentTemplateId()
                             && oldEquipmentStack.getName().equals(newEquipmentStack.getName())
                             && oldEquipmentStack.getCount() == newEquipmentStack.getCount();
                 }

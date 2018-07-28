@@ -42,7 +42,7 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
 
     @Override
     public long getItemId(int i) {
-        return filteredEquipmentTemplates.get(i).getId();
+        return filteredEquipmentTemplates.get(i).getEquipmentTemplateId();
     }
 
     @Override

@@ -4,23 +4,27 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "EquipmentStack", foreignKeys = @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "id", childColumns = "id"))
+@Entity(tableName = "EquipmentStack",
+        foreignKeys = @ForeignKey(
+                entity = EquipmentTemplate.class,
+                parentColumns = "equipmentTemplateId",
+                childColumns = "equipmentTemplateId"))
 public class EquipmentStack {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int equipmentStackId;
 
     private String name;
     private int count;
+    private long equipmentTemplateId;
 
-    public EquipmentStack() { }
-
-    public EquipmentStack(String name, int count) {
+    public EquipmentStack(String name, int count, long equipmentTemplateId) {
         this.name = name;
         this.count = count;
+        this.equipmentTemplateId = equipmentTemplateId;
     }
 
-    public int getId() {
-        return id;
+    public int getEquipmentStackId() {
+        return equipmentStackId;
     }
 
     public String getName() {
@@ -31,8 +35,8 @@ public class EquipmentStack {
         this.name = name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEquipmentStackId(int equipmentStackId) {
+        this.equipmentStackId = equipmentStackId;
     }
 
     public int getCount() {
@@ -41,5 +45,13 @@ public class EquipmentStack {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public long getEquipmentTemplateId() {
+        return equipmentTemplateId;
+    }
+
+    public void setEquipmentTemplateId(long equipmentTemplateId) {
+        this.equipmentTemplateId = equipmentTemplateId;
     }
 }
