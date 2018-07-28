@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -18,11 +17,11 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.Equipm
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTypes;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel.EquipmentStackAddViewModel;
 
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 public class EquipmentStackAddFragment extends Fragment {
@@ -51,21 +50,19 @@ public class EquipmentStackAddFragment extends Fragment {
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
 
-        List<EquipmentTemplate> equipmentTemplates = Arrays.asList();
+        LiveData<List<EquipmentTemplate>> equipmentTemplates = equipmentStackViewModel.getAllEquipmentTemplates();
 //                new EquipmentTemplate("Sword", EquipmentTypes.WEAPON),
 //                new EquipmentTemplate("Shield", EquipmentTypes.SHIELD));
+        equipmentTemplates.observe(this, equipmentTemplates1 -> {});
         EquipmentTemplateAdapter nameAutoCompleteTextViewAdapter = new EquipmentTemplateAdapter(
                 getContext(),
                 equipmentTemplates);
         nameAutoCompleteTextView.setAdapter(nameAutoCompleteTextViewAdapter);
-        nameAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
-                ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) typeSpinner.getAdapter();
-                int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
-                typeSpinner.setSelection(position, true);
-            }
+        nameAutoCompleteTextView.setOnItemClickListener((adapterView, view12, i, l) -> {
+            equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+            ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) typeSpinner.getAdapter();
+            int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
+            typeSpinner.setSelection(position, true);
         });
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),

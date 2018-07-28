@@ -8,18 +8,24 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.BasicApp;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackDao;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentTemplateDao;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 public class EquipmentStackAddViewModel extends AndroidViewModel {
     private AppDatabase appDatabase;
     private EquipmentStackDao equipmentStackDao;
+    private EquipmentTemplateDao equipmentTemplateDao;
     private Context context;
+    private LiveData<List<EquipmentTemplate>> equipmentTemplates;
 
     public EquipmentStackAddViewModel(@NonNull Application application) {
         super(application);
@@ -27,6 +33,13 @@ public class EquipmentStackAddViewModel extends AndroidViewModel {
         context = application.getApplicationContext();
         appDatabase = ((BasicApp) application).getDatabase();
         equipmentStackDao = appDatabase.equipmentStackDao();
+        equipmentTemplateDao = appDatabase.equipmentTemplateDao();
+
+        equipmentTemplates = equipmentTemplateDao.getAllTemplates();
+    }
+
+    public LiveData<List<EquipmentTemplate>> getAllEquipmentTemplates() {
+        return equipmentTemplates;
     }
 
     public void addEquipmentStack(EquipmentStack equipmentStack) {
