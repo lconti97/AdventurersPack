@@ -20,15 +20,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <AutoCompleteTextView
             android:id="@+id/equipment_stack_add_fragment_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:completionThreshold="2"
             android:hint="@string/name"
-            android:inputType="textCapSentences"
-            android:completionThreshold="2"/>
+            android:inputType="textCapSentences" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,8 +42,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginRight="27dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:hint="@string/count"
         app:layout_constraintEnd_toStartOf="@+id/equipment_stack_add_fragment_type"
         app:layout_constraintHorizontal_bias="0.5"
@@ -69,6 +70,51 @@
         app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_count_layout"
         app:layout_constraintTop_toTopOf="@+id/equipment_stack_add_fragment_count_layout" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/equipment_stack_add_fragment_weight_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/weightInPounds"
+        app:layout_constraintEnd_toStartOf="@+id/equipment_stack_add_fragment_cost_layout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_count_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/equipment_stack_add_fragment_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/equipment_stack_add_fragment_cost_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/costInGp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_weight_layout"
+        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_type">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/equipment_stack_add_fragment_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/equipment_stack_add_fragment_done"
         android:layout_width="wrap_content"
@@ -82,5 +128,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_done_white_24dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/equipment_stack_add_fragment_description_layout"
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_weight_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/equipment_stack_add_fragment_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences|textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

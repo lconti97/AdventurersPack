@@ -29,6 +29,9 @@ public class EquipmentStackAddFragment extends Fragment {
     private AutoCompleteTextView nameAutoCompleteTextView;
     private EditText countEditText;
     private Spinner typeSpinner;
+    private EditText weightEditText;
+    private EditText costEditText;
+    private EditText descriptionEditText;
     private EquipmentTemplate equipmentTemplate;
 
     @Override
@@ -40,14 +43,32 @@ public class EquipmentStackAddFragment extends Fragment {
         countEditText = view.findViewById(R.id.equipment_stack_add_fragment_count);
         FloatingActionButton addButton = view.findViewById(R.id.equipment_stack_add_fragment_done);
         typeSpinner = view.findViewById(R.id.equipment_stack_add_fragment_type);
+        weightEditText = view.findViewById(R.id.equipment_stack_add_fragment_weight);
+        costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
+        descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
 
         addButton.setOnClickListener(view1 -> {
             String name = nameAutoCompleteTextView.getText().toString();
             int count = Integer.valueOf(countEditText.getText().toString());
-            long equipmentTemplateId = equipmentTemplate.getEquipmentTemplateId();
-            EquipmentStack equipmentStack = new EquipmentStack(name, count, equipmentTemplateId);
 
-            viewModel.addEquipmentStack(equipmentStack);
+            //TODO: if equipment template is null or inputs don't match up with the equipment stack properties
+            if (equipmentTemplate == null) {
+                String description = descriptionEditText.getText().toString();
+                double weight = Double.valueOf(weightEditText.getText().toString());
+                double cost = Double.valueOf(costEditText.getText().toString());
+                String type = (String) typeSpinner.getSelectedItem();
+
+                EquipmentTemplate equipmentTemplate = new EquipmentTemplate(name, description, type, cost, weight);
+                EquipmentStack equipmentStack = new EquipmentStack(name, count);
+                viewModel.addEquipmentTemplateAndEquipmentStack(equipmentTemplate, equipmentStack);
+            }
+            else {
+                long equipmentTemplateId = equipmentTemplate.getEquipmentTemplateId();
+                EquipmentStack equipmentStack = new EquipmentStack(name, count, equipmentTemplateId);
+
+                viewModel.addEquipmentStack(equipmentStack);
+            }
+
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
 

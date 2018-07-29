@@ -22,6 +22,9 @@ public interface EquipmentStackDao {
     @Insert()
     void insertAll(Collection<EquipmentStack> equipmentStacks);
 
+    @Insert
+    long insertEquipmentStack(EquipmentStack equipmentStack);
+
     @Delete
     void delete(EquipmentStack equipmentStack);
 }

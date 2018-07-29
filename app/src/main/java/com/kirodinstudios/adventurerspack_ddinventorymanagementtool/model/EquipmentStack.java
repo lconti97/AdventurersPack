@@ -2,6 +2,7 @@ package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "EquipmentStack",
@@ -19,9 +20,14 @@ public class EquipmentStack {
     @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "equipmentTemplateId")
     private long equipmentTemplateId;
 
-    public EquipmentStack(String name, int count, long equipmentTemplateId) {
+    @Ignore
+    public EquipmentStack(String name, int count) {
         this.name = name;
         this.count = count;
+    }
+
+    public EquipmentStack(String name, int count, long equipmentTemplateId) {
+        this(name, count);
         this.equipmentTemplateId = equipmentTemplateId;
     }
 

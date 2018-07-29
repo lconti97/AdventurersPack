@@ -42,12 +42,30 @@ public class EquipmentStackAddViewModel extends AndroidViewModel {
         return equipmentTemplates;
     }
 
+    public void addEquipmentTemplateAndEquipmentStack(EquipmentTemplate equipmentTemplate, EquipmentStack equipmentStack) {
+        Callable<Void> addEquipmentTemplateCallable = () -> {
+            // TODO: null checks
+            long equipmentTemplateId = equipmentTemplateDao.insertTemplate(equipmentTemplate);
+            equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
+            equipmentStackDao.insertEquipmentStack(equipmentStack);
+            return null;
+        };
+        Callable<Void> failureCallable = () -> {
+            String failureMessageTemplate = context.getResources().getString(R.string.equipment_template_add_failure_message);
+            String failureMessage = String.format(failureMessageTemplate, equipmentTemplate.getName());
+            Toast.makeText(context, failureMessage, Toast.LENGTH_SHORT).show();
+            return null;
+        };
+
+        appDatabase.executeQuery(addEquipmentTemplateCallable, failureCallable);
+    }
+
     public void addEquipmentStack(EquipmentStack equipmentStack) {
-        Callable addEquipmentStackCallable = () -> {
+        Callable<Void> addEquipmentStackCallable = () -> {
             equipmentStackDao.insertAll(Arrays.asList(equipmentStack));
             return null;
         };
-        Callable failureCallable = () -> {
+        Callable<Void> failureCallable = () -> {
             String failureMessageTemplate = context.getResources().getString(R.string.equipment_stack_add_failure_message);
             String failureMessage = String.format(failureMessageTemplate, equipmentStack.getName());
             Toast.makeText(context, failureMessage, Toast.LENGTH_SHORT).show();

@@ -17,4 +17,7 @@ public interface EquipmentTemplateDao {
 
     @Insert
     void insertAllTemplates(Collection<EquipmentTemplate> equipmentTemplate);
+
+    @Insert
+    long insertTemplate(EquipmentTemplate equipmentTemplate);
 }

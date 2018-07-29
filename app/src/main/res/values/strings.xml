@@ -7,4 +7,8 @@
     <string name="equipment_stack_add_failure_message">Failed to save %s</string>
     <string name="type">Type</string>
     <string name="_1">1</string>
+    <string name="costInGp">Cost (gp)</string>
+    <string name="weightInPounds">Weight (lbs)</string>
+    <string name="description">Description</string>
+    <string name="equipment_template_add_failure_message">Failed to save template %s</string>
 </resources>
