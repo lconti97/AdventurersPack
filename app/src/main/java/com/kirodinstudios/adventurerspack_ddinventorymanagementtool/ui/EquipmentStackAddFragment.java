@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.EquipmentTemplateAdapter;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.R;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorCategories;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTypes;
@@ -40,6 +41,7 @@ public class EquipmentStackAddFragment extends Fragment {
     private EditText descriptionEditText;
     private TextInputLayout armorClassTextInputLayout;
     private EditText armorClassEditText;
+    private Spinner armorCategorySpinner;
     private EquipmentTemplate equipmentTemplate;
 
     @Override
@@ -56,6 +58,7 @@ public class EquipmentStackAddFragment extends Fragment {
         costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
         armorClassTextInputLayout = view.findViewById(R.id.equipment_stack_add_fragment_armor_class_layout);
         armorClassEditText = view.findViewById(R.id.equipment_stack_add_fragment_armor_class);
+        armorCategorySpinner = view.findViewById(R.id.equipment_stack_add_fragment_armor_category);
         descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
 
         addButton.setOnClickListener(view1 -> {
@@ -110,24 +113,31 @@ public class EquipmentStackAddFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = (String) adapterView.getSelectedItem();
                 if (selection.equals(EquipmentTypes.ARMOR))
-                    setVisibleWithoutChangingFocus(constraintLayout, armorClassTextInputLayout);
+                    setVisibleWithoutChangingFocus(constraintLayout, armorClassTextInputLayout, armorCategorySpinner);
                 else
                     armorClassTextInputLayout.setVisibility(View.GONE);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) { }
         });
+
+        ArrayAdapter<String> armorCategoryAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item,
+                ArmorCategories.ARMOR_CATEGORIES);
+        armorCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        armorCategorySpinner.setAdapter(armorCategoryAdapter);
 
         return view;
     }
 
-    private void setVisibleWithoutChangingFocus(ViewGroup parent, View target) {
+    private void setVisibleWithoutChangingFocus(ViewGroup parent, View... targets) {
         int initialFocusability = parent.getDescendantFocusability();
         parent.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        target.setVisibility(View.VISIBLE);
+
+        for (View target : targets)
+            target.setVisibility(View.VISIBLE);
+
         parent.setDescendantFocusability(initialFocusability);
     }
 

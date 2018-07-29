@@ -120,7 +120,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/equipment_stack_add_fragment_armor_class_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -128,10 +128,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:hint="@string/armor_class"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/equipment_stack_add_fragment_armor_category"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_weight_layout"
-        android:visibility="gone">
+        app:layout_constraintHorizontal_bias="0.5">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/equipment_stack_add_fragment_armor_class"
@@ -141,9 +141,22 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Spinner
+        android:id="@+id/equipment_stack_add_fragment_armor_category"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/equipment_stack_add_fragment_armor_class_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_armor_class_layout"
+        app:layout_constraintTop_toBottomOf="@id/equipment_stack_add_fragment_cost_layout" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/equipment_stack_add_fragment_description_layout"
-        android:layout_width="395dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"

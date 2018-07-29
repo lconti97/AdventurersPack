@@ -24,7 +24,7 @@ public class InitialEquipmentTemplateRepository {
         equipmentTemplates.add(new ArmorTemplate("Template 1", "description",
                 3.0, 1.0, "13", "Light",
                 false, false, 2));
-        equipmentTemplates.add(new EquipmentTemplate("Template 2", "description", "equipmentType", 3.0, 1.0));
+        equipmentTemplates.add(new EquipmentTemplate("Template 2", "description", "Weapon", 3.0, 1.0));
 
 //        try {
 //            InputStream armorInputStream = context.getAssets().open(ARMOR_TEMPLATES_FILE_NAME);
