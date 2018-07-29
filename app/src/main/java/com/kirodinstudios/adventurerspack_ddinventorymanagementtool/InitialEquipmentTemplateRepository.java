@@ -3,6 +3,7 @@ package com.kirodinstudios.adventurerspack_ddinventorymanagementtool;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplate;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ public class InitialEquipmentTemplateRepository {
     public ArrayList<EquipmentTemplate> getInitialEquipmentTemplates(Context context) {
         ArrayList<EquipmentTemplate> equipmentTemplates = new ArrayList<>();
 
-        equipmentTemplates.add(new EquipmentTemplate("Template 1", "description", "equipmentType", 3.0, 1.0));
+        equipmentTemplates.add(new ArmorTemplate("Template 1", "description",
+                3.0, 1.0, "13", "Light",
+                false, false, 2));
         equipmentTemplates.add(new EquipmentTemplate("Template 2", "description", "equipmentType", 3.0, 1.0));
 
 //        try {

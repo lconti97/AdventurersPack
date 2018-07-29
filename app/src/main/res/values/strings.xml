@@ -2,7 +2,7 @@
     <string name="app_name">Adventurer\'s Pack - D&amp;D Inventory Management Tool</string>
     <string name="cd_equipment_stacks_list">equipment</string>
     <string name="loading_equipment_stacks">Loading equipment</string>
-    <string name="name">Name</string>
+    <string name="name_required">Name*</string>
     <string name="count">Count</string>
     <string name="equipment_stack_add_failure_message">Failed to save %s</string>
     <string name="type">Type</string>
@@ -11,4 +11,6 @@
     <string name="weightInPounds">Weight (lbs)</string>
     <string name="description">Description</string>
     <string name="equipment_template_add_failure_message">Failed to save template %s</string>
+    <string name="required">*Required</string>
+    <string name="armor_class">Armor Class (AC)</string>
 </resources>

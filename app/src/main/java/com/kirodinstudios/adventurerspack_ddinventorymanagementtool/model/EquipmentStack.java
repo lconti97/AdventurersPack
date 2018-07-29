@@ -17,6 +17,7 @@ public class EquipmentStack {
     private String name;
     private int count;
 
+    //TODO: duplicated in class annotation?
     @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "equipmentTemplateId")
     private long equipmentTemplateId;
 
