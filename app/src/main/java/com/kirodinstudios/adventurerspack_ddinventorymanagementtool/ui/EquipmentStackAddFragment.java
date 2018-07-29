@@ -1,5 +1,6 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +84,9 @@ public class EquipmentStackAddFragment extends Fragment {
             ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) typeSpinner.getAdapter();
             int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
             typeSpinner.setSelection(position, true);
+            costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
+            weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
+            descriptionEditText.setText(equipmentTemplate.getDescription());
         });
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
@@ -92,5 +96,14 @@ public class EquipmentStackAddFragment extends Fragment {
         typeSpinner.setAdapter(spinnerAdapter);
 
         return view;
+    }
+
+    @SuppressLint("DefaultLocale")
+    private static String getStringRepresentationOfDouble(double d)
+    {
+        if(d == (long) d)
+            return String.format("%d",(long)d);
+        else
+            return String.format("%s",d);
     }
 }
