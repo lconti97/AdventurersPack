@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,7 +45,9 @@ public class EquipmentStackAddFragment extends Fragment {
     private TextInputLayout armorClassTextInputLayout;
     private EditText armorClassEditText;
     private Spinner armorCategorySpinner;
-    private Switch armorGivesDisadvantageOnStealthSwitch;
+    private CheckBox armorGivesDisadvantageOnStealthSwitch;
+    private CheckBox armorHasMinimumStrengthRequirementCheckBox;
+    private TextInputLayout armorMinimumStrengthLayout;
     private EquipmentTemplate equipmentTemplate;
 
     @Override
@@ -114,16 +116,19 @@ public class EquipmentStackAddFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = (String) adapterView.getSelectedItem();
-                if (selection.equals(EquipmentTypes.ARMOR))
+                if (selection.equals(EquipmentTypes.ARMOR)) {
                     setVisibleWithoutChangingFocus(constraintLayout, armorViewsToHide);
+                }
                 else {
                     for (View target : armorViewsToHide)
                         target.setVisibility(View.GONE);
                 }
+                descriptionEditText.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) { }
+
         });
 
 
@@ -132,17 +137,20 @@ public class EquipmentStackAddFragment extends Fragment {
     }
 
     private void setupArmorViews(View view) {
-
         armorClassTextInputLayout = view.findViewById(R.id.equipment_stack_add_fragment_armor_class_layout);
         armorClassEditText = view.findViewById(R.id.equipment_stack_add_fragment_armor_class);
         armorCategorySpinner = view.findViewById(R.id.equipment_stack_add_fragment_armor_category);
         armorGivesDisadvantageOnStealthSwitch = view.findViewById(R.id.equipment_stack_add_fragment_disadvantage_on_stealth);
+        armorHasMinimumStrengthRequirementCheckBox = view.findViewById(R.id.equipment_stack_add_fragment_requires_minimum_strength);
+        armorMinimumStrengthLayout = view.findViewById(R.id.equipment_stack_add_fragment_minimum_strength_layout);
 
         armorViewsToHide = new View[] {
                 armorClassTextInputLayout,
                 armorCategorySpinner,
                 armorGivesDisadvantageOnStealthSwitch,
-                armorGivesDisadvantageOnStealthSwitch
+                armorGivesDisadvantageOnStealthSwitch,
+                armorHasMinimumStrengthRequirementCheckBox,
+                armorMinimumStrengthLayout
         };
 
         ArrayAdapter<String> armorCategoryAdapter = new ArrayAdapter<>(getContext(),
@@ -150,6 +158,8 @@ public class EquipmentStackAddFragment extends Fragment {
                 ArmorCategories.ARMOR_CATEGORIES);
         armorCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         armorCategorySpinner.setAdapter(armorCategoryAdapter);
+
+
     }
 
     private void setVisibleWithoutChangingFocus(ViewGroup parent, View... targets) {
