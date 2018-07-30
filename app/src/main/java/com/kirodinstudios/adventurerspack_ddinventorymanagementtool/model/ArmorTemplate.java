@@ -20,6 +20,8 @@ public class ArmorTemplate extends EquipmentTemplate {
     private Boolean requiresMinimumStrength;
     private Integer minimumStrength;
 
+    public ArmorTemplate() { }
+
     public ArmorTemplate(
             String name,
             String description,

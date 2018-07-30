@@ -13,6 +13,8 @@ public class EquipmentTemplate {
     private Double costInGp;
     private Double weightInPounds;
 
+    public EquipmentTemplate() { }
+
     public EquipmentTemplate(
             String name,
             String description,
