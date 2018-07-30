@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,6 +32,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 public class EquipmentStackAddFragment extends Fragment {
+    private View[] armorViewsToHide;
+
     private EquipmentStackAddViewModel viewModel;
     private ConstraintLayout constraintLayout;
     private AutoCompleteTextView nameAutoCompleteTextView;
@@ -42,6 +45,7 @@ public class EquipmentStackAddFragment extends Fragment {
     private TextInputLayout armorClassTextInputLayout;
     private EditText armorClassEditText;
     private Spinner armorCategorySpinner;
+    private Switch armorGivesDisadvantageOnStealthSwitch;
     private EquipmentTemplate equipmentTemplate;
 
     @Override
@@ -56,9 +60,7 @@ public class EquipmentStackAddFragment extends Fragment {
         typeSpinner = view.findViewById(R.id.equipment_stack_add_fragment_type);
         weightEditText = view.findViewById(R.id.equipment_stack_add_fragment_weight);
         costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
-        armorClassTextInputLayout = view.findViewById(R.id.equipment_stack_add_fragment_armor_class_layout);
-        armorClassEditText = view.findViewById(R.id.equipment_stack_add_fragment_armor_class);
-        armorCategorySpinner = view.findViewById(R.id.equipment_stack_add_fragment_armor_category);
+        setupArmorViews(view);
         descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
 
         addButton.setOnClickListener(view1 -> {
@@ -113,22 +115,41 @@ public class EquipmentStackAddFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = (String) adapterView.getSelectedItem();
                 if (selection.equals(EquipmentTypes.ARMOR))
-                    setVisibleWithoutChangingFocus(constraintLayout, armorClassTextInputLayout, armorCategorySpinner);
-                else
-                    armorClassTextInputLayout.setVisibility(View.GONE);
+                    setVisibleWithoutChangingFocus(constraintLayout, armorViewsToHide);
+                else {
+                    for (View target : armorViewsToHide)
+                        target.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) { }
         });
 
+
+
+        return view;
+    }
+
+    private void setupArmorViews(View view) {
+
+        armorClassTextInputLayout = view.findViewById(R.id.equipment_stack_add_fragment_armor_class_layout);
+        armorClassEditText = view.findViewById(R.id.equipment_stack_add_fragment_armor_class);
+        armorCategorySpinner = view.findViewById(R.id.equipment_stack_add_fragment_armor_category);
+        armorGivesDisadvantageOnStealthSwitch = view.findViewById(R.id.equipment_stack_add_fragment_disadvantage_on_stealth);
+
+        armorViewsToHide = new View[] {
+                armorClassTextInputLayout,
+                armorCategorySpinner,
+                armorGivesDisadvantageOnStealthSwitch,
+                armorGivesDisadvantageOnStealthSwitch
+        };
+
         ArrayAdapter<String> armorCategoryAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
                 ArmorCategories.ARMOR_CATEGORIES);
         armorCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         armorCategorySpinner.setAdapter(armorCategoryAdapter);
-
-        return view;
     }
 
     private void setVisibleWithoutChangingFocus(ViewGroup parent, View... targets) {
