@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.AppExecutors;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.InitialEquipmentTemplateRepository;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplate;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
@@ -22,7 +23,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {EquipmentStack.class, EquipmentTemplate.class}, version = 1)
+@Database(entities = {EquipmentStack.class, EquipmentTemplate.class, ArmorTemplate.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
@@ -59,8 +60,8 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase database = AppDatabase.getInstance(context, executors);
 
                             InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
-                            Collection<EquipmentTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
-                            database.equipmentTemplateDao().insertAllTemplates(equipmentTemplates);
+                            Collection<ArmorTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
+                            database.armorTemplateDao().insertAllTemplates(equipmentTemplates);
 
                             database.setDatabaseCreated();
                         });
@@ -71,6 +72,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract EquipmentStackDao equipmentStackDao();
     public abstract EquipmentTemplateDao equipmentTemplateDao();
+    public abstract ArmorTemplateDao armorTemplateDao();
 
     private void setDatabaseCreated() {
         mIsDatabaseCreated.postValue(true);

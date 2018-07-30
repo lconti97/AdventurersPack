@@ -2,24 +2,18 @@ package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "ArmorTemplate",
-        foreignKeys = @ForeignKey(
-                entity = EquipmentTemplate.class,
-                parentColumns = "equipmentTemplateId",
-                childColumns = "equipmentTemplateId"))
+@Entity(tableName = "ArmorTemplate")
 public class ArmorTemplate extends EquipmentTemplate {
-    //TODO: duplicated from class annotation?
-    @PrimaryKey
-    @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "equipmentTemplateId")
-    private long equipmentTemplateId;
+    //TODO: duplicated from class annotation? Also change that var name
+
+    @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "parentTemplateId")
+    private long parentTemplateId;
     private String armorClass;
     private String armorCategory;
     private Boolean givesDisadvantageOnStealthChecks;
     private Boolean requiresMinimumStrength;
     private Integer minimumStrength;
-
     public ArmorTemplate() { }
 
     public ArmorTemplate(
@@ -71,6 +65,14 @@ public class ArmorTemplate extends EquipmentTemplate {
 
     public void setRequiresMinimumStrength(Boolean requiresMinimumStrength) {
         this.requiresMinimumStrength = requiresMinimumStrength;
+    }
+
+    public long getParentTemplateId() {
+        return parentTemplateId;
+    }
+
+    public void setParentTemplateId(long parentTemplateId) {
+        this.parentTemplateId = parentTemplateId;
     }
 
     public Integer getMinimumStrength() {

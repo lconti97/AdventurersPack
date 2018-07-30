@@ -111,20 +111,38 @@ public class EquipmentStackAddFragment extends Fragment {
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
 
-        LiveData<List<EquipmentTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
+        LiveData<List<ArmorTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
         equipmentTemplates.observe(this, equipmentTemplates1 -> {});
         EquipmentTemplateAdapter nameAutoCompleteTextViewAdapter = new EquipmentTemplateAdapter(
                 getContext(),
                 equipmentTemplates);
         nameAutoCompleteTextView.setAdapter(nameAutoCompleteTextViewAdapter);
         nameAutoCompleteTextView.setOnItemClickListener((adapterView, view12, i, l) -> {
-            equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+            equipmentTemplate = (ArmorTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+
+            //TODO: null check all sets. Those can throw exceptions
             ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
             int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
             equipmentTypeSpinner.setSelection(position, true);
             costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
             weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
             descriptionEditText.setText(equipmentTemplate.getDescription());
+
+            Class equipmentClass = equipmentTemplate.getClass();
+
+            if (equipmentTemplate.getClass().equals(ArmorTemplate.class)) {
+                ArmorTemplate armorTemplate = (ArmorTemplate) equipmentTemplate;
+
+                armorClassEditText.setText(armorTemplate.getArmorClass());
+                ArrayAdapter<String> armorCategoryAdapter = (ArrayAdapter<String>) armorCategorySpinner.getAdapter();
+                int armorCategoryPosition = armorCategoryAdapter.getPosition(armorTemplate.getArmorCategory());
+                armorCategorySpinner.setSelection(armorCategoryPosition, true);
+                armorGivesDisadvantageOnStealthCheckBox.setSelected(armorTemplate.getGivesDisadvantageOnStealthChecks());
+                armorHasMinimumStrengthRequirementCheckBox.setSelected(armorTemplate.getRequiresMinimumStrength());
+                Integer minimumStrength = armorTemplate.getMinimumStrength();
+                String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();
+                armorMinimumStrengthEditText.setText(minimumArmorStrengthText);
+            }
         });
 
         Arrays.sort(EquipmentTypes.EQUIPMENT_TYPES);

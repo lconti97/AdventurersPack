@@ -6,7 +6,6 @@ import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplate;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,8 +23,8 @@ public class InitialEquipmentTemplateRepository {
         objectMapper = new ObjectMapper();
     }
 
-    public ArrayList<EquipmentTemplate> getInitialEquipmentTemplates(Context context) {
-        ArrayList<EquipmentTemplate> equipmentTemplates = new ArrayList<>();
+    public ArrayList<ArmorTemplate> getInitialEquipmentTemplates(Context context) {
+        ArrayList<ArmorTemplate> equipmentTemplates = new ArrayList<>();
 
         try {
             InputStream armorInputStream = context.getAssets().open(ARMOR_TEMPLATES_FILE_NAME);

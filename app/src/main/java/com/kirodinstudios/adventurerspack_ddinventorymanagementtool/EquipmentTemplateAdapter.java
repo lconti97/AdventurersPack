@@ -10,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplate;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
 import java.util.ArrayList;
@@ -24,9 +25,9 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
 
     private Filter filter;
     private Context context;
-    private List<EquipmentTemplate> filteredEquipmentTemplates;
+    private List<ArmorTemplate> filteredEquipmentTemplates;
 
-    public EquipmentTemplateAdapter(Context context, final LiveData<List<EquipmentTemplate>> equipmentTemplates) {
+    public EquipmentTemplateAdapter(Context context, final LiveData<List<ArmorTemplate>> equipmentTemplates) {
         this.context = context;
         this.filter = new EquipmentTemplateFilter(equipmentTemplates);
         this.filteredEquipmentTemplates = Collections.emptyList();
@@ -65,9 +66,9 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
     }
 
     private class EquipmentTemplateFilter extends Filter {
-        private LiveData<List<EquipmentTemplate>> equipmentTemplates;
+        private LiveData<List<ArmorTemplate>> equipmentTemplates;
 
-        EquipmentTemplateFilter(LiveData<List<EquipmentTemplate>> equipmentTemplates) {
+        EquipmentTemplateFilter(LiveData<List<ArmorTemplate>> equipmentTemplates) {
             this.equipmentTemplates = equipmentTemplates;
         }
 
@@ -94,7 +95,7 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
         @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             try {
-                filteredEquipmentTemplates = (List<EquipmentTemplate>) filterResults.values;
+                filteredEquipmentTemplates = (List<ArmorTemplate>) filterResults.values;
                 notifyDataSetChanged();
             }
             catch (ClassCastException e) {
