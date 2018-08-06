@@ -61,6 +61,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
                             InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
                             Collection<ArmorTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
+
+                            database.equipmentTemplateDao().insertAllTemplates(equipmentTemplates);
                             database.armorTemplateDao().insertAllTemplates(equipmentTemplates);
 
                             database.setDatabaseCreated();

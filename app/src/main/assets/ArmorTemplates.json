@@ -45,7 +45,7 @@
   },
   {
     "name": "Chain shirt",
-    "description": "Made of interlocking metal rings, a Chain Shirt is worn between layers of clothing or leather. This armor offers modest protection to the wearer%u2019s upper body and allows the sound of the rings rubbing against one another to be muffled by outer layers.",
+    "description": "Made of interlocking metal rings, a Chain Shirt is worn between layers of clothing or leather. This armor offers modest protection to the wearer's upper body and allows the sound of the rings rubbing against one another to be muffled by outer layers.",
     "costInGp": 50,
     "weightInPounds": 20,
     "armorClass": "13 + Dex modifier (max 2)",
@@ -67,7 +67,7 @@
   },
   {
     "name": "Breastplate armor",
-    "description": "This armor consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer%u2019s vital organs while leaving the wearer relatively unencumbered.",
+    "description": "This armor consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer's vital organs while leaving the wearer relatively unencumbered.",
     "costInGp": 400,
     "weightInPounds": 20,
     "armorClass": "14 + Dex modifier (max 2)",
@@ -78,7 +78,7 @@
   },
   {
     "name": "Half plate armor",
-    "description": "Half Plate consists of shaped metal plates that cover most of the wearer%u2019s body. It does not include leg protection beyond simple greaves that are attached with leather straps.",
+    "description": "Half Plate consists of shaped metal plates that cover most of the wearer's body. It does not include leg protection beyond simple greaves that are attached with leather straps.",
     "costInGp": 750,
     "weightInPounds": 40,
     "armorClass": "15 + Dex modifier (max 2)",
@@ -89,7 +89,7 @@
   },
   {
     "name": "Ring mail",
-    "description": "This armor is Leather Armor with heavy rings sewn into it. The rings help reinforce the armor against blows from swords and axes. Ring Mail is inferior to Chain Mail, and it's usually worn only by those who can%u2019t afford better armor.",
+    "description": "This armor is Leather Armor with heavy rings sewn into it. The rings help reinforce the armor against blows from swords and axes. Ring Mail is inferior to Chain Mail, and it's usually worn only by those who can't afford better armor.",
     "costInGp": 30,
     "weightInPounds": 40,
     "armorClass": 14,

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "EquipmentTemplate")
 public class EquipmentTemplate {
     @PrimaryKey(autoGenerate = true)
-    private long equipmentTemplateId;
+    private Long equipmentTemplateId;
     private String name;
     private String description;
     private String equipmentType;
@@ -28,11 +28,11 @@ public class EquipmentTemplate {
         this.weightInPounds = weightInPounds;
     }
 
-    public long getEquipmentTemplateId() {
+    public Long getEquipmentTemplateId() {
         return equipmentTemplateId;
     }
 
-    public void setEquipmentTemplateId(long id) {
+    public void setEquipmentTemplateId(Long id) {
         this.equipmentTemplateId = id;
     }
 

@@ -54,6 +54,7 @@ public class EquipmentStackAddViewModel extends AndroidViewModel {
             equipmentStackDao.insertEquipmentStack(equipmentStack);
             return null;
         };
+        //TODO: does this thing even get called?
         Callable<Void> failureCallable = () -> {
             String failureMessageTemplate = context.getResources().getString(R.string.equipment_template_add_failure_message);
             String failureMessage = String.format(failureMessageTemplate, equipmentTemplate.getName());

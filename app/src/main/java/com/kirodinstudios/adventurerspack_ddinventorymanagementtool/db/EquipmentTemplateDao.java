@@ -16,7 +16,7 @@ public interface EquipmentTemplateDao {
     LiveData<List<EquipmentTemplate>> getAllTemplates();
 
     @Insert
-    void insertAllTemplates(Collection<EquipmentTemplate> equipmentTemplate);
+    void insertAllTemplates(Collection<? extends EquipmentTemplate> equipmentTemplate);
 
     @Insert
     long insertTemplate(EquipmentTemplate equipmentTemplate);

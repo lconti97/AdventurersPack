@@ -19,7 +19,7 @@ public class EquipmentStack {
 
     //TODO: duplicated in class annotation?
     @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "equipmentTemplateId")
-    private long equipmentTemplateId;
+    private Long equipmentTemplateId;
 
     @Ignore
     public EquipmentStack(String name, int count) {
@@ -56,11 +56,11 @@ public class EquipmentStack {
         this.count = count;
     }
 
-    public long getEquipmentTemplateId() {
+    public Long getEquipmentTemplateId() {
         return equipmentTemplateId;
     }
 
-    public void setEquipmentTemplateId(long equipmentTemplateId) {
+    public void setEquipmentTemplateId(Long equipmentTemplateId) {
         this.equipmentTemplateId = equipmentTemplateId;
     }
 }
