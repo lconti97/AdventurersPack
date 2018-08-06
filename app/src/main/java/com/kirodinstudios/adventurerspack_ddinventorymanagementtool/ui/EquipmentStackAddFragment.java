@@ -111,7 +111,7 @@ public class EquipmentStackAddFragment extends Fragment {
             ((MainActivity) getActivity()).showEquipmentStackListFragment();
         });
 
-        LiveData<List<ArmorTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
+        LiveData<List<EquipmentTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
         equipmentTemplates.observe(this, equipmentTemplates1 -> {});
         EquipmentTemplateAdapter nameAutoCompleteTextViewAdapter = new EquipmentTemplateAdapter(
                 getContext(),

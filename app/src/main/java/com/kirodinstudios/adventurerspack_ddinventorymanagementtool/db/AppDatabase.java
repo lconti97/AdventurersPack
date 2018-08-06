@@ -9,7 +9,8 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorT
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -17,6 +18,7 @@ import java.util.concurrent.Executors;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -28,9 +30,13 @@ public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
     private static final String LOG_TAG = "AppDatabase";
+    private static final Callable<Void> DEFAULT_FAILURE_CALLABLE = () -> null;
+
+    abstract EquipmentStackDao equipmentStackDao();
+    abstract EquipmentTemplateDao equipmentTemplateDao();
+    abstract ArmorTemplateDao armorTemplateDao();
 
     private static AppDatabase Instance;
-
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
     private Executor databaseThread;
 
@@ -48,6 +54,75 @@ public abstract class AppDatabase extends RoomDatabase {
         return Instance;
     }
 
+    public LiveData<List<EquipmentTemplate>> getEquipmentTemplates() {
+        MediatorLiveData<List<EquipmentTemplate>> liveData = new MediatorLiveData<>();
+
+        liveData.addSource(equipmentTemplateDao().getAllTemplates(), equipmentTemplates ->
+                addEquipmentTemplatesToLiveData(equipmentTemplates, liveData));
+        liveData.addSource(armorTemplateDao().getAllTemplates(), armorTemplates ->
+                addEquipmentTemplatesToLiveData(new ArrayList<>(armorTemplates), liveData));
+
+        return liveData;
+    }
+
+    public LiveData<List<EquipmentStack>> getEquipmentStacks() {
+        return equipmentStackDao().loadAll();
+    }
+
+    public LiveData<EquipmentStack> getEquipmentStack(int id) {
+        return equipmentStackDao().loadEquipmentStack(id);
+    }
+
+    public void insertEquipmentTemplateInBackground(EquipmentTemplate equipmentTemplate) {
+        Callable<Void> callable = () -> {
+            if (equipmentTemplate.getClass() == ArmorTemplate.class)
+                armorTemplateDao().insertTemplate((ArmorTemplate) equipmentTemplate);
+            else if (equipmentTemplate.getClass() == EquipmentTemplate.class)
+                equipmentTemplateDao().insertTemplate(equipmentTemplate);
+
+            return null;
+        };
+
+        executeQuery(callable);
+    }
+
+    public void insertEquipmentTemplateAndEquipmentStackInBackground(EquipmentTemplate equipmentTemplate, EquipmentStack equipmentStack) {
+        Callable<Void> addEquipmentTemplateCallable = () -> {
+            // TODO: null checks
+            long equipmentTemplateId = equipmentTemplateDao().insertTemplate(equipmentTemplate);
+            equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
+            equipmentStackDao().insertEquipmentStack(equipmentStack);
+            return null;
+        };
+
+        executeQuery(addEquipmentTemplateCallable);
+    }
+
+    public void insertEquipmentTemplatesInBackground(List<EquipmentTemplate> equipmentTemplates) {
+        Callable<Void> callable = () -> {
+            equipmentTemplateDao().insertAllTemplates(equipmentTemplates);
+            return null;
+        };
+
+        executeQuery(callable);
+    }
+
+    public void insertEquipmentStackInBackground(EquipmentStack equipmentStack) {
+        Callable<Void> callable = () -> {
+            equipmentStackDao().insertEquipmentStack(equipmentStack);
+            return null;
+        };
+
+        executeQuery(callable);
+    }
+
+    private static void addEquipmentTemplatesToLiveData(List<EquipmentTemplate> equipmentTemplates, MediatorLiveData<List<EquipmentTemplate>> liveData) {
+        if (liveData.getValue() == null)
+            liveData.postValue(equipmentTemplates);
+        else
+            liveData.getValue().addAll(equipmentTemplates);
+    }
+
     private static AppDatabase buildDatabase(final Context context, final AppExecutors executors) {
         return Room.databaseBuilder(context,
                 AppDatabase.class,
@@ -60,10 +135,9 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase database = AppDatabase.getInstance(context, executors);
 
                             InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
-                            Collection<ArmorTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
+                            List<EquipmentTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
 
-                            database.equipmentTemplateDao().insertAllTemplates(equipmentTemplates);
-                            database.armorTemplateDao().insertAllTemplates(equipmentTemplates);
+                            database.insertEquipmentTemplatesInBackground(equipmentTemplates);
 
                             database.setDatabaseCreated();
                         });
@@ -71,10 +145,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 })
                 .build();
     }
-
-    public abstract EquipmentStackDao equipmentStackDao();
-    public abstract EquipmentTemplateDao equipmentTemplateDao();
-    public abstract ArmorTemplateDao armorTemplateDao();
 
     private void setDatabaseCreated() {
         mIsDatabaseCreated.postValue(true);
@@ -90,14 +160,14 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    public void executeQuery(Callable queryFunction, Callable onFailure) {
+    private void executeQuery(Callable queryFunction) {
         databaseThread.execute(() -> {
             try {
                 queryFunction.call();
             } catch (Exception e) {
                 Log.e(LOG_TAG, Log.getStackTraceString(e));
                 try {
-                    onFailure.call();
+                    ((Callable) AppDatabase.DEFAULT_FAILURE_CALLABLE).call();
                 } catch (Exception e1) {
                     Log.e(LOG_TAG, Log.getStackTraceString(e));
                 }
