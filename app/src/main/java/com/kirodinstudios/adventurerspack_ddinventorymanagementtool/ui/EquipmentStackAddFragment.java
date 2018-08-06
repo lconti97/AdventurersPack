@@ -118,27 +118,35 @@ public class EquipmentStackAddFragment extends Fragment {
                 equipmentTemplates);
         nameAutoCompleteTextView.setAdapter(nameAutoCompleteTextViewAdapter);
         nameAutoCompleteTextView.setOnItemClickListener((adapterView, view12, i, l) -> {
-            equipmentTemplate = (ArmorTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+            equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
 
-            //TODO: null check all sets. Those can throw exceptions
-            ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
-            int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
-            equipmentTypeSpinner.setSelection(position, true);
-            costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
-            weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
-            descriptionEditText.setText(equipmentTemplate.getDescription());
-
-            Class equipmentClass = equipmentTemplate.getClass();
+            if (equipmentTemplate.getEquipmentType() != null) {
+                ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
+                int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
+                equipmentTypeSpinner.setSelection(position, true);
+            }
+            if (equipmentTemplate.getCostInGp() != null)
+                costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
+            if (equipmentTemplate.getCostInGp() != null)
+                weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
+            if (equipmentTemplate.getDescription() != null)
+                descriptionEditText.setText(equipmentTemplate.getDescription());
 
             if (equipmentTemplate.getClass().equals(ArmorTemplate.class)) {
                 ArmorTemplate armorTemplate = (ArmorTemplate) equipmentTemplate;
 
-                armorClassEditText.setText(armorTemplate.getArmorClass());
-                ArrayAdapter<String> armorCategoryAdapter = (ArrayAdapter<String>) armorCategorySpinner.getAdapter();
-                int armorCategoryPosition = armorCategoryAdapter.getPosition(armorTemplate.getArmorCategory());
-                armorCategorySpinner.setSelection(armorCategoryPosition, true);
-                armorGivesDisadvantageOnStealthCheckBox.setSelected(armorTemplate.getGivesDisadvantageOnStealthChecks());
-                armorHasMinimumStrengthRequirementCheckBox.setSelected(armorTemplate.getRequiresMinimumStrength());
+                if (armorTemplate.getArmorClass() != null)
+                    armorClassEditText.setText(armorTemplate.getArmorClass());
+                if (armorTemplate.getArmorCategory() != null) {
+                    ArrayAdapter<String> armorCategoryAdapter = (ArrayAdapter<String>) armorCategorySpinner.getAdapter();
+                    int armorCategoryPosition = armorCategoryAdapter.getPosition(armorTemplate.getArmorCategory());
+                    armorCategorySpinner.setSelection(armorCategoryPosition, true);
+                }
+                if (armorTemplate.getGivesDisadvantageOnStealthChecks() != null)
+                    armorGivesDisadvantageOnStealthCheckBox.setSelected(armorTemplate.getGivesDisadvantageOnStealthChecks());
+                if (armorTemplate.getMinimumStrength() != null)
+                    armorHasMinimumStrengthRequirementCheckBox.setSelected(armorTemplate.getRequiresMinimumStrength());
+
                 Integer minimumStrength = armorTemplate.getMinimumStrength();
                 String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();
                 armorMinimumStrengthEditText.setText(minimumArmorStrengthText);

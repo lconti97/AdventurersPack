@@ -18,13 +18,13 @@ public class EquipmentStackAdapter extends RecyclerView.Adapter<EquipmentStackAd
 
     @Nullable
     private final EquipmentStackClickCallback mEquipmentStackClickCallback;
-    private List<? extends EquipmentStack> mEquipmentStacks;
+    private List<EquipmentStack> mEquipmentStacks;
 
     public EquipmentStackAdapter(@Nullable EquipmentStackClickCallback equipmentStackClickCallback) {
         mEquipmentStackClickCallback = equipmentStackClickCallback;
     }
 
-    public void setEquipmentStacks(final List<? extends EquipmentStack> equipmentStacks) {
+    public void setEquipmentStacks(final List<EquipmentStack> equipmentStacks) {
         if (mEquipmentStacks == null) {
             mEquipmentStacks = equipmentStacks;
             notifyItemRangeInserted(0, equipmentStacks.size());
@@ -44,14 +44,14 @@ public class EquipmentStackAdapter extends RecyclerView.Adapter<EquipmentStackAd
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     EquipmentStack oldEquipmentStack = mEquipmentStacks.get(oldItemPosition);
                     EquipmentStack newEquipmentStack = equipmentStacks.get(newItemPosition);
-                    return oldEquipmentStack.getEquipmentTemplateId() == newEquipmentStack.getEquipmentTemplateId();
+                    return oldEquipmentStack.getEquipmentTemplateId().equals(newEquipmentStack.getEquipmentTemplateId());
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     EquipmentStack oldEquipmentStack = mEquipmentStacks.get(oldItemPosition);
                     EquipmentStack newEquipmentStack = mEquipmentStacks.get(newItemPosition);
-                    return oldEquipmentStack.getEquipmentTemplateId() == newEquipmentStack.getEquipmentTemplateId()
+                    return oldEquipmentStack.getEquipmentTemplateId().equals(newEquipmentStack.getEquipmentTemplateId())
                             && oldEquipmentStack.getName().equals(newEquipmentStack.getName())
                             && oldEquipmentStack.getCount() == newEquipmentStack.getCount();
                 }
