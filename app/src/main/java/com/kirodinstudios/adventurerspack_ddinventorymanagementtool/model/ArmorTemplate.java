@@ -1,14 +1,10 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 
 @Entity(tableName = "ArmorTemplate")
 public class ArmorTemplate extends EquipmentTemplate {
-    //TODO: duplicated from class annotation? Also change that var name
 
-    @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "parentTemplateId")
-    private long parentTemplateId;
     private String armorClass;
     private String armorCategory;
     private Boolean givesDisadvantageOnStealthChecks;
@@ -65,14 +61,6 @@ public class ArmorTemplate extends EquipmentTemplate {
 
     public void setRequiresMinimumStrength(Boolean requiresMinimumStrength) {
         this.requiresMinimumStrength = requiresMinimumStrength;
-    }
-
-    public long getParentTemplateId() {
-        return parentTemplateId;
-    }
-
-    public void setParentTemplateId(long parentTemplateId) {
-        this.parentTemplateId = parentTemplateId;
     }
 
     public Integer getMinimumStrength() {
