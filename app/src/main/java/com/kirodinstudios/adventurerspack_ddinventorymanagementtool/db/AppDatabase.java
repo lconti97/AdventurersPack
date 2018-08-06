@@ -25,11 +25,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import static com.kirodinstudios.adventurerspack_ddinventorymanagementtool.Constants.LOG_TAG;
+
 @Database(entities = {EquipmentStack.class, EquipmentTemplate.class, ArmorTemplate.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
-    private static final String LOG_TAG = "AppDatabase";
     private static final Callable<Void> DEFAULT_FAILURE_CALLABLE = () -> null;
 
     abstract EquipmentStackDao equipmentStackDao();
@@ -73,25 +74,26 @@ public abstract class AppDatabase extends RoomDatabase {
         return equipmentStackDao().loadEquipmentStack(id);
     }
 
-    public void insertEquipmentTemplateInBackground(EquipmentTemplate equipmentTemplate) {
-        Callable<Void> callable = () -> {
-            if (equipmentTemplate.getClass() == ArmorTemplate.class)
-                armorTemplateDao().insertTemplate((ArmorTemplate) equipmentTemplate);
-            else if (equipmentTemplate.getClass() == EquipmentTemplate.class)
-                equipmentTemplateDao().insertTemplate(equipmentTemplate);
+    private Long insertEquipmentTemplateInForeground(EquipmentTemplate equipmentTemplate) {
+        if (equipmentTemplate.getClass() == ArmorTemplate.class)
+            return armorTemplateDao().insertTemplate((ArmorTemplate) equipmentTemplate);
+        else if (equipmentTemplate.getClass() == EquipmentTemplate.class)
+            return equipmentTemplateDao().insertTemplate(equipmentTemplate);
 
-            return null;
-        };
-
-        executeQuery(callable);
+        return null;
     }
 
     public void insertEquipmentTemplateAndEquipmentStackInBackground(EquipmentTemplate equipmentTemplate, EquipmentStack equipmentStack) {
         Callable<Void> addEquipmentTemplateCallable = () -> {
-            // TODO: null checks
-            long equipmentTemplateId = equipmentTemplateDao().insertTemplate(equipmentTemplate);
-            equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
-            equipmentStackDao().insertEquipmentStack(equipmentStack);
+            Long equipmentTemplateId = insertEquipmentTemplateInForeground(equipmentTemplate);
+
+            if (equipmentTemplateId == null) {
+                Log.e(LOG_TAG, "Failed to save EquipmentTemplate: " + equipmentTemplate.toString());
+            } else {
+                equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
+                equipmentStackDao().insertEquipmentStack(equipmentStack);
+            }
+
             return null;
         };
 
@@ -118,32 +120,31 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static void addEquipmentTemplatesToLiveData(List<EquipmentTemplate> equipmentTemplates, MediatorLiveData<List<EquipmentTemplate>> liveData) {
         if (liveData.getValue() == null)
-            liveData.postValue(equipmentTemplates);
+            liveData.setValue(equipmentTemplates);
         else
             liveData.getValue().addAll(equipmentTemplates);
     }
 
     private static AppDatabase buildDatabase(final Context context, final AppExecutors executors) {
-        return Room.databaseBuilder(context,
-                AppDatabase.class,
-                DATABASE_NAME)
-                .addCallback(new RoomDatabase.Callback() {
-                    @Override
-                    public void onCreate(@NonNull final SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                            AppDatabase database = AppDatabase.getInstance(context, executors);
+        AppDatabase appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
+            .addCallback(new Callback() {
+                @Override
+                public void onCreate(@NonNull final SupportSQLiteDatabase db) {
+                    super.onCreate(db);
+                    Executors.newSingleThreadScheduledExecutor().execute(() -> {
+                        AppDatabase database = AppDatabase.getInstance(context, executors);
 
-                            InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
-                            List<EquipmentTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
+                        InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
+                        List<EquipmentTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
 
-                            database.insertEquipmentTemplatesInBackground(equipmentTemplates);
+                        database.insertEquipmentTemplatesInBackground(equipmentTemplates);
 
-                            database.setDatabaseCreated();
-                        });
-                    }
-                })
-                .build();
+                        database.setDatabaseCreated();
+                    });
+                }
+            })
+            .build();
+        return appDatabase;
     }
 
     private void setDatabaseCreated() {

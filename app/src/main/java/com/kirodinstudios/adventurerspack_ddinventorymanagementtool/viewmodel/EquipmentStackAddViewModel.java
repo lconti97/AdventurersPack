@@ -17,15 +17,12 @@ import androidx.lifecycle.LiveData;
 public class EquipmentStackAddViewModel extends AndroidViewModel {
     private AppDatabase appDatabase;
     private Context context;
-    private LiveData<List<EquipmentTemplate>> equipmentTemplates;
 
     public EquipmentStackAddViewModel(@NonNull Application application) {
         super(application);
 
         context = application.getApplicationContext();
         appDatabase = ((BasicApp) application).getDatabase();
-
-        equipmentTemplates = appDatabase.getEquipmentTemplates();
     }
 
     public LiveData<List<EquipmentTemplate>> getAllEquipmentTemplates() {
