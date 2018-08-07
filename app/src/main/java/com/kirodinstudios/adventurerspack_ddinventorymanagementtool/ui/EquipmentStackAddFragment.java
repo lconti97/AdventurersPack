@@ -118,7 +118,8 @@ public class EquipmentStackAddFragment extends Fragment {
                 equipmentTemplates);
         nameAutoCompleteTextView.setAdapter(nameAutoCompleteTextViewAdapter);
         nameAutoCompleteTextView.setOnItemClickListener((adapterView, view12, i, l) -> {
-            equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+            Object object = nameAutoCompleteTextView.getAdapter().getItem(i);
+            equipmentTemplate = (EquipmentTemplate) object;
 
             if (equipmentTemplate.getEquipmentType() != null) {
                 ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
@@ -143,9 +144,9 @@ public class EquipmentStackAddFragment extends Fragment {
                     armorCategorySpinner.setSelection(armorCategoryPosition, true);
                 }
                 if (armorTemplate.getGivesDisadvantageOnStealthChecks() != null)
-                    armorGivesDisadvantageOnStealthCheckBox.setSelected(armorTemplate.getGivesDisadvantageOnStealthChecks());
+                    armorGivesDisadvantageOnStealthCheckBox.setChecked(armorTemplate.getGivesDisadvantageOnStealthChecks());
                 if (armorTemplate.getMinimumStrength() != null)
-                    armorHasMinimumStrengthRequirementCheckBox.setSelected(armorTemplate.getRequiresMinimumStrength());
+                    armorHasMinimumStrengthRequirementCheckBox.setChecked(armorTemplate.getRequiresMinimumStrength());
 
                 Integer minimumStrength = armorTemplate.getMinimumStrength();
                 String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();

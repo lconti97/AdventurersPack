@@ -6,6 +6,7 @@ import android.util.Log;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.AppExecutors;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.InitialEquipmentTemplateRepository;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplateEntity;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
@@ -27,7 +28,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import static com.kirodinstudios.adventurerspack_ddinventorymanagementtool.Constants.LOG_TAG;
 
-@Database(entities = {EquipmentStack.class, EquipmentTemplate.class, ArmorTemplate.class}, version = 1)
+@Database(entities = {EquipmentStack.class, EquipmentTemplate.class, ArmorTemplateEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
@@ -35,7 +36,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
     abstract EquipmentStackDao equipmentStackDao();
     abstract EquipmentTemplateDao equipmentTemplateDao();
-    abstract ArmorTemplateDao armorTemplateDao();
 
     private static AppDatabase Instance;
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
@@ -58,9 +58,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public LiveData<List<EquipmentTemplate>> getEquipmentTemplates() {
         MediatorLiveData<List<EquipmentTemplate>> liveData = new MediatorLiveData<>();
 
-        liveData.addSource(equipmentTemplateDao().getAllTemplates(), equipmentTemplates ->
+        liveData.addSource(equipmentTemplateDao().getAllEquipmentTemplates(), equipmentTemplates ->
                 addEquipmentTemplatesToLiveData(equipmentTemplates, liveData));
-        liveData.addSource(armorTemplateDao().getAllTemplates(), armorTemplates ->
+        liveData.addSource(equipmentTemplateDao().getAllArmorTemplates(), armorTemplates ->
                 addEquipmentTemplatesToLiveData(new ArrayList<>(armorTemplates), liveData));
 
         return liveData;
@@ -75,10 +75,11 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private Long insertEquipmentTemplateInForeground(EquipmentTemplate equipmentTemplate) {
-        if (equipmentTemplate.getClass() == ArmorTemplate.class)
-            return armorTemplateDao().insertTemplate((ArmorTemplate) equipmentTemplate);
+        if (equipmentTemplate.getClass() == ArmorTemplate.class) {
+            return equipmentTemplateDao().insertArmorTemplate((ArmorTemplate) equipmentTemplate);
+        }
         else if (equipmentTemplate.getClass() == EquipmentTemplate.class)
-            return equipmentTemplateDao().insertTemplate(equipmentTemplate);
+            return equipmentTemplateDao().insertEquipmentTemplate(equipmentTemplate);
 
         return null;
     }
@@ -102,7 +103,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public void insertEquipmentTemplatesInBackground(List<EquipmentTemplate> equipmentTemplates) {
         Callable<Void> callable = () -> {
-            equipmentTemplateDao().insertAllTemplates(equipmentTemplates);
+            for (EquipmentTemplate equipmentTemplate: equipmentTemplates)
+                insertEquipmentTemplateInForeground(equipmentTemplate);
+
             return null;
         };
 
@@ -111,7 +114,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public void insertEquipmentStackInBackground(EquipmentStack equipmentStack) {
         Callable<Void> callable = () -> {
-            equipmentStackDao().insertEquipmentStack(equipmentStack);
+            Long id = equipmentStackDao().insertEquipmentStack(equipmentStack);
             return null;
         };
 

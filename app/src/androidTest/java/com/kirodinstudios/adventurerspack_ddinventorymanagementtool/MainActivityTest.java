@@ -30,8 +30,6 @@ import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
-import static androidx.test.espresso.matcher.ViewMatchers.withChild;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
@@ -80,10 +78,9 @@ public class MainActivityTest {
     }
 
     @Test
-    public void canCreateEquipmentStackAndTemplate() throws Throwable {
+    public void canCreateEquipmentStackAndTemplate() {
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
-        drain();
         onView(withId(R.id.equipment_stack_add_fragment_name))
                 .perform(typeText("xq"));
         onView(withId(R.id.equipment_stack_add_fragment_count))
@@ -125,15 +122,16 @@ public class MainActivityTest {
                 .check(matches(isChecked()));
         onView(withId(R.id.equipment_stack_add_fragment_requires_minimum_strength))
                 .check(matches(isNotChecked()));
-        onView(withId(R.id.equipment_stack_add_fragment_requires_minimum_strength))
+        onView(withId(R.id.equipment_stack_add_fragment_minimum_strength))
                 .check(matches(withText("")));
         onView(withId(R.id.equipment_stack_add_fragment_description))
                 .check(matches(withSubstring("consists of shaped metal plates")));
 
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.equipment_stack_add_fragment_done))
                 .perform(click());
-        onView(withContentDescription(R.string.cd_equipment_stacks_list))
-                .check(matches(withChild(withText("Half plate"))));
+        onView(withSubstring("Half plate"))
+                .check(matches(isDisplayed()));
     }
 
     private void drain() throws TimeoutException, InterruptedException {

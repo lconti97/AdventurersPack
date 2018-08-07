@@ -22,7 +22,7 @@ interface EquipmentStackDao {
     void insertAll(List<EquipmentStack> equipmentStacks);
 
     @Insert
-    long insertEquipmentStack(EquipmentStack equipmentStack);
+    Long insertEquipmentStack(EquipmentStack equipmentStack);
 
     @Delete
     void delete(EquipmentStack equipmentStack);

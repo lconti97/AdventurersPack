@@ -34,7 +34,7 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
 
     @Override
     public int getCount() {
-        return filteredEquipmentTemplates.size();
+        return filteredEquipmentTemplates == null ? 0 : filteredEquipmentTemplates.size();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
                 String filterString = constraint.toString().toLowerCase();
 
                 for (EquipmentTemplate equipmentTemplate : equipmentTemplates.getValue()) {
-                    if (equipmentTemplate.getName().toLowerCase().contains(filterString))
+                    if (equipmentTemplate.getName() != null && equipmentTemplate.getName().toLowerCase().contains(filterString))
                         results.add(equipmentTemplate);
                 }
             }

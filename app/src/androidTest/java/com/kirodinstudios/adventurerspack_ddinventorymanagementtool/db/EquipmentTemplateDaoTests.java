@@ -45,7 +45,7 @@ public class EquipmentTemplateDaoTests {
 
     @Test
     public void getAllTemplates() throws InterruptedException {
-        LiveData<List<EquipmentTemplate>> equipmentTemplates = equipmentTemplateDao.getAllTemplates();
+        LiveData<List<EquipmentTemplate>> equipmentTemplates = equipmentTemplateDao.getAllEquipmentTemplates();
 
         assertNotNull(LiveDataTestUtil.getValue(equipmentTemplates));
     }

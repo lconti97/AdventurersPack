@@ -1,8 +1,5 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
-import androidx.room.Entity;
-
-@Entity(tableName = "ArmorTemplate")
 public class ArmorTemplate extends EquipmentTemplate {
 
     private String armorClass;

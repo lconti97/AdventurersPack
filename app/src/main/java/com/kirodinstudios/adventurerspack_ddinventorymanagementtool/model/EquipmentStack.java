@@ -13,12 +13,8 @@ import androidx.room.PrimaryKey;
 public class EquipmentStack {
     @PrimaryKey(autoGenerate = true)
     private int equipmentStackId;
-
     private String name;
     private int count;
-
-    //TODO: duplicated in class annotation?
-    @ForeignKey(entity = EquipmentTemplate.class, parentColumns = "equipmentTemplateId", childColumns = "equipmentTemplateId")
     private Long equipmentTemplateId;
 
     @Ignore
