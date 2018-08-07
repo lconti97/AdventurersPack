@@ -1,7 +1,6 @@
-package com.kirodinstudios.adventurerspack_ddinventorymanagementtool;
+package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db;
 
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentTemplateDao;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.LiveDataTestUtil;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 
 import org.junit.After;

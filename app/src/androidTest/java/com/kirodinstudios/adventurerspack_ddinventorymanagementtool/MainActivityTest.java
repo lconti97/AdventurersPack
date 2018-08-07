@@ -1,14 +1,5 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool;
 
-import androidx.arch.core.executor.testing.CountingTaskExecutorRule;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.annotation.Nullable;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui.MainActivity;
 
@@ -22,17 +13,29 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import androidx.annotation.Nullable;
+import androidx.arch.core.executor.testing.CountingTaskExecutorRule;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.Espresso;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.action.ViewActions.typeTextIntoFocusedView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.withChild;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
+import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.core.AllOf.allOf;
 
 @LargeTest
 public class MainActivityTest {
@@ -77,20 +80,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void clickOnFirstItem_opensDetailView() throws Throwable {
-        drain();
-        onView(withContentDescription(R.string.cd_equipment_stacks_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
-        drain();
-        String secondEquipmentStackName = TestData.EQUIPMENT_STACKS.get(1).getName();
-        onView(allOf(
-                withId(R.id.equipment_stack_detail_item),
-                withChild(withText(secondEquipmentStackName))))
-                .check(matches((isDisplayed())));
-    }
-
-    @Test
-    public void canCreateEquipmentStack() throws Throwable {
+    public void canCreateEquipmentStackAndTemplate() throws Throwable {
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
         drain();
@@ -98,13 +88,52 @@ public class MainActivityTest {
                 .perform(typeText("xq"));
         onView(withId(R.id.equipment_stack_add_fragment_count))
                 .perform(typeText("5"));
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.equipment_stack_add_fragment_done))
                 .perform(click());
 
         onView(withId(R.id.equipment_stacks_list))
                 .check(matches(isDisplayed()));
         onView(withText("xq"))
+                .perform(click());
+
+        onView(withId(R.id.equipment_stack_detail_item))
                 .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void canPopulateFieldsFromTemplate() {
+        onView(withId(R.id.add_equipment_stack_button))
+                .perform(click());
+        onView(withId(R.id.equipment_stack_add_fragment_name))
+                .perform(typeText("pl"));
+        onView(withSubstring("Half plate"))
+                .inRoot(isPlatformPopup())
+                .perform(click());
+
+        onView(withId(R.id.equipment_stack_add_fragment_type))
+                .check(matches(withSpinnerText("Armor")));
+        onView(withId(R.id.equipment_stack_add_fragment_weight))
+                .check(matches(withText("750")));
+        onView(withId(R.id.equipment_stack_add_fragment_cost))
+                .check(matches(withText("750")));
+        onView(withId(R.id.equipment_stack_add_fragment_armor_class))
+                .check(matches(withSubstring("15 + Dex")));
+        onView(withId(R.id.equipment_stack_add_fragment_armor_category))
+                .check(matches(withSpinnerText("Medium Armor")));
+        onView(withId(R.id.equipment_stack_add_fragment_disadvantage_on_stealth))
+                .check(matches(isChecked()));
+        onView(withId(R.id.equipment_stack_add_fragment_requires_minimum_strength))
+                .check(matches(isNotChecked()));
+        onView(withId(R.id.equipment_stack_add_fragment_requires_minimum_strength))
+                .check(matches(withText("")));
+        onView(withId(R.id.equipment_stack_add_fragment_description))
+                .check(matches(withSubstring("consists of shaped metal plates")));
+
+        onView(withId(R.id.equipment_stack_add_fragment_done))
+                .perform(click());
+        onView(withContentDescription(R.string.cd_equipment_stacks_list))
+                .check(matches(withChild(withText("Half plate"))));
     }
 
     private void drain() throws TimeoutException, InterruptedException {
