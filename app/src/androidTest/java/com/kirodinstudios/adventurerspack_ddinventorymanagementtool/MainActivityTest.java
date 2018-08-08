@@ -6,11 +6,13 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui.MainActiv
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.Espresso;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -29,6 +31,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 
+@RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MainActivityTest {
 
@@ -38,11 +41,11 @@ public class MainActivityTest {
     @Before
     public void disableRecyclerViewAnimations() {
         InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
-        EspressoTestUtil.disableAnimations(mActivityRule);
+//        EspressoTestUtil.disableAnimations(mActivityRule);
     }
 
     @Test
-    public void canCreateEquipmentStackAndTemplate() {
+    public void testCanCreateEquipmentStackAndTemplate() {
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
         onView(withId(R.id.equipment_stack_add_fragment_name))
@@ -63,7 +66,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void canPopulateFieldsFromTemplate() {
+    public void testCanPopulateFieldsFromTemplate() {
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
         onView(withId(R.id.equipment_stack_add_fragment_name))
@@ -99,7 +102,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void weaponFieldsShowInAddFragment() {
+    public void testWeaponFieldsShowInAddFragment() {
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
         onView(withId(R.id.equipment_stack_add_fragment_type))

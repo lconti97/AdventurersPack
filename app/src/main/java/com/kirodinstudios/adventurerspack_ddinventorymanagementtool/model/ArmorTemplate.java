@@ -7,6 +7,7 @@ public class ArmorTemplate extends EquipmentTemplate {
     private Boolean givesDisadvantageOnStealthChecks;
     private Boolean requiresMinimumStrength;
     private Integer minimumStrength;
+
     public ArmorTemplate() { }
 
     public ArmorTemplate(
