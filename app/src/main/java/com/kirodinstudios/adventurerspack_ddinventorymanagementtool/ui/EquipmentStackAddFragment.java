@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.ViewFlipper;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -51,6 +52,7 @@ public class EquipmentStackAddFragment extends Fragment {
     private TextInputLayout armorMinimumStrengthLayout;
     private EditText armorMinimumStrengthEditText;
     private EquipmentTemplate equipmentTemplate;
+    private ViewFlipper additionalFieldsViewFlipper;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class EquipmentStackAddFragment extends Fragment {
         weightEditText = view.findViewById(R.id.equipment_stack_add_fragment_weight);
         costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
         setupArmorViews(view);
+        additionalFieldsViewFlipper = view.findViewById(R.id.equipment_stack_add_fragment_additional_fields);
         descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
 
         addButton.setOnClickListener(view1 -> {
@@ -164,12 +167,18 @@ public class EquipmentStackAddFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = (String) adapterView.getSelectedItem();
-                if (selection.equals(EquipmentTypes.ARMOR)) {
-                    setVisibleWithoutChangingFocus(constraintLayout, armorViewsToHide);
-                }
-                else {
-                    for (View target : armorViewsToHide)
-                        target.setVisibility(View.GONE);
+                switch (selection) {
+                    case EquipmentTypes.ARMOR:
+                        additionalFieldsViewFlipper.setDisplayedChild(0);
+                        setVisibleWithoutChangingFocus(constraintLayout, additionalFieldsViewFlipper);
+                        break;
+                    case EquipmentTypes.WEAPON:
+                        additionalFieldsViewFlipper.setDisplayedChild(1);
+                        setVisibleWithoutChangingFocus(constraintLayout, additionalFieldsViewFlipper);
+                        break;
+                    default:
+                        additionalFieldsViewFlipper.setVisibility(View.GONE);
+                        break;
                 }
                 descriptionEditText.setVisibility(View.VISIBLE);
             }

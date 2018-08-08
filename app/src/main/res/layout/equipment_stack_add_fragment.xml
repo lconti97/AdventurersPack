@@ -28,14 +28,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:helperText="@string/required">
+        app:helperText="@string/asterisk_Required">
 
         <AutoCompleteTextView
             android:id="@+id/equipment_stack_add_fragment_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:completionThreshold="2"
-            android:hint="@string/name_required"
+            android:hint="@string/Name_asterisk"
             android:inputType="textCapSentences" />
 
 
@@ -51,7 +51,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="@string/count"
+        android:hint="@string/Count"
         app:layout_constraintEnd_toStartOf="@+id/equipment_stack_add_fragment_type"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="@string/weightInPounds"
+        android:hint="@string/Weight_lbs"
         app:layout_constraintEnd_toStartOf="@+id/equipment_stack_add_fragment_cost_layout"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +109,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="@string/costInGp"
+        android:hint="@string/Cost_gp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_weight_layout"
         app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_type">
@@ -122,95 +122,19 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/equipment_stack_add_fragment_armor_class_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
+    <ViewFlipper
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:hint="@string/armor_class"
-        app:layout_constraintEnd_toStartOf="@id/equipment_stack_add_fragment_armor_category"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_weight_layout"
-        app:layout_constraintHorizontal_bias="0.5">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/equipment_stack_add_fragment_armor_class"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textCapSentences" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Spinner
-        android:id="@+id/equipment_stack_add_fragment_armor_category"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/equipment_stack_add_fragment_armor_class_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_armor_class_layout"
-        app:layout_constraintTop_toBottomOf="@id/equipment_stack_add_fragment_cost_layout" />
+        app:layout_constraintTop_toBottomOf="@id/equipment_stack_add_fragment_cost_layout"
+        app:layout_constraintBottom_toTopOf="@id/equipment_stack_add_fragment_description_layout"
+        android:id="@+id/equipment_stack_add_fragment_additional_fields">
 
-    <CheckBox
-        android:id="@+id/equipment_stack_add_fragment_disadvantage_on_stealth"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/givesDisadvantageOnStealthChecks"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_armor_class_layout" />
+        <include layout="@layout/armor_template_fields" />
+        <include layout="@layout/weapon_template_fields" />
 
-    <CheckBox
-        android:id="@+id/equipment_stack_add_fragment_requires_minimum_strength"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/has_minimum_strength_requirement"
-        app:layout_constraintEnd_toStartOf="@id/equipment_stack_add_fragment_minimum_strength_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_disadvantage_on_stealth"
-        app:layout_constraintHorizontal_bias="0.5"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/equipment_stack_add_fragment_minimum_strength_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:hint="@string/minimum_strength"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/equipment_stack_add_fragment_requires_minimum_strength"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_disadvantage_on_stealth"
-        app:layout_constraintHorizontal_bias="0.5">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/equipment_stack_add_fragment_minimum_strength"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+    </ViewFlipper>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/equipment_stack_add_fragment_description_layout"
@@ -221,11 +145,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="@string/description"
+        android:hint="@string/Description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_requires_minimum_strength">
+        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_additional_fields">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/equipment_stack_add_fragment_description"

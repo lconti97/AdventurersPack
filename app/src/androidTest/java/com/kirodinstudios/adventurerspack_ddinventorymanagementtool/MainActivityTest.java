@@ -3,25 +3,16 @@ package com.kirodinstudios.adventurerspack_ddinventorymanagementtool;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui.MainActivity;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import androidx.annotation.Nullable;
-import androidx.arch.core.executor.testing.CountingTaskExecutorRule;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.Espresso;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -34,6 +25,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 
 @LargeTest
 public class MainActivityTest {
@@ -41,40 +35,10 @@ public class MainActivityTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
-    @Rule
-    public CountingTaskExecutorRule mCountingTaskExecutorRule = new CountingTaskExecutorRule();
-
-    public MainActivityTest() {
-        InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
-    }
-
     @Before
     public void disableRecyclerViewAnimations() {
+        InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
         EspressoTestUtil.disableAnimations(mActivityRule);
-    }
-
-    @Before
-    public void waitForDbCreation() throws Throwable {
-        final CountDownLatch latch = new CountDownLatch(1);
-        final LiveData<Boolean> databaseCreated = AppDatabase.getInstance(
-                InstrumentationRegistry.getTargetContext(), new AppExecutors())
-                .getDatabaseCreated();
-        mActivityRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                databaseCreated.observeForever(new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(@Nullable Boolean aBoolean) {
-                        if (Boolean.TRUE.equals(aBoolean)) {
-                            databaseCreated.removeObserver(this);
-                            latch.countDown();
-                        }
-                    }
-                });
-            }
-        });
-        MatcherAssert.assertThat("database should've initialized",
-                latch.await(1, TimeUnit.MINUTES), CoreMatchers.is(true));
     }
 
     @Test
@@ -107,34 +71,47 @@ public class MainActivityTest {
         onView(withSubstring("Half plate"))
                 .inRoot(isPlatformPopup())
                 .perform(click());
+        Espresso.closeSoftKeyboard();
 
         onView(withId(R.id.equipment_stack_add_fragment_type))
-                .check(matches(withSpinnerText("Armor")));
+                .check(matches(allOf(isDisplayed(), withSpinnerText("Armor"))));
         onView(withId(R.id.equipment_stack_add_fragment_weight))
-                .check(matches(withText("750")));
+                .check(matches(allOf(isDisplayed(), withText("750"))));
         onView(withId(R.id.equipment_stack_add_fragment_cost))
-                .check(matches(withText("750")));
+                .check(matches(allOf(isDisplayed(), withText("750"))));
         onView(withId(R.id.equipment_stack_add_fragment_armor_class))
-                .check(matches(withSubstring("15 + Dex")));
+                .check(matches(allOf(isDisplayed(), withSubstring("15 + Dex"))));
         onView(withId(R.id.equipment_stack_add_fragment_armor_category))
-                .check(matches(withSpinnerText("Medium Armor")));
+                .check(matches(allOf(isDisplayed(), withSpinnerText("Medium Armor"))));
         onView(withId(R.id.equipment_stack_add_fragment_disadvantage_on_stealth))
-                .check(matches(isChecked()));
+                .check(matches(allOf(isDisplayed(), isChecked())));
         onView(withId(R.id.equipment_stack_add_fragment_requires_minimum_strength))
-                .check(matches(isNotChecked()));
+                .check(matches(allOf(isDisplayed(), isNotChecked())));
         onView(withId(R.id.equipment_stack_add_fragment_minimum_strength))
-                .check(matches(withText("")));
+                .check(matches(allOf(isDisplayed(), withText(""))));
         onView(withId(R.id.equipment_stack_add_fragment_description))
-                .check(matches(withSubstring("consists of shaped metal plates")));
+                .check(matches(allOf(isDisplayed(), withSubstring("consists of shaped metal plates"))));
 
-        Espresso.closeSoftKeyboard();
         onView(withId(R.id.equipment_stack_add_fragment_done))
                 .perform(click());
         onView(withSubstring("Half plate"))
                 .check(matches(isDisplayed()));
     }
 
-    private void drain() throws TimeoutException, InterruptedException {
-        mCountingTaskExecutorRule.drainTasks(1, TimeUnit.MINUTES);
+    @Test
+    public void weaponFieldsShowInAddFragment() {
+        onView(withId(R.id.add_equipment_stack_button))
+                .perform(click());
+        onView(withId(R.id.equipment_stack_add_fragment_type))
+                .perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Weapon")))
+                .perform(click());
+
+        onView(withId(R.id.weapon_damage))
+                .check(matches(isDisplayed()));
+        onView(withId(R.id.weapon_properties))
+                .check(matches(isDisplayed()));
+        onView(withId(R.id.weapon_category))
+                .check(matches(isDisplayed()));
     }
 }
