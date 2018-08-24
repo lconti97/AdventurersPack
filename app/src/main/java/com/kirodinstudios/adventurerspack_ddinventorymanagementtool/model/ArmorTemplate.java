@@ -21,7 +21,7 @@ public class ArmorTemplate extends EquipmentTemplate {
             Boolean requiresMinimumStrength,
             Integer minimumStrength) {
 
-        super(name, description, EquipmentTypes.ARMOR, costInGp, weightInPounds);
+        super(name, description, costInGp, weightInPounds);
         this.armorClass = armorClass;
         this.armorCategory = armorCategory;
         this.givesDisadvantageOnStealthChecks = givesDisadvantageOnStealthChecks;

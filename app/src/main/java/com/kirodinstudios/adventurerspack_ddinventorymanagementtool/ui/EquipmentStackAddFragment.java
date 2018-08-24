@@ -108,7 +108,7 @@ public class EquipmentStackAddFragment extends Fragment {
                 }
                 //TODO: weaponTemplate stuff
                 else {
-                    equipmentTemplate = new EquipmentTemplate(name, description, equipmentType, cost, weight);
+                    equipmentTemplate = new EquipmentTemplate(name, description, cost, weight);
                 }
 
                 EquipmentStack equipmentStack = new EquipmentStack(name, count);
@@ -134,11 +134,13 @@ public class EquipmentStackAddFragment extends Fragment {
             Object object = nameAutoCompleteTextView.getAdapter().getItem(i);
             equipmentTemplate = (EquipmentTemplate) object;
 
-            if (equipmentTemplate.getEquipmentType() != null) {
-                ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
-                int position = typeSpinnerAdapter.getPosition(equipmentTemplate.getEquipmentType());
-                equipmentTypeSpinner.setSelection(position, true);
-            }
+            Class<? extends EquipmentTemplate> equipmentTemplateClass = equipmentTemplate.getClass();
+
+            ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
+            String type = EquipmentTypes.getTypeStringFromClass(equipmentTemplateClass);
+            int position = typeSpinnerAdapter.getPosition(type);
+            equipmentTypeSpinner.setSelection(position, true);
+
             if (equipmentTemplate.getCostInGp() != null)
                 costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
             if (equipmentTemplate.getWeightInPounds() != null)
@@ -146,7 +148,7 @@ public class EquipmentStackAddFragment extends Fragment {
             if (equipmentTemplate.getDescription() != null)
                 descriptionEditText.setText(equipmentTemplate.getDescription());
 
-            if (equipmentTemplate.getClass().equals(ArmorTemplate.class)) {
+            if (equipmentTemplateClass.equals(ArmorTemplate.class)) {
                 ArmorTemplate armorTemplate = (ArmorTemplate) equipmentTemplate;
 
                 if (armorTemplate.getArmorClass() != null)
@@ -165,7 +167,7 @@ public class EquipmentStackAddFragment extends Fragment {
                 String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();
                 armorMinimumStrengthEditText.setText(minimumArmorStrengthText);
             }
-            if (equipmentTemplate.getClass().equals(WeaponTemplate.class)) {
+            if (equipmentTemplateClass.equals(WeaponTemplate.class)) {
                 WeaponTemplate weaponTemplate = (WeaponTemplate) equipmentTemplate;
 
                 if (weaponTemplate.getIsMeleeWeapon() != null && weaponTemplate.getIsSimpleWeapon() != null) {

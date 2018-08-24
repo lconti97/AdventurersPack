@@ -4,6 +4,7 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDataba
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui.MainActivity;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +36,8 @@ import static org.hamcrest.CoreMatchers.is;
 @LargeTest
 public class MainActivityTest {
 
-    public MainActivityTest() {
+    @BeforeClass
+    public static void deleteDatabase() {
         InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
     }
 
@@ -114,13 +116,6 @@ public class MainActivityTest {
                 .inRoot(isPlatformPopup())
                 .perform(click());
         Espresso.closeSoftKeyboard();
-
-        //TODO: remove this workaround to the weapon type bug once it's fixed
-        onView(withId(R.id.equipment_stack_add_fragment_type))
-                .perform(click());
-        onView(withText("Weapon"))
-                .inRoot(isPlatformPopup())
-                .perform(click());
 
         onView(withId(R.id.equipment_stack_add_fragment_type))
                 .check(matches(allOf(isDisplayed(), withSpinnerText("Weapon"))));

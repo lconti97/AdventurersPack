@@ -9,7 +9,6 @@ public class EquipmentTemplate {
     private Long equipmentTemplateId;
     private String name;
     private String description;
-    private String equipmentType;
     private Double costInGp;
     private Double weightInPounds;
 
@@ -18,12 +17,10 @@ public class EquipmentTemplate {
     public EquipmentTemplate(
             String name,
             String description,
-            String equipmentType,
             Double costInGp,
             Double weightInPounds) {
         this.name = name;
         this.description = description;
-        this.equipmentType = equipmentType;
         this.costInGp = costInGp;
         this.weightInPounds = weightInPounds;
     }
@@ -42,14 +39,6 @@ public class EquipmentTemplate {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEquipmentType() {
-        return equipmentType;
-    }
-
-    public void setEquipmentType(String equipmentType) {
-        this.equipmentType = equipmentType;
     }
 
     public String getDescription() {

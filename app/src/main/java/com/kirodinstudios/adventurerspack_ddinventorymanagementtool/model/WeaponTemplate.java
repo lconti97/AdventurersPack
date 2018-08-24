@@ -10,7 +10,7 @@ public class WeaponTemplate extends EquipmentTemplate {
     public WeaponTemplate() { }
 
     public WeaponTemplate(String name, String description, Double costInGp, Double weightInPounds, String damage, String properties, Boolean isSimpleWeapon, Boolean isMeleeWeapon) {
-        super(name, description, EquipmentTypes.WEAPON, costInGp, weightInPounds);
+        super(name, description, costInGp, weightInPounds);
         this.damage = damage;
         this.properties = properties;
         this.isSimpleWeapon = isSimpleWeapon;
