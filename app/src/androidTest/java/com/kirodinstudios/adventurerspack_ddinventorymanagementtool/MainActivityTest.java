@@ -1,6 +1,7 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool;
 
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplate;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui.MainActivity;
 
 import org.junit.Before;
@@ -15,6 +16,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import static androidx.test.espresso.Espresso.closeSoftKeyboard;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -136,6 +138,72 @@ public class MainActivityTest {
                 .perform(click());
         onView(withSubstring("Shortsword"))
                 .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testCanAddWeaponTemplateAndCreateANewStackWithIt() {
+        WeaponTemplate weaponTemplate = new WeaponTemplate("name", "description", 6.8, 3.4,
+                "1d10 piercing", "Heavy, finesse", false, true);
+        int count = 7;
+
+        onView(withId(R.id.add_equipment_stack_button))
+                .perform(click());
+        onView(withId(R.id.equipment_stack_add_fragment_name))
+                .perform(typeText(weaponTemplate.getName()));
+        onView(withId(R.id.equipment_stack_add_fragment_count))
+                .perform(typeText(String.valueOf(count)));
+        onView(withId(R.id.equipment_stack_add_fragment_type))
+                .perform(click());
+        onView(withText("Weapon"))
+                .inRoot(isPlatformPopup())
+                .perform(click());
+        onView(withId(R.id.equipment_stack_add_fragment_weight))
+                .perform(typeText(String.valueOf(weaponTemplate.getWeightInPounds())));
+        onView(withId(R.id.equipment_stack_add_fragment_cost))
+                .perform(typeText(String.valueOf(weaponTemplate.getCostInGp())));
+        onView(withId(R.id.weapon_damage))
+                .perform(typeText(weaponTemplate.getDamage()));
+        onView(withId(R.id.weapon_properties))
+                .perform(typeText(weaponTemplate.getProperties()));
+        closeSoftKeyboard();
+        onView(withId(R.id.weapon_category))
+                .perform(click());
+        onView(withText("Martial melee weapon"))
+                .inRoot(isPlatformPopup())
+                .perform(click());
+        onView(withId(R.id.equipment_stack_add_fragment_description))
+                .perform(typeText(weaponTemplate.getDescription()));
+
+        onView(withId(R.id.equipment_stack_add_fragment_done))
+                .perform(click());
+
+        onView(withText(weaponTemplate.getName()))
+                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.add_equipment_stack_button))
+                .perform(click());
+        onView(withId(R.id.equipment_stack_add_fragment_name))
+                .perform(typeText(weaponTemplate.getName()));
+        onView(withText(weaponTemplate.getName()))
+                .inRoot(isPlatformPopup())
+                .perform(click());
+
+        onView(withId(R.id.equipment_stack_add_fragment_type))
+                .check(matches(withSpinnerText("Weapon")));
+        onView(withId(R.id.equipment_stack_add_fragment_count))
+                .check(matches(withText("1")));
+        onView(withId(R.id.equipment_stack_add_fragment_weight))
+                .check(matches(withText(String.valueOf(weaponTemplate.getWeightInPounds()))));
+        onView(withId(R.id.equipment_stack_add_fragment_cost))
+                .check(matches(withText(String.valueOf(weaponTemplate.getCostInGp()))));
+        onView(withId(R.id.weapon_damage))
+                .check(matches(withText(weaponTemplate.getDamage())));
+        onView(withId(R.id.weapon_properties))
+                .check(matches(withText(weaponTemplate.getProperties())));
+        onView(withId(R.id.weapon_category))
+                .check(matches(withSpinnerText("Martial melee weapon")));
+        onView(withId(R.id.equipment_stack_add_fragment_description))
+                .check(matches(withText(weaponTemplate.getDescription())));
     }
 
     @Test

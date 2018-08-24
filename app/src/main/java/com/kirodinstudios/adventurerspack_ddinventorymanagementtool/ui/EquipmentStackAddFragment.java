@@ -94,21 +94,31 @@ public class EquipmentStackAddFragment extends Fragment {
                 Double cost = costText.isEmpty() ? null : Double.valueOf(costText);
                 String equipmentType = (String) equipmentTypeSpinner.getSelectedItem();
 
-                if (equipmentType.equals(EquipmentTypes.ARMOR)) {
-                    String armorClass = armorClassEditText.getText().toString();
-                    String armorCategory = (String) armorCategorySpinner.getSelectedItem();
-                    Boolean givesDisadvantageOnStealthChecks = armorGivesDisadvantageOnStealthCheckBox.isSelected();
-                    Boolean hasMinimumStrength = armorHasMinimumStrengthRequirementCheckBox.isSelected();
-                    String minimumStrengthText = armorMinimumStrengthEditText.getText().toString();
-                    Integer minimumStrength = minimumStrengthText.isEmpty() ? null : Integer.valueOf(minimumStrengthText);
+                switch (equipmentType) {
+                    case EquipmentTypes.ARMOR:
+                        String armorClass = armorClassEditText.getText().toString();
+                        String armorCategory = (String) armorCategorySpinner.getSelectedItem();
+                        Boolean givesDisadvantageOnStealthChecks = armorGivesDisadvantageOnStealthCheckBox.isSelected();
+                        Boolean hasMinimumStrength = armorHasMinimumStrengthRequirementCheckBox.isSelected();
+                        String minimumStrengthText = armorMinimumStrengthEditText.getText().toString();
+                        Integer minimumStrength = minimumStrengthText.isEmpty() ? null : Integer.valueOf(minimumStrengthText);
 
-                    equipmentTemplate = new ArmorTemplate(name, description, cost, weight,
-                            armorClass, armorCategory, givesDisadvantageOnStealthChecks,
-                            hasMinimumStrength, minimumStrength);
-                }
-                //TODO: weaponTemplate stuff
-                else {
-                    equipmentTemplate = new EquipmentTemplate(name, description, cost, weight);
+                        equipmentTemplate = new ArmorTemplate(name, description, cost, weight,
+                                armorClass, armorCategory, givesDisadvantageOnStealthChecks,
+                                hasMinimumStrength, minimumStrength);
+                        break;
+                    case EquipmentTypes.WEAPON:
+                        String damage = weaponDamageEditText.getText().toString();
+                        String properties = weaponPropertiesEditText.getText().toString();
+                        boolean isSimpleWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("simple");
+                        boolean isMeleeWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("martial");
+
+                        equipmentTemplate = new WeaponTemplate(name, description, cost, weight,
+                                damage, properties, isSimpleWeapon, isMeleeWeapon);
+                        break;
+                    default:
+                        equipmentTemplate = new EquipmentTemplate(name, description, cost, weight);
+                        break;
                 }
 
                 EquipmentStack equipmentStack = new EquipmentStack(name, count);
