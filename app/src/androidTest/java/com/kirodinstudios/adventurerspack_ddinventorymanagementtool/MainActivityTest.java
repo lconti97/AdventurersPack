@@ -35,12 +35,15 @@ import static org.hamcrest.CoreMatchers.is;
 @LargeTest
 public class MainActivityTest {
 
+    public MainActivityTest() {
+        InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
+    }
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void disableRecyclerViewAnimations() {
-        InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
 //        EspressoTestUtil.disableAnimations(mActivityRule);
     }
 
