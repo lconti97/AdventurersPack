@@ -9,6 +9,8 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorT
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplateEntity;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplateEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import static com.kirodinstudios.adventurerspack_ddinventorymanagementtool.Constants.LOG_TAG;
 
-@Database(entities = {EquipmentStack.class, EquipmentTemplate.class, ArmorTemplateEntity.class}, version = 1)
+@Database(entities = {
+        EquipmentStack.class,
+        EquipmentTemplate.class,
+        ArmorTemplateEntity.class,
+        WeaponTemplateEntity.class,
+    }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
@@ -62,6 +69,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 addEquipmentTemplatesToLiveData(equipmentTemplates, liveData));
         liveData.addSource(equipmentTemplateDao().getAllArmorTemplates(), armorTemplates ->
                 addEquipmentTemplatesToLiveData(new ArrayList<>(armorTemplates), liveData));
+        liveData.addSource(equipmentTemplateDao().getAllWeaponTemplates(), weaponTemplates ->
+                addEquipmentTemplatesToLiveData(new ArrayList<>(weaponTemplates), liveData));
 
         return liveData;
     }
@@ -75,10 +84,13 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private Long insertEquipmentTemplateInForeground(EquipmentTemplate equipmentTemplate) {
-        if (equipmentTemplate.getClass() == ArmorTemplate.class) {
+        Class<? extends EquipmentTemplate> equipmentTemplateClass = equipmentTemplate.getClass();
+
+        if (equipmentTemplateClass == ArmorTemplate.class)
             return equipmentTemplateDao().insertArmorTemplate((ArmorTemplate) equipmentTemplate);
-        }
-        else if (equipmentTemplate.getClass() == EquipmentTemplate.class)
+        else if (equipmentTemplateClass == WeaponTemplate.class)
+            return equipmentTemplateDao().insertWeaponTemplate((WeaponTemplate) equipmentTemplate);
+        else if (equipmentTemplateClass == EquipmentTemplate.class)
             return equipmentTemplateDao().insertEquipmentTemplate(equipmentTemplate);
 
         return null;

@@ -69,7 +69,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testCanPopulateFieldsFromTemplate() {
+    public void testCanPopulateFieldsFromArmorTemplate() {
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
         onView(withId(R.id.equipment_stack_add_fragment_name))
@@ -82,18 +82,18 @@ public class MainActivityTest {
         onView(withId(R.id.equipment_stack_add_fragment_type))
                 .check(matches(allOf(isDisplayed(), withSpinnerText("Armor"))));
         onView(withId(R.id.equipment_stack_add_fragment_weight))
-                .check(matches(allOf(isDisplayed(), withText("750"))));
+                .check(matches(allOf(isDisplayed(), withText("40"))));
         onView(withId(R.id.equipment_stack_add_fragment_cost))
                 .check(matches(allOf(isDisplayed(), withText("750"))));
-        onView(withId(R.id.equipment_stack_add_fragment_armor_class))
+        onView(withId(R.id.armor_class))
                 .check(matches(allOf(isDisplayed(), withSubstring("15 + Dex"))));
-        onView(withId(R.id.equipment_stack_add_fragment_armor_category))
+        onView(withId(R.id.armor_category))
                 .check(matches(allOf(isDisplayed(), withSpinnerText("Medium Armor"))));
-        onView(withId(R.id.equipment_stack_add_fragment_disadvantage_on_stealth))
+        onView(withId(R.id.armor_disadvantage_on_stealth))
                 .check(matches(allOf(isDisplayed(), isChecked())));
-        onView(withId(R.id.equipment_stack_add_fragment_requires_minimum_strength))
+        onView(withId(R.id.armor_requires_minimum_strength))
                 .check(matches(allOf(isDisplayed(), isNotChecked())));
-        onView(withId(R.id.equipment_stack_add_fragment_minimum_strength))
+        onView(withId(R.id.armor_minimum_strength))
                 .check(matches(allOf(isDisplayed(), withText(""))));
         onView(withId(R.id.equipment_stack_add_fragment_description))
                 .check(matches(allOf(isDisplayed(), withSubstring("consists of shaped metal plates"))));
@@ -101,6 +101,45 @@ public class MainActivityTest {
         onView(withId(R.id.equipment_stack_add_fragment_done))
                 .perform(click());
         onView(withSubstring("Half plate"))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testCanPopulateFieldsFromWeaponTemplate() {
+        onView(withId(R.id.add_equipment_stack_button))
+                .perform(click());
+        onView(withId(R.id.equipment_stack_add_fragment_name))
+                .perform(typeText("sw"));
+        onView(withSubstring("Shortsword"))
+                .inRoot(isPlatformPopup())
+                .perform(click());
+        Espresso.closeSoftKeyboard();
+
+        //TODO: remove this workaround to the weapon type bug once it's fixed
+        onView(withId(R.id.equipment_stack_add_fragment_type))
+                .perform(click());
+        onView(withText("Weapon"))
+                .inRoot(isPlatformPopup())
+                .perform(click());
+
+        onView(withId(R.id.equipment_stack_add_fragment_type))
+                .check(matches(allOf(isDisplayed(), withSpinnerText("Weapon"))));
+        onView(withId(R.id.equipment_stack_add_fragment_weight))
+                .check(matches(allOf(isDisplayed(), withText("2"))));
+        onView(withId(R.id.equipment_stack_add_fragment_cost))
+                .check(matches(allOf(isDisplayed(), withText("10"))));
+        onView(withId(R.id.weapon_category))
+                .check(matches(allOf(isDisplayed(), withSpinnerText("Martial melee weapon"))));
+        onView(withId(R.id.weapon_damage))
+                .check(matches(allOf(isDisplayed(), withText("1d6 piercing"))));
+        onView(withId(R.id.weapon_properties))
+                .check(matches(allOf(isDisplayed(), withText("Finesse, light"))));
+        onView(withId(R.id.equipment_stack_add_fragment_description))
+                .check(matches(allOf(isDisplayed(), withText(""))));
+
+        onView(withId(R.id.equipment_stack_add_fragment_done))
+                .perform(click());
+        onView(withSubstring("Shortsword"))
                 .check(matches(isDisplayed()));
     }
 

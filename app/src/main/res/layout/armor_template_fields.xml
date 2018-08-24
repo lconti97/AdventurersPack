@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/equipment_stack_add_fragment_armor_class_layout"
+        android:id="@+id/armor_class_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,13 +16,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:hint="@string/Armor_Class_AC"
-        app:layout_constraintEnd_toStartOf="@id/equipment_stack_add_fragment_armor_category"
+        app:layout_constraintEnd_toStartOf="@id/armor_category"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/equipment_stack_add_fragment_armor_class"
+            android:id="@+id/armor_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapSentences" />
@@ -30,20 +30,20 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
-        android:id="@+id/equipment_stack_add_fragment_armor_category"
+        android:id="@+id/armor_category"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/equipment_stack_add_fragment_armor_class_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/armor_class_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_armor_class_layout"
+        app:layout_constraintStart_toEndOf="@+id/armor_class_layout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/equipment_stack_add_fragment_disadvantage_on_stealth"
+        android:id="@+id/armor_disadvantage_on_stealth"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -54,10 +54,10 @@
         android:text="@string/Gives_disadvantage_on_stealth_checks"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_armor_class_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/armor_class_layout" />
 
     <CheckBox
-        android:id="@+id/equipment_stack_add_fragment_requires_minimum_strength"
+        android:id="@+id/armor_requires_minimum_strength"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -66,13 +66,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/Has_minimum_strength_requirement"
-        app:layout_constraintEnd_toStartOf="@id/equipment_stack_add_fragment_minimum_strength_layout"
+        app:layout_constraintEnd_toStartOf="@id/armor_minimum_strength_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_disadvantage_on_stealth"
+        app:layout_constraintTop_toBottomOf="@+id/armor_disadvantage_on_stealth"
         app:layout_constraintHorizontal_bias="0.5"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/equipment_stack_add_fragment_minimum_strength_layout"
+        android:id="@+id/armor_minimum_strength_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -84,11 +84,11 @@
         android:hint="@string/Minimum_strength"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/equipment_stack_add_fragment_requires_minimum_strength"
-        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_disadvantage_on_stealth">
+        app:layout_constraintStart_toEndOf="@id/armor_requires_minimum_strength"
+        app:layout_constraintTop_toBottomOf="@+id/armor_disadvantage_on_stealth">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/equipment_stack_add_fragment_minimum_strength"
+            android:id="@+id/armor_minimum_strength"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />

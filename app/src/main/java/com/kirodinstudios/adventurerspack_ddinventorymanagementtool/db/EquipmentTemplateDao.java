@@ -3,6 +3,8 @@ package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplate;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplateEntity;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplateEntity;
 
 import java.util.List;
 
@@ -22,6 +24,10 @@ abstract class EquipmentTemplateDao {
             "INNER JOIN EquipmentTemplate ON ArmorTemplateEntity.armorTemplateId=EquipmentTemplate.equipmentTemplateId")
     abstract LiveData<List<ArmorTemplate>> getAllArmorTemplates();
 
+    @Query("SELECT * FROM WeaponTemplateEntity " +
+            "INNER JOIN EquipmentTemplate ON WeaponTemplateEntity.weaponTemplateId=EquipmentTemplate.equipmentTemplateId")
+    abstract LiveData<List<WeaponTemplate>> getAllWeaponTemplates();
+
     @Transaction
     Long insertArmorTemplate(ArmorTemplate armorTemplate) {
         Long id = insertEquipmentTemplate(armorTemplate);
@@ -36,9 +42,25 @@ abstract class EquipmentTemplateDao {
         return insertArmorTemplateEntity(armorTemplateEntity);
     }
 
+    @Transaction
+    Long insertWeaponTemplate(WeaponTemplate weaponTemplate) {
+        Long id = insertEquipmentTemplate(weaponTemplate);
+        WeaponTemplateEntity weaponTemplateEntity = new WeaponTemplateEntity(
+                id,
+                weaponTemplate.getDamage(),
+                weaponTemplate.getProperties(),
+                weaponTemplate.getIsSimpleWeapon(),
+                weaponTemplate.getIsMeleeWeapon()
+        );
+        return insertWeaponTemplateEntity(weaponTemplateEntity);
+    }
+
     @Insert
     abstract Long insertEquipmentTemplate(EquipmentTemplate equipmentTemplate);
 
     @Insert
     abstract Long insertArmorTemplateEntity(ArmorTemplateEntity armorTemplateEntity);
+
+    @Insert
+    abstract Long insertWeaponTemplateEntity(WeaponTemplateEntity weaponTemplateEntity);
 }

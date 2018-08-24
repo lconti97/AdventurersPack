@@ -44,6 +44,7 @@ public class InitialEquipmentTemplateRepository {
         return equipmentTemplates;
     }
 
+    //TODO: make sure equipment type is populated (or change data format)
     private void addAllTemplatesFromFile(
             List<EquipmentTemplate> equipmentTemplates,
             String fileName,

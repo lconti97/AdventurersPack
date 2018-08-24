@@ -48,4 +48,12 @@ public class WeaponTemplate extends EquipmentTemplate {
     public void setIsMeleeWeapon(Boolean meleeWeapon) {
         isMeleeWeapon = meleeWeapon;
     }
+
+    public String getWeaponType() {
+        if (isSimpleWeapon == null || isMeleeWeapon == null)
+            return "";
+        String simpleOrMartial = isSimpleWeapon ? "Simple" : "Martial";
+        String meleeOrRanged = isMeleeWeapon ? "melee" : "ranged";
+        return String.format("%s %s weapon", simpleOrMartial, meleeOrRanged);
+    }
 }

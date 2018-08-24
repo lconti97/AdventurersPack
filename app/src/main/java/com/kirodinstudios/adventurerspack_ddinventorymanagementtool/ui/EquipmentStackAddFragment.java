@@ -22,6 +22,8 @@ import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorT
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTypes;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTypes;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel.EquipmentStackAddViewModel;
 
 import java.util.Arrays;
@@ -44,6 +46,7 @@ public class EquipmentStackAddFragment extends Fragment {
     private EditText weightEditText;
     private EditText costEditText;
     private EditText descriptionEditText;
+
     private TextInputLayout armorClassTextInputLayout;
     private EditText armorClassEditText;
     private Spinner armorCategorySpinner;
@@ -51,6 +54,11 @@ public class EquipmentStackAddFragment extends Fragment {
     private CheckBox armorHasMinimumStrengthRequirementCheckBox;
     private TextInputLayout armorMinimumStrengthLayout;
     private EditText armorMinimumStrengthEditText;
+
+    private Spinner weaponTypeSpinner;
+    private EditText weaponDamageEditText;
+    private EditText weaponPropertiesEditText;
+
     private EquipmentTemplate equipmentTemplate;
     private ViewFlipper additionalFieldsViewFlipper;
 
@@ -67,6 +75,7 @@ public class EquipmentStackAddFragment extends Fragment {
         weightEditText = view.findViewById(R.id.equipment_stack_add_fragment_weight);
         costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
         setupArmorViews(view);
+        setupWeaponViews(view);
         additionalFieldsViewFlipper = view.findViewById(R.id.equipment_stack_add_fragment_additional_fields);
         descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
 
@@ -97,6 +106,7 @@ public class EquipmentStackAddFragment extends Fragment {
                             armorClass, armorCategory, givesDisadvantageOnStealthChecks,
                             hasMinimumStrength, minimumStrength);
                 }
+                //TODO: weaponTemplate stuff
                 else {
                     equipmentTemplate = new EquipmentTemplate(name, description, equipmentType, cost, weight);
                 }
@@ -131,8 +141,8 @@ public class EquipmentStackAddFragment extends Fragment {
             }
             if (equipmentTemplate.getCostInGp() != null)
                 costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
-            if (equipmentTemplate.getCostInGp() != null)
-                weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
+            if (equipmentTemplate.getWeightInPounds() != null)
+                weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getWeightInPounds()));
             if (equipmentTemplate.getDescription() != null)
                 descriptionEditText.setText(equipmentTemplate.getDescription());
 
@@ -154,6 +164,19 @@ public class EquipmentStackAddFragment extends Fragment {
                 Integer minimumStrength = armorTemplate.getMinimumStrength();
                 String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();
                 armorMinimumStrengthEditText.setText(minimumArmorStrengthText);
+            }
+            if (equipmentTemplate.getClass().equals(WeaponTemplate.class)) {
+                WeaponTemplate weaponTemplate = (WeaponTemplate) equipmentTemplate;
+
+                if (weaponTemplate.getIsMeleeWeapon() != null && weaponTemplate.getIsSimpleWeapon() != null) {
+                    ArrayAdapter<String> weaponTypeAdapter = (ArrayAdapter<String>) weaponTypeSpinner.getAdapter();
+                    int weaponTypePosition = weaponTypeAdapter.getPosition(weaponTemplate.getWeaponType());
+                    weaponTypeSpinner.setSelection(weaponTypePosition, true);
+                }
+                if (weaponTemplate.getDamage() != null)
+                    weaponDamageEditText.setText(weaponTemplate.getDamage());
+                if (weaponTemplate.getProperties() != null)
+                    weaponPropertiesEditText.setText(weaponTemplate.getProperties());
             }
         });
 
@@ -192,13 +215,13 @@ public class EquipmentStackAddFragment extends Fragment {
     }
 
     private void setupArmorViews(View view) {
-        armorClassTextInputLayout = view.findViewById(R.id.equipment_stack_add_fragment_armor_class_layout);
-        armorClassEditText = view.findViewById(R.id.equipment_stack_add_fragment_armor_class);
-        armorCategorySpinner = view.findViewById(R.id.equipment_stack_add_fragment_armor_category);
-        armorGivesDisadvantageOnStealthCheckBox = view.findViewById(R.id.equipment_stack_add_fragment_disadvantage_on_stealth);
-        armorHasMinimumStrengthRequirementCheckBox = view.findViewById(R.id.equipment_stack_add_fragment_requires_minimum_strength);
-        armorMinimumStrengthLayout = view.findViewById(R.id.equipment_stack_add_fragment_minimum_strength_layout);
-        armorMinimumStrengthEditText = view.findViewById(R.id.equipment_stack_add_fragment_minimum_strength);
+        armorClassTextInputLayout = view.findViewById(R.id.armor_class_layout);
+        armorClassEditText = view.findViewById(R.id.armor_class);
+        armorCategorySpinner = view.findViewById(R.id.armor_category);
+        armorGivesDisadvantageOnStealthCheckBox = view.findViewById(R.id.armor_disadvantage_on_stealth);
+        armorHasMinimumStrengthRequirementCheckBox = view.findViewById(R.id.armor_requires_minimum_strength);
+        armorMinimumStrengthLayout = view.findViewById(R.id.armor_minimum_strength_layout);
+        armorMinimumStrengthEditText = view.findViewById(R.id.armor_minimum_strength);
 
         armorViewsToHide = new View[] {
                 armorClassTextInputLayout,
@@ -214,8 +237,18 @@ public class EquipmentStackAddFragment extends Fragment {
                 ArmorCategories.ARMOR_CATEGORIES);
         armorCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         armorCategorySpinner.setAdapter(armorCategoryAdapter);
+    }
 
+    private void setupWeaponViews(View view) {
+        weaponDamageEditText = view.findViewById(R.id.weapon_damage);
+        weaponPropertiesEditText = view.findViewById(R.id.weapon_properties);
+        weaponTypeSpinner = view.findViewById(R.id.weapon_category);
 
+        ArrayAdapter<String> weaponTypeAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item,
+                WeaponTypes.WEAPON_TYPES);
+        weaponTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        weaponTypeSpinner.setAdapter(weaponTypeAdapter);
     }
 
     private void setVisibleWithoutChangingFocus(ViewGroup parent, View... targets) {
