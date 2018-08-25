@@ -71,97 +71,6 @@ public class EquipmentStackAddFragment extends Fragment {
         setupArmorViews(view);
         setupWeaponViews(view);
 
-        addButton.setOnClickListener(view1 -> addEquipmentStack());
-
-        LiveData<List<EquipmentTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
-        equipmentTemplates.observe(this, equipmentTemplates1 -> {});
-        EquipmentTemplateAdapter nameAutoCompleteTextViewAdapter = new EquipmentTemplateAdapter(
-                getContext(),
-                equipmentTemplates);
-        nameAutoCompleteTextView.setAdapter(nameAutoCompleteTextViewAdapter);
-        nameAutoCompleteTextView.setOnItemClickListener((adapterView, view12, i, l) -> {
-            Object object = nameAutoCompleteTextView.getAdapter().getItem(i);
-            equipmentTemplate = (EquipmentTemplate) object;
-
-            Class<? extends EquipmentTemplate> equipmentTemplateClass = equipmentTemplate.getClass();
-
-            ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
-            String type = EquipmentTypes.getTypeStringFromClass(equipmentTemplateClass);
-            int position = typeSpinnerAdapter.getPosition(type);
-            equipmentTypeSpinner.setSelection(position, true);
-
-            if (equipmentTemplate.getCostInGp() != null)
-                costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
-            if (equipmentTemplate.getWeightInPounds() != null)
-                weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getWeightInPounds()));
-            if (equipmentTemplate.getDescription() != null)
-                descriptionEditText.setText(equipmentTemplate.getDescription());
-
-            if (equipmentTemplateClass.equals(ArmorTemplate.class)) {
-                ArmorTemplate armorTemplate = (ArmorTemplate) equipmentTemplate;
-
-                if (armorTemplate.getArmorClass() != null)
-                    armorClassEditText.setText(armorTemplate.getArmorClass());
-                if (armorTemplate.getArmorCategory() != null) {
-                    ArrayAdapter<String> armorCategoryAdapter = (ArrayAdapter<String>) armorCategorySpinner.getAdapter();
-                    int armorCategoryPosition = armorCategoryAdapter.getPosition(armorTemplate.getArmorCategory());
-                    armorCategorySpinner.setSelection(armorCategoryPosition, true);
-                }
-                if (armorTemplate.getGivesDisadvantageOnStealthChecks() != null)
-                    armorGivesDisadvantageOnStealthCheckBox.setChecked(armorTemplate.getGivesDisadvantageOnStealthChecks());
-                if (armorTemplate.getMinimumStrength() != null)
-                    armorHasMinimumStrengthRequirementCheckBox.setChecked(armorTemplate.getRequiresMinimumStrength());
-
-                Integer minimumStrength = armorTemplate.getMinimumStrength();
-                String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();
-                armorMinimumStrengthEditText.setText(minimumArmorStrengthText);
-            }
-            if (equipmentTemplateClass.equals(WeaponTemplate.class)) {
-                WeaponTemplate weaponTemplate = (WeaponTemplate) equipmentTemplate;
-
-                if (weaponTemplate.getIsMeleeWeapon() != null && weaponTemplate.getIsSimpleWeapon() != null) {
-                    ArrayAdapter<String> weaponTypeAdapter = (ArrayAdapter<String>) weaponTypeSpinner.getAdapter();
-                    int weaponTypePosition = weaponTypeAdapter.getPosition(weaponTemplate.getWeaponType());
-                    weaponTypeSpinner.setSelection(weaponTypePosition, true);
-                }
-                if (weaponTemplate.getDamage() != null)
-                    weaponDamageEditText.setText(weaponTemplate.getDamage());
-                if (weaponTemplate.getProperties() != null)
-                    weaponPropertiesEditText.setText(weaponTemplate.getProperties());
-            }
-        });
-
-        Arrays.sort(EquipmentTypes.EQUIPMENT_TYPES);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_item,
-                EquipmentTypes.EQUIPMENT_TYPES);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        equipmentTypeSpinner.setAdapter(spinnerAdapter);
-        equipmentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String selection = (String) adapterView.getSelectedItem();
-                switch (selection) {
-                    case EquipmentTypes.ARMOR:
-                        additionalFieldsViewFlipper.setDisplayedChild(0);
-                        setVisibleWithoutChangingFocus(constraintLayout, additionalFieldsViewFlipper);
-                        break;
-                    case EquipmentTypes.WEAPON:
-                        additionalFieldsViewFlipper.setDisplayedChild(1);
-                        setVisibleWithoutChangingFocus(constraintLayout, additionalFieldsViewFlipper);
-                        break;
-                    default:
-                        additionalFieldsViewFlipper.setVisibility(View.GONE);
-                        break;
-                }
-                descriptionEditText.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-
-        });
-
         return view;
     }
 
@@ -175,6 +84,59 @@ public class EquipmentStackAddFragment extends Fragment {
         costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
         additionalFieldsViewFlipper = view.findViewById(R.id.equipment_stack_add_fragment_additional_fields);
         descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
+
+        addButton.setOnClickListener(view1 -> addEquipmentStack());
+
+        nameAutoCompleteTextView.setAdapter(getNameAutocompleteTextViewAdapter());
+        nameAutoCompleteTextView.setOnItemClickListener((adapterView, view12, i, l) -> {
+            equipmentTemplate = (EquipmentTemplate) nameAutoCompleteTextView.getAdapter().getItem(i);
+            populateInputFieldsFromEquipmentTemplate(equipmentTemplate);
+        });
+
+        equipmentTypeSpinner.setAdapter(getEquipmentTypeSpinnerAdapter());
+        equipmentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String equipmentType = (String) adapterView.getSelectedItem();
+                showInputFieldsForEquipmentType(equipmentType);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+        });
+    }
+
+    private EquipmentTemplateAdapter getNameAutocompleteTextViewAdapter() {
+        LiveData<List<EquipmentTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
+        equipmentTemplates.observe(this, equipmentTemplates1 -> {});
+        return new EquipmentTemplateAdapter(
+                getContext(),
+                equipmentTemplates);
+    }
+
+    private ArrayAdapter<String> getEquipmentTypeSpinnerAdapter() {
+        Arrays.sort(EquipmentTypes.EQUIPMENT_TYPES);
+        ArrayAdapter<String> equipmentTypeSpinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item,
+                EquipmentTypes.EQUIPMENT_TYPES);
+        equipmentTypeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return equipmentTypeSpinnerAdapter;
+    }
+
+    private void showInputFieldsForEquipmentType(String equipmentType) {
+        switch (equipmentType) {
+            case EquipmentTypes.ARMOR:
+                additionalFieldsViewFlipper.setDisplayedChild(0);
+                setVisibleWithoutChangingFocus(constraintLayout, additionalFieldsViewFlipper);
+                break;
+            case EquipmentTypes.WEAPON:
+                additionalFieldsViewFlipper.setDisplayedChild(1);
+                setVisibleWithoutChangingFocus(constraintLayout, additionalFieldsViewFlipper);
+                break;
+            default:
+                additionalFieldsViewFlipper.setVisibility(View.GONE);
+                break;
+        }
     }
 
     private void setupArmorViews(View view) {
@@ -264,6 +226,55 @@ public class EquipmentStackAddFragment extends Fragment {
 
         equipmentStack.setName(equipmentTemplate.getName());
         viewModel.addEquipmentTemplateAndEquipmentStack(equipmentTemplate, equipmentStack);
+    }
+
+    private void populateInputFieldsFromEquipmentTemplate(EquipmentTemplate equipmentTemplate) {
+        Class<? extends EquipmentTemplate> equipmentTemplateClass = equipmentTemplate.getClass();
+
+        ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
+        String type = EquipmentTypes.getTypeStringFromClass(equipmentTemplateClass);
+        int position = typeSpinnerAdapter.getPosition(type);
+        equipmentTypeSpinner.setSelection(position, true);
+
+        if (equipmentTemplate.getCostInGp() != null)
+            costEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getCostInGp()));
+        if (equipmentTemplate.getWeightInPounds() != null)
+            weightEditText.setText(getStringRepresentationOfDouble(equipmentTemplate.getWeightInPounds()));
+        if (equipmentTemplate.getDescription() != null)
+            descriptionEditText.setText(equipmentTemplate.getDescription());
+
+        if (equipmentTemplateClass.equals(ArmorTemplate.class)) {
+            ArmorTemplate armorTemplate = (ArmorTemplate) equipmentTemplate;
+
+            if (armorTemplate.getArmorClass() != null)
+                armorClassEditText.setText(armorTemplate.getArmorClass());
+            if (armorTemplate.getArmorCategory() != null) {
+                ArrayAdapter<String> armorCategoryAdapter = (ArrayAdapter<String>) armorCategorySpinner.getAdapter();
+                int armorCategoryPosition = armorCategoryAdapter.getPosition(armorTemplate.getArmorCategory());
+                armorCategorySpinner.setSelection(armorCategoryPosition, true);
+            }
+            if (armorTemplate.getGivesDisadvantageOnStealthChecks() != null)
+                armorGivesDisadvantageOnStealthCheckBox.setChecked(armorTemplate.getGivesDisadvantageOnStealthChecks());
+            if (armorTemplate.getMinimumStrength() != null)
+                armorHasMinimumStrengthRequirementCheckBox.setChecked(armorTemplate.getRequiresMinimumStrength());
+
+            Integer minimumStrength = armorTemplate.getMinimumStrength();
+            String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();
+            armorMinimumStrengthEditText.setText(minimumArmorStrengthText);
+        }
+        if (equipmentTemplateClass.equals(WeaponTemplate.class)) {
+            WeaponTemplate weaponTemplate = (WeaponTemplate) equipmentTemplate;
+
+            if (weaponTemplate.getIsMeleeWeapon() != null && weaponTemplate.getIsSimpleWeapon() != null) {
+                ArrayAdapter<String> weaponTypeAdapter = (ArrayAdapter<String>) weaponTypeSpinner.getAdapter();
+                int weaponTypePosition = weaponTypeAdapter.getPosition(weaponTemplate.getWeaponType());
+                weaponTypeSpinner.setSelection(weaponTypePosition, true);
+            }
+            if (weaponTemplate.getDamage() != null)
+                weaponDamageEditText.setText(weaponTemplate.getDamage());
+            if (weaponTemplate.getProperties() != null)
+                weaponPropertiesEditText.setText(weaponTemplate.getProperties());
+        }
     }
 
     private void setVisibleWithoutChangingFocus(ViewGroup parent, View... targets) {
