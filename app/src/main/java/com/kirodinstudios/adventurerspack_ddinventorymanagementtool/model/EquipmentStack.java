@@ -13,18 +13,17 @@ import androidx.room.PrimaryKey;
 public class EquipmentStack {
     @PrimaryKey(autoGenerate = true)
     private int equipmentStackId;
-    private String name;
     private int count;
+    private String name; // TODO: remove this field
     private Long equipmentTemplateId;
 
     @Ignore
-    public EquipmentStack(String name, int count) {
-        this.name = name;
+    public EquipmentStack(int count) {
         this.count = count;
     }
 
-    public EquipmentStack(String name, int count, long equipmentTemplateId) {
-        this(name, count);
+    public EquipmentStack(int count, long equipmentTemplateId) {
+        this(count);
         this.equipmentTemplateId = equipmentTemplateId;
     }
 

@@ -126,7 +126,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public void insertEquipmentStackInBackground(EquipmentStack equipmentStack) {
         Callable<Void> callable = () -> {
-            Long id = equipmentStackDao().insertEquipmentStack(equipmentStack);
+            equipmentStackDao().insertEquipmentStack(equipmentStack);
             return null;
         };
 

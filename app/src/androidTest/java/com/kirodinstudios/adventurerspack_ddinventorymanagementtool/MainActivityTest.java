@@ -38,7 +38,8 @@ public class MainActivityTest {
 
     @BeforeClass
     public static void deleteDatabase() {
-        InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
+        //TODO: this is acting up and causing tests to be flaky... figure it out
+        boolean deleted = InstrumentationRegistry.getTargetContext().deleteDatabase(AppDatabase.DATABASE_NAME);
     }
 
     @Rule

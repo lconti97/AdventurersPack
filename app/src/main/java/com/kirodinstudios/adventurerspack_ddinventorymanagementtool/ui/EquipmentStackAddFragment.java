@@ -36,9 +36,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 public class EquipmentStackAddFragment extends Fragment {
-    private View[] armorViewsToHide;
-
     private EquipmentStackAddViewModel viewModel;
+    private EquipmentTemplate equipmentTemplate;
+
     private ConstraintLayout constraintLayout;
     private AutoCompleteTextView nameAutoCompleteTextView;
     private EditText countEditText;
@@ -46,6 +46,7 @@ public class EquipmentStackAddFragment extends Fragment {
     private EditText weightEditText;
     private EditText costEditText;
     private EditText descriptionEditText;
+    private FloatingActionButton addButton;
 
     private TextInputLayout armorClassTextInputLayout;
     private EditText armorClassEditText;
@@ -59,7 +60,6 @@ public class EquipmentStackAddFragment extends Fragment {
     private EditText weaponDamageEditText;
     private EditText weaponPropertiesEditText;
 
-    private EquipmentTemplate equipmentTemplate;
     private ViewFlipper additionalFieldsViewFlipper;
 
     @Override
@@ -67,72 +67,11 @@ public class EquipmentStackAddFragment extends Fragment {
         View view = inflater.inflate(R.layout.equipment_stack_add_fragment, container, false);
         viewModel = ViewModelProviders.of(this).get(EquipmentStackAddViewModel.class);
 
-        constraintLayout = view.findViewById(R.id.equipment_stack_add_fragment_layout);
-        nameAutoCompleteTextView = view.findViewById(R.id.equipment_stack_add_fragment_name);
-        countEditText = view.findViewById(R.id.equipment_stack_add_fragment_count);
-        FloatingActionButton addButton = view.findViewById(R.id.equipment_stack_add_fragment_done);
-        equipmentTypeSpinner = view.findViewById(R.id.equipment_stack_add_fragment_type);
-        weightEditText = view.findViewById(R.id.equipment_stack_add_fragment_weight);
-        costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
+        setupBaseViews(view);
         setupArmorViews(view);
         setupWeaponViews(view);
-        additionalFieldsViewFlipper = view.findViewById(R.id.equipment_stack_add_fragment_additional_fields);
-        descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
 
-        addButton.setOnClickListener(view1 -> {
-            String name = nameAutoCompleteTextView.getText().toString();
-            int count = Integer.valueOf(countEditText.getText().toString());
-
-            //TODO: if equipment template is null or inputs don't match up with the equipment stack properties
-            if (equipmentTemplate == null) {
-                EquipmentTemplate equipmentTemplate;
-
-                String description = descriptionEditText.getText().toString();
-                String weightText = weightEditText.getText().toString();
-                Double weight = weightText.isEmpty() ? null : Double.valueOf(weightText);
-                String costText = costEditText.getText().toString();
-                Double cost = costText.isEmpty() ? null : Double.valueOf(costText);
-                String equipmentType = (String) equipmentTypeSpinner.getSelectedItem();
-
-                switch (equipmentType) {
-                    case EquipmentTypes.ARMOR:
-                        String armorClass = armorClassEditText.getText().toString();
-                        String armorCategory = (String) armorCategorySpinner.getSelectedItem();
-                        Boolean givesDisadvantageOnStealthChecks = armorGivesDisadvantageOnStealthCheckBox.isSelected();
-                        Boolean hasMinimumStrength = armorHasMinimumStrengthRequirementCheckBox.isSelected();
-                        String minimumStrengthText = armorMinimumStrengthEditText.getText().toString();
-                        Integer minimumStrength = minimumStrengthText.isEmpty() ? null : Integer.valueOf(minimumStrengthText);
-
-                        equipmentTemplate = new ArmorTemplate(name, description, cost, weight,
-                                armorClass, armorCategory, givesDisadvantageOnStealthChecks,
-                                hasMinimumStrength, minimumStrength);
-                        break;
-                    case EquipmentTypes.WEAPON:
-                        String damage = weaponDamageEditText.getText().toString();
-                        String properties = weaponPropertiesEditText.getText().toString();
-                        boolean isSimpleWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("simple");
-                        boolean isMeleeWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("martial");
-
-                        equipmentTemplate = new WeaponTemplate(name, description, cost, weight,
-                                damage, properties, isSimpleWeapon, isMeleeWeapon);
-                        break;
-                    default:
-                        equipmentTemplate = new EquipmentTemplate(name, description, cost, weight);
-                        break;
-                }
-
-                EquipmentStack equipmentStack = new EquipmentStack(name, count);
-                viewModel.addEquipmentTemplateAndEquipmentStack(equipmentTemplate, equipmentStack);
-            }
-            else {
-                long equipmentTemplateId = equipmentTemplate.getEquipmentTemplateId();
-                EquipmentStack equipmentStack = new EquipmentStack(name, count, equipmentTemplateId);
-
-                viewModel.addEquipmentStack(equipmentStack);
-            }
-
-            ((MainActivity) getActivity()).showEquipmentStackListFragment();
-        });
+        addButton.setOnClickListener(view1 -> addEquipmentStack());
 
         LiveData<List<EquipmentTemplate>> equipmentTemplates = viewModel.getAllEquipmentTemplates();
         equipmentTemplates.observe(this, equipmentTemplates1 -> {});
@@ -226,6 +165,18 @@ public class EquipmentStackAddFragment extends Fragment {
         return view;
     }
 
+    private void setupBaseViews(View view) {
+        constraintLayout = view.findViewById(R.id.equipment_stack_add_fragment_layout);
+        nameAutoCompleteTextView = view.findViewById(R.id.equipment_stack_add_fragment_name);
+        countEditText = view.findViewById(R.id.equipment_stack_add_fragment_count);
+        addButton = view.findViewById(R.id.equipment_stack_add_fragment_done);
+        equipmentTypeSpinner = view.findViewById(R.id.equipment_stack_add_fragment_type);
+        weightEditText = view.findViewById(R.id.equipment_stack_add_fragment_weight);
+        costEditText = view.findViewById(R.id.equipment_stack_add_fragment_cost);
+        additionalFieldsViewFlipper = view.findViewById(R.id.equipment_stack_add_fragment_additional_fields);
+        descriptionEditText = view.findViewById(R.id.equipment_stack_add_fragment_description);
+    }
+
     private void setupArmorViews(View view) {
         armorClassTextInputLayout = view.findViewById(R.id.armor_class_layout);
         armorClassEditText = view.findViewById(R.id.armor_class);
@@ -234,15 +185,6 @@ public class EquipmentStackAddFragment extends Fragment {
         armorHasMinimumStrengthRequirementCheckBox = view.findViewById(R.id.armor_requires_minimum_strength);
         armorMinimumStrengthLayout = view.findViewById(R.id.armor_minimum_strength_layout);
         armorMinimumStrengthEditText = view.findViewById(R.id.armor_minimum_strength);
-
-        armorViewsToHide = new View[] {
-                armorClassTextInputLayout,
-                armorCategorySpinner,
-                armorGivesDisadvantageOnStealthCheckBox,
-                armorGivesDisadvantageOnStealthCheckBox,
-                armorHasMinimumStrengthRequirementCheckBox,
-                armorMinimumStrengthLayout
-        };
 
         ArrayAdapter<String> armorCategoryAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item,
@@ -261,6 +203,67 @@ public class EquipmentStackAddFragment extends Fragment {
                 WeaponTypes.WEAPON_TYPES);
         weaponTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         weaponTypeSpinner.setAdapter(weaponTypeAdapter);
+    }
+
+    private void addEquipmentStack() {
+        int count = Integer.valueOf(countEditText.getText().toString());
+        EquipmentStack equipmentStack = new EquipmentStack(count);
+
+        //TODO: if equipment template is null or inputs don't match up with the equipment stack properties
+        if (equipmentTemplate == null) {
+            addEquipmentTemplateAndEquipmentStack(equipmentStack);
+        }
+        else {
+            long equipmentTemplateId = equipmentTemplate.getEquipmentTemplateId();
+            equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
+            equipmentStack.setName(equipmentTemplate.getName());
+
+            viewModel.addEquipmentStack(equipmentStack);
+        }
+
+        ((MainActivity) getActivity()).showEquipmentStackListFragment();
+    }
+
+    private void addEquipmentTemplateAndEquipmentStack(EquipmentStack equipmentStack) {
+        EquipmentTemplate equipmentTemplate;
+
+        String name = nameAutoCompleteTextView.getText().toString();
+        String description = descriptionEditText.getText().toString();
+        String weightText = weightEditText.getText().toString();
+        Double weight = weightText.isEmpty() ? null : Double.valueOf(weightText);
+        String costText = costEditText.getText().toString();
+        Double cost = costText.isEmpty() ? null : Double.valueOf(costText);
+        String equipmentType = (String) equipmentTypeSpinner.getSelectedItem();
+
+        switch (equipmentType) {
+            case EquipmentTypes.ARMOR:
+                String armorClass = armorClassEditText.getText().toString();
+                String armorCategory = (String) armorCategorySpinner.getSelectedItem();
+                Boolean givesDisadvantageOnStealthChecks = armorGivesDisadvantageOnStealthCheckBox.isSelected();
+                Boolean hasMinimumStrength = armorHasMinimumStrengthRequirementCheckBox.isSelected();
+                String minimumStrengthText = armorMinimumStrengthEditText.getText().toString();
+                Integer minimumStrength = minimumStrengthText.isEmpty() ? null : Integer.valueOf(minimumStrengthText);
+
+                equipmentTemplate = new ArmorTemplate(name, description, cost, weight,
+                        armorClass, armorCategory, givesDisadvantageOnStealthChecks,
+                        hasMinimumStrength, minimumStrength);
+                break;
+            case EquipmentTypes.WEAPON:
+                String damage = weaponDamageEditText.getText().toString();
+                String properties = weaponPropertiesEditText.getText().toString();
+                boolean isSimpleWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("simple");
+                boolean isMeleeWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("martial");
+
+                equipmentTemplate = new WeaponTemplate(name, description, cost, weight,
+                        damage, properties, isSimpleWeapon, isMeleeWeapon);
+                break;
+            default:
+                equipmentTemplate = new EquipmentTemplate(name, description, cost, weight);
+                break;
+        }
+
+        equipmentStack.setName(equipmentTemplate.getName());
+        viewModel.addEquipmentTemplateAndEquipmentStack(equipmentTemplate, equipmentStack);
     }
 
     private void setVisibleWithoutChangingFocus(ViewGroup parent, View... targets) {
