@@ -4,11 +4,11 @@
     <data>
         <variable
             name="equipmentStack"
-            type="com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack" />
+            type="com.kirodinstudios.dungeoneerspack.model.EquipmentStack" />
 
         <variable
             name="callback"
-            type="com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui.EquipmentStackClickCallback" />
+            type="com.kirodinstudios.dungeoneerspack.ui.EquipmentStackClickCallback" />
     </data>
 
     <LinearLayout

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Adventurer\'s Pack - D&amp;D Inventory Management Tool</string>
+    <string name="app_name">Dungeoneer\'s Pack</string>
     <string name="cd_equipment_stacks_list">equipment</string>
     <string name="Loading_Equipment">Loading equipment</string>
     <string name="Name_asterisk">Name*</string>

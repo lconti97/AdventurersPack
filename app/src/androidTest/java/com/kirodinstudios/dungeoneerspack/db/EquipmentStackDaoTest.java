@@ -1,0 +1,63 @@
+package com.kirodinstudios.dungeoneerspack.db;
+
+import com.kirodinstudios.dungeoneerspack.LiveDataTestUtil;
+import com.kirodinstudios.dungeoneerspack.TestData;
+import com.kirodinstudios.dungeoneerspack.model.EquipmentStack;
+
+import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.room.Room;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.MediumTest;
+import androidx.test.runner.AndroidJUnit4;
+
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+@MediumTest
+@RunWith(AndroidJUnit4.class)
+public class EquipmentStackDaoTest {
+    private AppDatabase database;
+    private EquipmentStackDao equipmentStackDao;
+
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+
+    @Before
+    public void initDb() {
+        database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
+                AppDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        equipmentStackDao = database.equipmentStackDao();
+    }
+
+    @After
+    public void closeDb() {
+        database.close();
+    }
+
+    @Test
+    public void getEquipmentStacksWhenNoEquipmentStacksInserted() throws InterruptedException {
+        List<EquipmentStack> equipmentStackEntities = LiveDataTestUtil.getValue(equipmentStackDao.loadAll());
+
+        assertTrue(equipmentStackEntities.isEmpty());
+    }
+
+    @Test
+    public void getEquipmentStacksAfterInserted() throws InterruptedException {
+        equipmentStackDao.insertAll(TestData.EQUIPMENT_STACKS);
+
+        List<EquipmentStack> equipmentStackEntities = LiveDataTestUtil.getValue(equipmentStackDao.loadAll());
+
+        assertThat(equipmentStackEntities.size(), Matchers.is(2));
+    }
+}
