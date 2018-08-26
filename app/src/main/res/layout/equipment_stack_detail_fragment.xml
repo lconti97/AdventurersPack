@@ -12,7 +12,7 @@
 
         <variable
             name="equipmentStackViewModel"
-            type="com.kirodinstudios.adventurerspack_ddinventorymanagementtool.viewmodel.EquipmentStackViewModel" />
+            type="com.kirodinstudios.dungeoneerspack.viewmodel.EquipmentStackViewModel" />
     </data>
 
     <LinearLayout
