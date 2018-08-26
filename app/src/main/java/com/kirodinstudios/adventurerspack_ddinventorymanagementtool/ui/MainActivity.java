@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showEquipmentStackDetailFragment(EquipmentStack equipmentStack) {
-        EquipmentStackDetailFragment equipmentStackDetailFragment = EquipmentStackDetailFragment.forEquipmentStack(equipmentStack.getId());
+        EquipmentStackDetailFragment equipmentStackDetailFragment = EquipmentStackDetailFragment.forEquipmentStack(equipmentStack.getEquipmentStackId());
 
         getSupportFragmentManager()
                 .beginTransaction()

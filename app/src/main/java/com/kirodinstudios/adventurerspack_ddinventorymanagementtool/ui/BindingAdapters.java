@@ -1,11 +1,12 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.ui;
 
-import androidx.databinding.BindingAdapter;
 import android.view.View;
+
+import androidx.databinding.BindingAdapter;
 
 public class BindingAdapters {
     @BindingAdapter("visibleGone")
-    public static void showHide(View view, boolean show) {
-        view.setVisibility(show ? View.VISIBLE : View.GONE);
+    public static void showHide(View view, boolean shouldShowView) {
+        view.setVisibility(shouldShowView ? View.VISIBLE : View.GONE);
     }
 }

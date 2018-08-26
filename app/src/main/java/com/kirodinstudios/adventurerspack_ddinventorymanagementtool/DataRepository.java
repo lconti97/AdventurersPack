@@ -1,24 +1,24 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
-import java.util.List;
+import java.util.Collection;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 public class DataRepository {
     private static DataRepository sInstance;
 
     private final AppDatabase mDatabase;
-    private MediatorLiveData<List<EquipmentStack>> mObservableEquipmentStacks;
+    private MediatorLiveData<Collection<EquipmentStack>> mObservableEquipmentStacks;
 
     private DataRepository(final AppDatabase database) {
         mDatabase = database;
         mObservableEquipmentStacks = new MediatorLiveData<>();
 
-        mObservableEquipmentStacks.addSource(mDatabase.equipmentStackDao().loadAll(),
+        mObservableEquipmentStacks.addSource(mDatabase.getEquipmentStacks(),
                 productEntities -> {
                     if (mDatabase.getDatabaseCreated().getValue() != null) {
                         mObservableEquipmentStacks.postValue(productEntities);
@@ -40,11 +40,11 @@ public class DataRepository {
     /**
      * Get the list of products from the database and get notified when the data changes.
      */
-    public LiveData<List<EquipmentStack>> getEquipmentStacks() {
+    public LiveData<Collection<EquipmentStack>> getEquipmentStacks() {
         return mObservableEquipmentStacks;
     }
 
     public LiveData<EquipmentStack> getEquipmentStack(final int id) {
-        return mDatabase.equipmentStackDao().loadEquipmentStack(id);
+        return mDatabase.getEquipmentStack(id);
     }
 }

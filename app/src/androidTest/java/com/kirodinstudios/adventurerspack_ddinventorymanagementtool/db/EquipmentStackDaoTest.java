@@ -1,13 +1,7 @@
-package com.kirodinstudios.adventurerspack_ddinventorymanagementtool;
+package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.room.Room;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.filters.MediumTest;
-import androidx.test.runner.AndroidJUnit4;
-
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.AppDatabase;
-import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db.EquipmentStackDao;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.LiveDataTestUtil;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.TestData;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
 
 import org.hamcrest.Matchers;
@@ -18,6 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.room.Room;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.MediumTest;
+import androidx.test.runner.AndroidJUnit4;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;

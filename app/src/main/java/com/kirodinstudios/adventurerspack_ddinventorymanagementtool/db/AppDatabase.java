@@ -1,34 +1,50 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.db;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.AppExecutors;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.InitialEquipmentTemplateRepository;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.ArmorTemplateEntity;
 import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentStack;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.EquipmentTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplate;
+import com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model.WeaponTemplateEntity;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Database(entities = {EquipmentStack.class}, version = 1)
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import static com.kirodinstudios.adventurerspack_ddinventorymanagementtool.Constants.LOG_TAG;
+
+@Database(entities = {
+        EquipmentStack.class,
+        EquipmentTemplate.class,
+        ArmorTemplateEntity.class,
+        WeaponTemplateEntity.class,
+    }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
     public static final String DATABASE_NAME = "adventurers-pack";
-    private static final String LOG_TAG = "AppDatabase";
+    private static final Callable<Void> DEFAULT_FAILURE_CALLABLE = () -> null;
+
+    abstract EquipmentStackDao equipmentStackDao();
+    abstract EquipmentTemplateDao equipmentTemplateDao();
 
     private static AppDatabase Instance;
-
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
     private Executor databaseThread;
 
@@ -46,33 +62,105 @@ public abstract class AppDatabase extends RoomDatabase {
         return Instance;
     }
 
+    public LiveData<List<EquipmentTemplate>> getEquipmentTemplates() {
+        MediatorLiveData<List<EquipmentTemplate>> liveData = new MediatorLiveData<>();
+
+        liveData.addSource(equipmentTemplateDao().getAllEquipmentTemplates(), equipmentTemplates ->
+                addEquipmentTemplatesToLiveData(equipmentTemplates, liveData));
+        liveData.addSource(equipmentTemplateDao().getAllArmorTemplates(), armorTemplates ->
+                addEquipmentTemplatesToLiveData(new ArrayList<>(armorTemplates), liveData));
+        liveData.addSource(equipmentTemplateDao().getAllWeaponTemplates(), weaponTemplates ->
+                addEquipmentTemplatesToLiveData(new ArrayList<>(weaponTemplates), liveData));
+
+        return liveData;
+    }
+
+    public LiveData<List<EquipmentStack>> getEquipmentStacks() {
+        return equipmentStackDao().loadAll();
+    }
+
+    public LiveData<EquipmentStack> getEquipmentStack(int id) {
+        return equipmentStackDao().loadEquipmentStack(id);
+    }
+
+    private Long insertEquipmentTemplateInForeground(EquipmentTemplate equipmentTemplate) {
+        Class<? extends EquipmentTemplate> equipmentTemplateClass = equipmentTemplate.getClass();
+
+        if (equipmentTemplateClass == ArmorTemplate.class)
+            return equipmentTemplateDao().insertArmorTemplate((ArmorTemplate) equipmentTemplate);
+        else if (equipmentTemplateClass == WeaponTemplate.class)
+            return equipmentTemplateDao().insertWeaponTemplate((WeaponTemplate) equipmentTemplate);
+        else if (equipmentTemplateClass == EquipmentTemplate.class)
+            return equipmentTemplateDao().insertEquipmentTemplate(equipmentTemplate);
+
+        return null;
+    }
+
+    public void insertEquipmentTemplateAndEquipmentStackInBackground(EquipmentTemplate equipmentTemplate, EquipmentStack equipmentStack) {
+        Callable<Void> addEquipmentTemplateCallable = () -> {
+            Long equipmentTemplateId = insertEquipmentTemplateInForeground(equipmentTemplate);
+
+            if (equipmentTemplateId == null) {
+                Log.e(LOG_TAG, "Failed to save EquipmentTemplate: " + equipmentTemplate.toString());
+            } else {
+                equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
+                equipmentStackDao().insertEquipmentStack(equipmentStack);
+            }
+
+            return null;
+        };
+
+        executeQuery(addEquipmentTemplateCallable);
+    }
+
+    public void insertEquipmentTemplatesInBackground(List<EquipmentTemplate> equipmentTemplates) {
+        Callable<Void> callable = () -> {
+            for (EquipmentTemplate equipmentTemplate: equipmentTemplates)
+                insertEquipmentTemplateInForeground(equipmentTemplate);
+
+            return null;
+        };
+
+        executeQuery(callable);
+    }
+
+    public void insertEquipmentStackInBackground(EquipmentStack equipmentStack) {
+        Callable<Void> callable = () -> {
+            equipmentStackDao().insertEquipmentStack(equipmentStack);
+            return null;
+        };
+
+        executeQuery(callable);
+    }
+
+    private static void addEquipmentTemplatesToLiveData(List<EquipmentTemplate> equipmentTemplates, MediatorLiveData<List<EquipmentTemplate>> liveData) {
+        if (liveData.getValue() == null)
+            liveData.setValue(equipmentTemplates);
+        else
+            liveData.getValue().addAll(equipmentTemplates);
+    }
+
     private static AppDatabase buildDatabase(final Context context, final AppExecutors executors) {
-        return Room.databaseBuilder(context,
-                AppDatabase.class,
-                DATABASE_NAME)
-                .addCallback(new RoomDatabase.Callback() {
-                    @Override
-                    public void onCreate(@NonNull final SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                            AppDatabase database = AppDatabase.getInstance(context, executors);
-                            List<EquipmentStack> equipmentStackEntities = getPopulationEquipmentStacks();
-                            database.equipmentStackDao().insertAll(equipmentStackEntities);
-                            database.setDatabaseCreated();
-                        });
-                    }
-                })
-                .build();
-    }
+        AppDatabase appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
+            .addCallback(new Callback() {
+                @Override
+                public void onCreate(@NonNull final SupportSQLiteDatabase db) {
+                    super.onCreate(db);
+                    Executors.newSingleThreadScheduledExecutor().execute(() -> {
+                        AppDatabase database = AppDatabase.getInstance(context, executors);
 
-    private static List<EquipmentStack> getPopulationEquipmentStacks() {
-        return Arrays.asList(
-                new EquipmentStack("sword", 1),
-                new EquipmentStack("gold", 200)
-        );
-    }
+                        InitialEquipmentTemplateRepository initialEquipmentTemplateRepository = new InitialEquipmentTemplateRepository();
+                        List<EquipmentTemplate> equipmentTemplates = initialEquipmentTemplateRepository.getInitialEquipmentTemplates(context);
 
-    public abstract EquipmentStackDao equipmentStackDao();
+                        database.insertEquipmentTemplatesInBackground(equipmentTemplates);
+
+                        database.setDatabaseCreated();
+                    });
+                }
+            })
+            .build();
+        return appDatabase;
+    }
 
     private void setDatabaseCreated() {
         mIsDatabaseCreated.postValue(true);
@@ -88,14 +176,14 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    public void executeQuery(Callable queryFunction, Callable onFailure) {
+    private void executeQuery(Callable queryFunction) {
         databaseThread.execute(() -> {
             try {
                 queryFunction.call();
             } catch (Exception e) {
                 Log.e(LOG_TAG, Log.getStackTraceString(e));
                 try {
-                    onFailure.call();
+                    ((Callable) AppDatabase.DEFAULT_FAILURE_CALLABLE).call();
                 } catch (Exception e1) {
                     Log.e(LOG_TAG, Log.getStackTraceString(e));
                 }

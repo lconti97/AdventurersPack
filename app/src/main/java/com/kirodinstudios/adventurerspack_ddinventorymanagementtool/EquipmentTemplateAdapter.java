@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+
 
 public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable {
     private static final int MINIMUM_FILTER_STRING_LENGTH = 2;
@@ -24,7 +26,7 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
     private Context context;
     private List<EquipmentTemplate> filteredEquipmentTemplates;
 
-    public EquipmentTemplateAdapter(Context context, final List<EquipmentTemplate> equipmentTemplates) {
+    public EquipmentTemplateAdapter(Context context, final LiveData<List<EquipmentTemplate>> equipmentTemplates) {
         this.context = context;
         this.filter = new EquipmentTemplateFilter(equipmentTemplates);
         this.filteredEquipmentTemplates = Collections.emptyList();
@@ -32,7 +34,7 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
 
     @Override
     public int getCount() {
-        return filteredEquipmentTemplates.size();
+        return filteredEquipmentTemplates == null ? 0 : filteredEquipmentTemplates.size();
     }
 
     @Override
@@ -42,7 +44,7 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
 
     @Override
     public long getItemId(int i) {
-        return filteredEquipmentTemplates.get(i).getId();
+        return filteredEquipmentTemplates.get(i).getEquipmentTemplateId();
     }
 
     @Override
@@ -63,20 +65,20 @@ public class EquipmentTemplateAdapter extends BaseAdapter implements Filterable 
     }
 
     private class EquipmentTemplateFilter extends Filter {
-        private List<EquipmentTemplate> equipmentTemplates;
+        private LiveData<List<EquipmentTemplate>> equipmentTemplates;
 
-        EquipmentTemplateFilter(List<EquipmentTemplate> equipmentTemplates) {
+        EquipmentTemplateFilter(LiveData<List<EquipmentTemplate>> equipmentTemplates) {
             this.equipmentTemplates = equipmentTemplates;
         }
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<EquipmentTemplate> results = new ArrayList<>();
-            if (constraint != null && constraint.length() >= MINIMUM_FILTER_STRING_LENGTH) {
+            if (constraint != null && constraint.length() >= MINIMUM_FILTER_STRING_LENGTH && equipmentTemplates.getValue() != null) {
                 String filterString = constraint.toString().toLowerCase();
 
-                for (EquipmentTemplate equipmentTemplate : equipmentTemplates) {
-                    if (equipmentTemplate.getName().toLowerCase().startsWith(filterString))
+                for (EquipmentTemplate equipmentTemplate : equipmentTemplates.getValue()) {
+                    if (equipmentTemplate.getName() != null && equipmentTemplate.getName().toLowerCase().contains(filterString))
                         results.add(equipmentTemplate);
                 }
             }

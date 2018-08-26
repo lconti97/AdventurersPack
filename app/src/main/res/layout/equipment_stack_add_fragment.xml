@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true" >
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/equipment_stack_add_fragment_layout">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/equipment_stack_add_fragment_name_layout"
@@ -20,15 +26,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:helperText="@string/asterisk_Required">
 
         <AutoCompleteTextView
             android:id="@+id/equipment_stack_add_fragment_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/name"
-            android:inputType="textCapSentences"
-            android:completionThreshold="2"/>
+            android:completionThreshold="2"
+            android:hint="@string/Name_asterisk"
+            android:inputType="textCapSentences" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,9 +49,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginRight="27dp"
-        android:hint="@string/count"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/Count"
         app:layout_constraintEnd_toStartOf="@+id/equipment_stack_add_fragment_type"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +77,88 @@
         app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_count_layout"
         app:layout_constraintTop_toTopOf="@+id/equipment_stack_add_fragment_count_layout" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/equipment_stack_add_fragment_weight_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/Weight_lbs"
+        app:layout_constraintEnd_toStartOf="@+id/equipment_stack_add_fragment_cost_layout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_count_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/equipment_stack_add_fragment_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/equipment_stack_add_fragment_cost_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/Cost_gp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/equipment_stack_add_fragment_weight_layout"
+        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_type">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/equipment_stack_add_fragment_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/equipment_stack_add_fragment_cost_layout"
+        app:layout_constraintBottom_toTopOf="@id/equipment_stack_add_fragment_description_layout"
+        android:id="@+id/equipment_stack_add_fragment_additional_fields">
+
+        <include layout="@layout/armor_template_fields" />
+        <include layout="@layout/weapon_template_fields" />
+
+    </ViewFlipper>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/equipment_stack_add_fragment_description_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/Description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/equipment_stack_add_fragment_additional_fields">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/equipment_stack_add_fragment_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences|textMultiLine" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/equipment_stack_add_fragment_done"
         android:layout_width="wrap_content"
@@ -83,4 +173,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_done_white_24dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

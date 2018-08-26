@@ -1,25 +1,34 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "EquipmentStack")
+@Entity(tableName = "EquipmentStack",
+        foreignKeys = @ForeignKey(
+                entity = EquipmentTemplate.class,
+                parentColumns = "equipmentTemplateId",
+                childColumns = "equipmentTemplateId"))
 public class EquipmentStack {
     @PrimaryKey(autoGenerate = true)
-    private int id;
-
-    private String name;
+    private int equipmentStackId;
     private int count;
+    private String name; // TODO: remove this field
+    private Long equipmentTemplateId;
 
-    public EquipmentStack() { }
-
-    public EquipmentStack(String name, int count) {
-        this.name = name;
+    @Ignore
+    public EquipmentStack(int count) {
         this.count = count;
     }
 
-    public int getId() {
-        return id;
+    public EquipmentStack(int count, long equipmentTemplateId) {
+        this(count);
+        this.equipmentTemplateId = equipmentTemplateId;
+    }
+
+    public int getEquipmentStackId() {
+        return equipmentStackId;
     }
 
     public String getName() {
@@ -30,8 +39,8 @@ public class EquipmentStack {
         this.name = name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEquipmentStackId(int equipmentStackId) {
+        this.equipmentStackId = equipmentStackId;
     }
 
     public int getCount() {
@@ -40,5 +49,13 @@ public class EquipmentStack {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public Long getEquipmentTemplateId() {
+        return equipmentTemplateId;
+    }
+
+    public void setEquipmentTemplateId(Long equipmentTemplateId) {
+        this.equipmentTemplateId = equipmentTemplateId;
     }
 }

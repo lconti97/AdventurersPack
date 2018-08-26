@@ -11,6 +11,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,7 +34,9 @@ dependencies {
     implementation              'androidx.cardview:cardview:1.0.0-alpha3'
     implementation              'androidx.constraintlayout:constraintlayout:1.1.2'
     implementation              'com.google.android.material:material:1.0.0-beta1'
+    api                         'com.google.guava:guava:25.1-android'
     androidTestImplementation   'androidx.test:runner:1.1.0-alpha3'
+    androidTestUtil             'androidx.test:orchestrator:1.1.0-alpha4'
     androidTestImplementation   'androidx.test.espresso:espresso-contrib:3.1.0-alpha3'
     androidTestImplementation   'androidx.test.espresso:espresso-core:3.1.0-alpha3'
     implementation              'com.google.android.material:material:1.0.0-beta01'
@@ -48,4 +51,8 @@ dependencies {
     implementation              'androidx.room:room-runtime:2.0.0-alpha1'
     androidTestImplementation   'androidx.room:room-testing:2.0.0-alpha1'
     androidTestImplementation   'androidx.test:rules:1.1.0-alpha3'
+
+    implementation              'com.fasterxml.jackson.core:jackson-core:2.7.3'
+    implementation              'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
+    implementation              'com.fasterxml.jackson.core:jackson-databind:2.7.3'
 }

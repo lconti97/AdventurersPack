@@ -1,24 +1,36 @@
 package com.kirodinstudios.adventurerspack_ddinventorymanagementtool.model;
 
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+@Entity(tableName = "EquipmentTemplate")
 public class EquipmentTemplate {
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private Long equipmentTemplateId;
     private String name;
-    private String equipmentType;
+    private String description;
+    private Double costInGp;
+    private Double weightInPounds;
 
-    public EquipmentTemplate(String name, String equipmentType) {
+    public EquipmentTemplate() { }
+
+    public EquipmentTemplate(
+            String name,
+            String description,
+            Double costInGp,
+            Double weightInPounds) {
         this.name = name;
-        this.equipmentType = equipmentType;
+        this.description = description;
+        this.costInGp = costInGp;
+        this.weightInPounds = weightInPounds;
     }
 
-    public long getId() {
-        return id;
+    public Long getEquipmentTemplateId() {
+        return equipmentTemplateId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEquipmentTemplateId(Long id) {
+        this.equipmentTemplateId = id;
     }
 
     public String getName() {
@@ -29,16 +41,27 @@ public class EquipmentTemplate {
         this.name = name;
     }
 
-    public String getEquipmentType() {
-        return equipmentType;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEquipmentType(String equipmentType) {
-        this.equipmentType = equipmentType;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "";
+    public Double getCostInGp() {
+        return costInGp;
+    }
+
+    public void setCostInGp(Double costInGp) {
+        this.costInGp = costInGp;
+    }
+
+    public Double getWeightInPounds() {
+        return weightInPounds;
+    }
+
+    public void setWeightInPounds(Double weightInPounds) {
+        this.weightInPounds = weightInPounds;
     }
 }

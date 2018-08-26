@@ -11,18 +11,18 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 @Dao
-public interface EquipmentStackDao {
+interface EquipmentStackDao {
     @Query("SELECT * FROM EquipmentStack")
     LiveData<List<EquipmentStack>> loadAll();
 
-    @Query("SELECT * FROM EquipmentStack WHERE id = :id")
+    @Query("SELECT * FROM EquipmentStack WHERE equipmentStackId = :id")
     LiveData<EquipmentStack> loadEquipmentStack(int id);
 
-    @Insert
-    void insertAll(List<EquipmentStack> equipmentStackEntities);
+    @Insert()
+    void insertAll(List<EquipmentStack> equipmentStacks);
 
     @Insert
-    void insert(EquipmentStack equipmentStack);
+    Long insertEquipmentStack(EquipmentStack equipmentStack);
 
     @Delete
     void delete(EquipmentStack equipmentStack);
