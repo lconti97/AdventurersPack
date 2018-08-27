@@ -149,6 +149,8 @@ public class MainActivityTest {
 
         onView(withText(weaponTemplate.getName()))
                 .check(matches(isDisplayed()));
+        onView(withText(DisplayDataConverter.getStringRepresentationOfDouble(weaponTemplate.getWeightInPounds())))
+                .check(matches(isDisplayed()));
 
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());

@@ -1,6 +1,5 @@
 package com.kirodinstudios.dungeoneerspack.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +33,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
+
+import static com.kirodinstudios.dungeoneerspack.DisplayDataConverter.getStringRepresentationOfDouble;
 
 public class EquipmentStackAddFragment extends Fragment {
     private EquipmentStackAddViewModel viewModel;
@@ -169,16 +170,15 @@ public class EquipmentStackAddFragment extends Fragment {
 
     private void addEquipmentStack() {
         int count = Integer.valueOf(countEditText.getText().toString());
-        EquipmentStack equipmentStack = new EquipmentStack(count);
+        EquipmentStack equipmentStack = new EquipmentStack();
+        equipmentStack.setCount(count);
 
         //TODO: if equipment template is null or inputs don't match up with the equipment stack properties
         if (equipmentTemplate == null) {
             addEquipmentTemplateAndEquipmentStack(equipmentStack);
         }
         else {
-            long equipmentTemplateId = equipmentTemplate.getEquipmentTemplateId();
-            equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
-            equipmentStack.setName(equipmentTemplate.getName());
+            equipmentStack.setEquipmentTemplate(equipmentTemplate);
 
             viewModel.addEquipmentStack(equipmentStack);
         }
@@ -224,7 +224,6 @@ public class EquipmentStackAddFragment extends Fragment {
                 break;
         }
 
-        equipmentStack.setName(equipmentTemplate.getName());
         viewModel.addEquipmentTemplateAndEquipmentStack(equipmentTemplate, equipmentStack);
     }
 
@@ -287,12 +286,4 @@ public class EquipmentStackAddFragment extends Fragment {
         parent.setDescendantFocusability(initialFocusability);
     }
 
-    @SuppressLint("DefaultLocale")
-    private static String getStringRepresentationOfDouble(double d)
-    {
-        if(d == (long) d)
-            return String.format("%d",(long)d);
-        else
-            return String.format("%s",d);
-    }
 }

@@ -99,11 +99,13 @@ public abstract class AppDatabase extends RoomDatabase {
     public void insertEquipmentTemplateAndEquipmentStackInBackground(EquipmentTemplate equipmentTemplate, EquipmentStack equipmentStack) {
         Callable<Void> addEquipmentTemplateCallable = () -> {
             Long equipmentTemplateId = insertEquipmentTemplateInForeground(equipmentTemplate);
+            equipmentTemplate.setEquipmentTemplateId(equipmentTemplateId);
 
             if (equipmentTemplateId == null) {
                 Log.e(LOG_TAG, "Failed to save EquipmentTemplate: " + equipmentTemplate.toString());
             } else {
-                equipmentStack.setEquipmentTemplateId(equipmentTemplateId);
+                //TODO: assign the previously inserted template to this stack
+                equipmentStack.setEquipmentTemplate(equipmentTemplate);
                 equipmentStackDao().insertEquipmentStack(equipmentStack);
             }
 

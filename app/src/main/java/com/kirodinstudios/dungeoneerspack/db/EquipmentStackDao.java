@@ -6,24 +6,28 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 @Dao
-interface EquipmentStackDao {
-    @Query("SELECT * FROM EquipmentStack")
-    LiveData<List<EquipmentStack>> loadAll();
+abstract class EquipmentStackDao {
+    @Query("SELECT * FROM EquipmentStack " +
+            "INNER JOIN EquipmentTemplate ON EquipmentStack.equipmentTemplateId=EquipmentTemplate.equipmentTemplateId")
+    abstract LiveData<List<EquipmentStack>> loadAll();
 
-    @Query("SELECT * FROM EquipmentStack WHERE equipmentStackId = :id")
-    LiveData<EquipmentStack> loadEquipmentStack(int id);
+    @Query("SELECT * FROM EquipmentStack " +
+            "INNER JOIN EquipmentTemplate ON EquipmentStack.equipmentTemplateId=EquipmentTemplate.equipmentTemplateId " +
+            "WHERE equipmentStackId = :id")
+    abstract LiveData<EquipmentStack> loadEquipmentStack(int id);
 
-    @Insert()
-    void insertAll(List<EquipmentStack> equipmentStacks);
+    @Transaction
+    void insertAll(List<EquipmentStack> equipmentStacks) {
+        for (EquipmentStack equipmentStack: equipmentStacks) {
+            insertEquipmentStack(equipmentStack);
+        }
+    }
 
     @Insert
-    Long insertEquipmentStack(EquipmentStack equipmentStack);
-
-    @Delete
-    void delete(EquipmentStack equipmentStack);
+    abstract Long insertEquipmentStack(EquipmentStack equipmentStackEntity);
 }

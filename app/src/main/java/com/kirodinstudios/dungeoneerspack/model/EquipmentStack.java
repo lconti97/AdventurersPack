@@ -1,42 +1,29 @@
 package com.kirodinstudios.dungeoneerspack.model;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "EquipmentStack",
-        foreignKeys = @ForeignKey(
-                entity = EquipmentTemplate.class,
-                parentColumns = "equipmentTemplateId",
-                childColumns = "equipmentTemplateId"))
+@Entity
 public class EquipmentStack {
     @PrimaryKey(autoGenerate = true)
     private int equipmentStackId;
     private int count;
-    private String name; // TODO: remove this field
-    private Long equipmentTemplateId;
+    @Embedded
+    private EquipmentTemplate equipmentTemplate;
+
+    public EquipmentStack() { }
 
     @Ignore
-    public EquipmentStack(int count) {
+    public EquipmentStack(int id, int count, EquipmentTemplate equipmentTemplate) {
+        this.equipmentStackId = id;
         this.count = count;
-    }
-
-    public EquipmentStack(int count, long equipmentTemplateId) {
-        this(count);
-        this.equipmentTemplateId = equipmentTemplateId;
+        this.equipmentTemplate = equipmentTemplate;
     }
 
     public int getEquipmentStackId() {
         return equipmentStackId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setEquipmentStackId(int equipmentStackId) {
@@ -51,11 +38,11 @@ public class EquipmentStack {
         this.count = count;
     }
 
-    public Long getEquipmentTemplateId() {
-        return equipmentTemplateId;
+    public EquipmentTemplate getEquipmentTemplate() {
+        return equipmentTemplate;
     }
 
-    public void setEquipmentTemplateId(Long equipmentTemplateId) {
-        this.equipmentTemplateId = equipmentTemplateId;
+    public void setEquipmentTemplate(EquipmentTemplate equipmentTemplateId) {
+        this.equipmentTemplate = equipmentTemplateId;
     }
 }

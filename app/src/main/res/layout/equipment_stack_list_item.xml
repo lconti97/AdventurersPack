@@ -25,7 +25,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingStart="16dp"
-            android:text="@{equipmentStack.getName()}"
+            android:text="@{equipmentStack.getEquipmentTemplate.getName()}"
             android:textSize="16sp" />
 
         <TextView
@@ -36,6 +36,16 @@
             android:paddingRight="16dp"
             android:paddingStart="16dp"
             android:text="@{Integer.toString(equipmentStack.count)}"
+            android:textSize="14sp" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:text="@{Double.toString(equipmentStack.getEquipmentTemplate().getWeightInPounds())}"
             android:textSize="14sp" />
 
     </LinearLayout>
