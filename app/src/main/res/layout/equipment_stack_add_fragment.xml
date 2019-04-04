@@ -123,15 +123,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <ViewFlipper
+        android:id="@+id/equipment_stack_add_fragment_additional_fields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/equipment_stack_add_fragment_cost_layout"
         app:layout_constraintBottom_toTopOf="@id/equipment_stack_add_fragment_description_layout"
-        android:id="@+id/equipment_stack_add_fragment_additional_fields">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/equipment_stack_add_fragment_cost_layout">
 
         <include layout="@layout/armor_template_fields" />
+
         <include layout="@layout/weapon_template_fields" />
 
     </ViewFlipper>

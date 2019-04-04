@@ -17,11 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            EquipmentStackListFragment fragment = new EquipmentStackListFragment();
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment, EquipmentStackListFragment.TAG)
-                    .commit();
+            showEquipmentStackListFragment();
         }
     }
 
