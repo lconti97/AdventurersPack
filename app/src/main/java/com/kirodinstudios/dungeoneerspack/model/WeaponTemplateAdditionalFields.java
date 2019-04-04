@@ -1,20 +1,34 @@
 package com.kirodinstudios.dungeoneerspack.model;
 
-public class WeaponTemplate extends EquipmentTemplate {
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+@Entity
+public class WeaponTemplateAdditionalFields {
+    @PrimaryKey(autoGenerate = true)
+    private Long weaponTemplateAdditionalFieldsId;
     private String damage;
     private String properties;
     private Boolean isSimpleWeapon;
     private Boolean isMeleeWeapon;
 
-    public WeaponTemplate() { }
+    public WeaponTemplateAdditionalFields() { }
 
-    public WeaponTemplate(String name, String description, Double costInGp, Double weightInPounds, String damage, String properties, Boolean isSimpleWeapon, Boolean isMeleeWeapon) {
-        super(name, description, costInGp, weightInPounds);
+    @Ignore
+    public WeaponTemplateAdditionalFields(String damage, String properties, Boolean isSimpleWeapon, Boolean isMeleeWeapon) {
         this.damage = damage;
         this.properties = properties;
         this.isSimpleWeapon = isSimpleWeapon;
         this.isMeleeWeapon = isMeleeWeapon;
+    }
+
+    public Long getWeaponTemplateAdditionalFieldsId() {
+        return weaponTemplateAdditionalFieldsId;
+    }
+
+    public void setWeaponTemplateAdditionalFieldsId(Long weaponTemplateAdditionalFieldsId) {
+        this.weaponTemplateAdditionalFieldsId = weaponTemplateAdditionalFieldsId;
     }
 
     public String getDamage() {

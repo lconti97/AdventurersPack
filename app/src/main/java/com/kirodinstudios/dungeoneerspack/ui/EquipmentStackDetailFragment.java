@@ -1,11 +1,6 @@
 package com.kirodinstudios.dungeoneerspack.ui;
 
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +8,12 @@ import android.view.ViewGroup;
 import com.kirodinstudios.dungeoneerspack.R;
 import com.kirodinstudios.dungeoneerspack.databinding.EquipmentStackDetailFragmentBinding;
 import com.kirodinstudios.dungeoneerspack.viewmodel.EquipmentStackViewModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 public class EquipmentStackDetailFragment extends Fragment {
 

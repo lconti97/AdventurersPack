@@ -1,5 +1,6 @@
 package com.kirodinstudios.dungeoneerspack.model;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,6 +12,11 @@ public class EquipmentTemplate {
     private String description;
     private Double costInGp;
     private Double weightInPounds;
+    private String type;
+    @Embedded
+    private ArmorTemplateAdditionalFields armorTemplateAdditionalFields;
+    @Embedded
+    private WeaponTemplateAdditionalFields weaponTemplateAdditionalFields;
 
     public EquipmentTemplate() { }
 
@@ -18,11 +24,17 @@ public class EquipmentTemplate {
             String name,
             String description,
             Double costInGp,
-            Double weightInPounds) {
+            Double weightInPounds,
+            String type,
+            ArmorTemplateAdditionalFields armorTemplateAdditionalFields,
+            WeaponTemplateAdditionalFields weaponTemplateAdditionalFields) {
         this.name = name;
         this.description = description;
         this.costInGp = costInGp;
         this.weightInPounds = weightInPounds;
+        this.type = type;
+        this.armorTemplateAdditionalFields = armorTemplateAdditionalFields;
+        this.weaponTemplateAdditionalFields = weaponTemplateAdditionalFields;
     }
 
     public Long getEquipmentTemplateId() {
@@ -64,4 +76,29 @@ public class EquipmentTemplate {
     public void setWeightInPounds(Double weightInPounds) {
         this.weightInPounds = weightInPounds;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public ArmorTemplateAdditionalFields getArmorTemplateAdditionalFields() {
+        return armorTemplateAdditionalFields;
+    }
+
+    public void setArmorTemplateAdditionalFields(ArmorTemplateAdditionalFields armorTemplateAdditionalFields) {
+        this.armorTemplateAdditionalFields = armorTemplateAdditionalFields;
+    }
+
+    public WeaponTemplateAdditionalFields getWeaponTemplateAdditionalFields() {
+        return weaponTemplateAdditionalFields;
+    }
+
+    public void setWeaponTemplateAdditionalFields(WeaponTemplateAdditionalFields weaponTemplateAdditionalFields) {
+        this.weaponTemplateAdditionalFields = weaponTemplateAdditionalFields;
+    }
+
 }
