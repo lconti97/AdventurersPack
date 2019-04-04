@@ -10,13 +10,4 @@ public class EquipmentTypes {
             OTHER,
             ARMOR
     };
-
-    public static String getTypeStringFromClass(Class<? extends EquipmentTemplate> equipmentTemplateClass) {
-        if (equipmentTemplateClass == WeaponTemplate.class)
-            return WEAPON;
-        else if (equipmentTemplateClass == ArmorTemplate.class)
-            return ARMOR;
-        else
-            return OTHER;
-    }
 }

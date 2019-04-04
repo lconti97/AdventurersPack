@@ -1,9 +1,10 @@
 package com.kirodinstudios.dungeoneerspack;
 
 import com.kirodinstudios.dungeoneerspack.db.AppDatabase;
-import com.kirodinstudios.dungeoneerspack.model.ArmorTemplate;
+import com.kirodinstudios.dungeoneerspack.model.ArmorTemplateAdditionalFields;
+import com.kirodinstudios.dungeoneerspack.model.EquipmentTemplate;
 import com.kirodinstudios.dungeoneerspack.model.EquipmentTypes;
-import com.kirodinstudios.dungeoneerspack.model.WeaponTemplate;
+import com.kirodinstudios.dungeoneerspack.model.WeaponTemplateAdditionalFields;
 import com.kirodinstudios.dungeoneerspack.ui.MainActivity;
 
 import org.junit.BeforeClass;
@@ -12,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import androidx.test.InstrumentationRegistry;
-import androidx.test.espresso.Espresso;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -30,7 +30,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -47,10 +47,19 @@ public class MainActivityTest {
 
     @Test
     public void testCanPopulateFieldsFromArmorTemplate() {
-        ArmorTemplate armorTemplate = new ArmorTemplate("Half plate",
-                "consists of shaped metal plates", 750.0, 40.0,
-                "15 + Dex", "Medium Armor", true,
-                false, null);
+        EquipmentTemplate armorTemplate = new EquipmentTemplate(
+                "Half plate",
+                "consists of shaped metal plates",
+                750.0,
+                40.0,
+                EquipmentTypes.ARMOR,
+                new ArmorTemplateAdditionalFields(
+                        "15 + Dex",
+                        "Medium Armor",
+                        true,
+                        false,
+                        null),
+                null);
 
         onView(withId(R.id.add_equipment_stack_button))
                 .perform(click());
@@ -59,7 +68,7 @@ public class MainActivityTest {
         onView(withSubstring(armorTemplate.getName()))
                 .inRoot(isPlatformPopup())
                 .perform(click());
-        Espresso.closeSoftKeyboard();
+        closeSoftKeyboard();
 
         checkArmorTemplateFieldsArePopulated(armorTemplate);
 
@@ -69,7 +78,9 @@ public class MainActivityTest {
                 .check(matches(isDisplayed()));
     }
 
-    private void checkArmorTemplateFieldsArePopulated(ArmorTemplate armorTemplate) {
+    private void checkArmorTemplateFieldsArePopulated(EquipmentTemplate armorTemplate) {
+        ArmorTemplateAdditionalFields armorFields = armorTemplate.getArmorTemplateAdditionalFields();
+
         onView(withId(R.id.equipment_stack_add_fragment_type))
                 .check(matches(allOf(isDisplayed(), withSpinnerText(EquipmentTypes.ARMOR))));
         onView(withId(R.id.equipment_stack_add_fragment_weight))
@@ -77,15 +88,15 @@ public class MainActivityTest {
         onView(withId(R.id.equipment_stack_add_fragment_cost))
                 .check(matches(allOf(isDisplayed(), withSubstring(String.valueOf(armorTemplate.getCostInGp().intValue())))));
         onView(withId(R.id.armor_class))
-                .check(matches(allOf(isDisplayed(), withSubstring(armorTemplate.getArmorClass()))));
+                .check(matches(allOf(isDisplayed(), withSubstring(armorFields.getArmorClass()))));
         onView(withId(R.id.armor_category))
-                .check(matches(allOf(isDisplayed(), withSpinnerText(armorTemplate.getArmorCategory()))));
+                .check(matches(allOf(isDisplayed(), withSpinnerText(armorFields.getArmorCategory()))));
         onView(withId(R.id.armor_disadvantage_on_stealth))
-                .check(matches(allOf(isDisplayed(), armorTemplate.getGivesDisadvantageOnStealthChecks() ? isChecked() : isNotChecked())));
+                .check(matches(allOf(isDisplayed(), armorFields.getGivesDisadvantageOnStealthChecks() ? isChecked() : isNotChecked())));
         onView(withId(R.id.armor_requires_minimum_strength))
-                .check(matches(allOf(isDisplayed(), armorTemplate.getRequiresMinimumStrength() ? isChecked() : isNotChecked())));
-        String expectedMinimumStrength = armorTemplate.getMinimumStrength() == null
-                ? "" : String.valueOf(armorTemplate.getMinimumStrength());
+                .check(matches(allOf(isDisplayed(), armorFields.getRequiresMinimumStrength() ? isChecked() : isNotChecked())));
+        String expectedMinimumStrength = armorFields.getMinimumStrength() == null
+                ? "" : String.valueOf(armorFields.getMinimumStrength());
         onView(withId(R.id.armor_minimum_strength))
                 .check(matches(allOf(isDisplayed(), withText(expectedMinimumStrength))));
         onView(withId(R.id.equipment_stack_add_fragment_description))
@@ -101,7 +112,7 @@ public class MainActivityTest {
         onView(withSubstring("Shortsword"))
                 .inRoot(isPlatformPopup())
                 .perform(click());
-        Espresso.closeSoftKeyboard();
+        closeSoftKeyboard();
 
         onView(withId(R.id.equipment_stack_add_fragment_type))
                 .check(matches(allOf(isDisplayed(), withSpinnerText("Weapon"))));
@@ -126,8 +137,18 @@ public class MainActivityTest {
 
     @Test
     public void testCanAddWeaponTemplateAndCreateANewStackWithIt() {
-        WeaponTemplate weaponTemplate = new WeaponTemplate("name", "description", 6.8, 3.4,
-                "1d10 piercing", "Heavy, finesse", false, true);
+        EquipmentTemplate weaponTemplate = new EquipmentTemplate(
+                "name",
+                "description",
+                6.8,
+                3.4,
+                EquipmentTypes.WEAPON,
+                null,
+                new WeaponTemplateAdditionalFields(
+                        "1d10 piercing",
+                        "Heavy, finesse",
+                        false,
+                        true));
         int count = 7;
 
         onView(withId(R.id.add_equipment_stack_button))
@@ -160,30 +181,34 @@ public class MainActivityTest {
                 .inRoot(isPlatformPopup())
                 .perform(click());
 
-        assertFieldsArePopulated(weaponTemplate);
+        assertWeaponTemplateFieldsArePopulated(weaponTemplate);
     }
 
-    private void inputWeaponTemplateFields(WeaponTemplate weaponTemplate) {
+    private void inputWeaponTemplateFields(EquipmentTemplate weaponTemplate) {
+        WeaponTemplateAdditionalFields weaponFields = weaponTemplate.getWeaponTemplateAdditionalFields();
+
         onView(withId(R.id.equipment_stack_add_fragment_weight))
                 .perform(typeText(String.valueOf(weaponTemplate.getWeightInPounds())));
         onView(withId(R.id.equipment_stack_add_fragment_cost))
                 .perform(typeText(String.valueOf(weaponTemplate.getCostInGp())));
         onView(withId(R.id.weapon_damage))
-                .perform(typeText(weaponTemplate.getDamage()));
+                .perform(typeText(weaponFields.getDamage()));
         onView(withId(R.id.weapon_properties))
-                .perform(typeText(weaponTemplate.getProperties()));
+                .perform(typeText(weaponFields.getProperties()));
         closeSoftKeyboard();
         onView(withId(R.id.weapon_category))
                 .perform(click());
-        onView(withText(weaponTemplate.getWeaponType()))
+        onView(withText(weaponFields.getWeaponType()))
                 .inRoot(isPlatformPopup())
                 .perform(click());
         onView(withId(R.id.equipment_stack_add_fragment_description))
                 .perform(typeText(weaponTemplate.getDescription()));
     }
 
-    private void assertFieldsArePopulated(WeaponTemplate weaponTemplate) {
+    private void assertWeaponTemplateFieldsArePopulated(EquipmentTemplate weaponTemplate) {
+        WeaponTemplateAdditionalFields weaponFields = weaponTemplate.getWeaponTemplateAdditionalFields();
         int EQUIPMENT_STACK_DEFAULT_COUNT = 1;
+
         onView(withId(R.id.equipment_stack_add_fragment_count))
                 .check(matches(withText(String.valueOf(EQUIPMENT_STACK_DEFAULT_COUNT))));
         onView(withId(R.id.equipment_stack_add_fragment_type))
@@ -193,11 +218,11 @@ public class MainActivityTest {
         onView(withId(R.id.equipment_stack_add_fragment_cost))
                 .check(matches(withText(String.valueOf(weaponTemplate.getCostInGp()))));
         onView(withId(R.id.weapon_damage))
-                .check(matches(withText(weaponTemplate.getDamage())));
+                .check(matches(withText(weaponFields.getDamage())));
         onView(withId(R.id.weapon_properties))
-                .check(matches(withText(weaponTemplate.getProperties())));
+                .check(matches(withText(weaponFields.getProperties())));
         onView(withId(R.id.weapon_category))
-                .check(matches(withSpinnerText(weaponTemplate.getWeaponType())));
+                .check(matches(withSpinnerText(weaponFields.getWeaponType())));
         onView(withId(R.id.equipment_stack_add_fragment_description))
                 .check(matches(withText(weaponTemplate.getDescription())));
     }

@@ -17,11 +17,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.kirodinstudios.dungeoneerspack.EquipmentTemplateAdapter;
 import com.kirodinstudios.dungeoneerspack.R;
 import com.kirodinstudios.dungeoneerspack.model.ArmorCategories;
-import com.kirodinstudios.dungeoneerspack.model.ArmorTemplate;
+import com.kirodinstudios.dungeoneerspack.model.ArmorTemplateAdditionalFields;
 import com.kirodinstudios.dungeoneerspack.model.EquipmentStack;
 import com.kirodinstudios.dungeoneerspack.model.EquipmentTemplate;
 import com.kirodinstudios.dungeoneerspack.model.EquipmentTypes;
-import com.kirodinstudios.dungeoneerspack.model.WeaponTemplate;
+import com.kirodinstudios.dungeoneerspack.model.WeaponTemplateAdditionalFields;
 import com.kirodinstudios.dungeoneerspack.model.WeaponTypes;
 import com.kirodinstudios.dungeoneerspack.viewmodel.EquipmentStackAddViewModel;
 
@@ -206,9 +206,21 @@ public class EquipmentStackAddFragment extends Fragment {
                 String minimumStrengthText = armorMinimumStrengthEditText.getText().toString();
                 Integer minimumStrength = minimumStrengthText.isEmpty() ? null : Integer.valueOf(minimumStrengthText);
 
-                equipmentTemplate = new ArmorTemplate(name, description, cost, weight,
-                        armorClass, armorCategory, givesDisadvantageOnStealthChecks,
-                        hasMinimumStrength, minimumStrength);
+                ArmorTemplateAdditionalFields armorTemplateAdditionalFields = new ArmorTemplateAdditionalFields(
+                        armorClass,
+                        armorCategory,
+                        givesDisadvantageOnStealthChecks,
+                        hasMinimumStrength,
+                        minimumStrength);
+
+                equipmentTemplate = new EquipmentTemplate(
+                        name,
+                        description,
+                        cost,
+                        weight,
+                        EquipmentTypes.ARMOR,
+                        armorTemplateAdditionalFields,
+                        null);
                 break;
             case EquipmentTypes.WEAPON:
                 String damage = weaponDamageEditText.getText().toString();
@@ -216,11 +228,30 @@ public class EquipmentStackAddFragment extends Fragment {
                 boolean isSimpleWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("simple");
                 boolean isMeleeWeapon = weaponTypeSpinner.getSelectedItem().toString().toLowerCase().contains("martial");
 
-                equipmentTemplate = new WeaponTemplate(name, description, cost, weight,
-                        damage, properties, isSimpleWeapon, isMeleeWeapon);
+                WeaponTemplateAdditionalFields weaponTemplateAdditionalFields = new WeaponTemplateAdditionalFields(
+                        damage,
+                        properties,
+                        isSimpleWeapon,
+                        isMeleeWeapon
+                );
+
+                equipmentTemplate = new EquipmentTemplate(name,
+                        description,
+                        cost,
+                        weight,
+                        EquipmentTypes.WEAPON,
+                        null,
+                        weaponTemplateAdditionalFields);
                 break;
             default:
-                equipmentTemplate = new EquipmentTemplate(name, description, cost, weight);
+                equipmentTemplate = new EquipmentTemplate(
+                        name,
+                        description,
+                        cost,
+                        weight,
+                        EquipmentTypes.OTHER,
+                        null,
+                        null);
                 break;
         }
 
@@ -228,10 +259,9 @@ public class EquipmentStackAddFragment extends Fragment {
     }
 
     private void populateInputFieldsFromEquipmentTemplate(EquipmentTemplate equipmentTemplate) {
-        Class<? extends EquipmentTemplate> equipmentTemplateClass = equipmentTemplate.getClass();
 
         ArrayAdapter<String> typeSpinnerAdapter = (ArrayAdapter<String>) equipmentTypeSpinner.getAdapter();
-        String type = EquipmentTypes.getTypeStringFromClass(equipmentTemplateClass);
+        String type = equipmentTemplate.getType();
         int position = typeSpinnerAdapter.getPosition(type);
         equipmentTypeSpinner.setSelection(position, true);
 
@@ -242,37 +272,38 @@ public class EquipmentStackAddFragment extends Fragment {
         if (equipmentTemplate.getDescription() != null)
             descriptionEditText.setText(equipmentTemplate.getDescription());
 
-        if (equipmentTemplateClass.equals(ArmorTemplate.class)) {
-            ArmorTemplate armorTemplate = (ArmorTemplate) equipmentTemplate;
+        if (equipmentTemplate.getType().equals(EquipmentTypes.ARMOR)) {
+            ArmorTemplateAdditionalFields armorTemplateAdditionalFields = equipmentTemplate.getArmorTemplateAdditionalFields();
 
-            if (armorTemplate.getArmorClass() != null)
-                armorClassEditText.setText(armorTemplate.getArmorClass());
-            if (armorTemplate.getArmorCategory() != null) {
+            if (armorTemplateAdditionalFields.getArmorClass() != null)
+                armorClassEditText.setText(armorTemplateAdditionalFields.getArmorClass());
+            if (armorTemplateAdditionalFields.getArmorCategory() != null) {
                 ArrayAdapter<String> armorCategoryAdapter = (ArrayAdapter<String>) armorCategorySpinner.getAdapter();
-                int armorCategoryPosition = armorCategoryAdapter.getPosition(armorTemplate.getArmorCategory());
+                int armorCategoryPosition = armorCategoryAdapter.getPosition(armorTemplateAdditionalFields.getArmorCategory());
                 armorCategorySpinner.setSelection(armorCategoryPosition, true);
             }
-            if (armorTemplate.getGivesDisadvantageOnStealthChecks() != null)
-                armorGivesDisadvantageOnStealthCheckBox.setChecked(armorTemplate.getGivesDisadvantageOnStealthChecks());
-            if (armorTemplate.getMinimumStrength() != null)
-                armorHasMinimumStrengthRequirementCheckBox.setChecked(armorTemplate.getRequiresMinimumStrength());
+            if (armorTemplateAdditionalFields.getGivesDisadvantageOnStealthChecks() != null)
+                armorGivesDisadvantageOnStealthCheckBox.setChecked(armorTemplateAdditionalFields.getGivesDisadvantageOnStealthChecks());
+            if (armorTemplateAdditionalFields.getMinimumStrength() != null)
+                armorHasMinimumStrengthRequirementCheckBox.setChecked(armorTemplateAdditionalFields.getRequiresMinimumStrength());
 
-            Integer minimumStrength = armorTemplate.getMinimumStrength();
+            Integer minimumStrength = armorTemplateAdditionalFields.getMinimumStrength();
             String minimumArmorStrengthText = minimumStrength == null ? "" : minimumStrength.toString();
             armorMinimumStrengthEditText.setText(minimumArmorStrengthText);
         }
-        if (equipmentTemplateClass.equals(WeaponTemplate.class)) {
-            WeaponTemplate weaponTemplate = (WeaponTemplate) equipmentTemplate;
 
-            if (weaponTemplate.getIsMeleeWeapon() != null && weaponTemplate.getIsSimpleWeapon() != null) {
+        if (equipmentTemplate.getType().equals(EquipmentTypes.WEAPON)) {
+            WeaponTemplateAdditionalFields weaponTemplateAdditionalFields = equipmentTemplate.getWeaponTemplateAdditionalFields();
+
+            if (weaponTemplateAdditionalFields.getIsMeleeWeapon() != null && weaponTemplateAdditionalFields.getIsSimpleWeapon() != null) {
                 ArrayAdapter<String> weaponTypeAdapter = (ArrayAdapter<String>) weaponTypeSpinner.getAdapter();
-                int weaponTypePosition = weaponTypeAdapter.getPosition(weaponTemplate.getWeaponType());
+                int weaponTypePosition = weaponTypeAdapter.getPosition(weaponTemplateAdditionalFields.getWeaponType());
                 weaponTypeSpinner.setSelection(weaponTypePosition, true);
             }
-            if (weaponTemplate.getDamage() != null)
-                weaponDamageEditText.setText(weaponTemplate.getDamage());
-            if (weaponTemplate.getProperties() != null)
-                weaponPropertiesEditText.setText(weaponTemplate.getProperties());
+            if (weaponTemplateAdditionalFields.getDamage() != null)
+                weaponDamageEditText.setText(weaponTemplateAdditionalFields.getDamage());
+            if (weaponTemplateAdditionalFields.getProperties() != null)
+                weaponPropertiesEditText.setText(weaponTemplateAdditionalFields.getProperties());
         }
     }
 

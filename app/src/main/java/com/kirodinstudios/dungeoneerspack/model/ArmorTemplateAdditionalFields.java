@@ -1,32 +1,42 @@
 package com.kirodinstudios.dungeoneerspack.model;
 
-public class ArmorTemplate extends EquipmentTemplate {
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+@Entity
+public class ArmorTemplateAdditionalFields {
+    @PrimaryKey(autoGenerate = true)
+    private Long armorTemplateAdditionalFieldsId;
     private String armorClass;
     private String armorCategory;
     private Boolean givesDisadvantageOnStealthChecks;
     private Boolean requiresMinimumStrength;
     private Integer minimumStrength;
 
-    public ArmorTemplate() { }
+    public ArmorTemplateAdditionalFields() { }
 
-    public ArmorTemplate(
-            String name,
-            String description,
-            Double costInGp,
-            Double weightInPounds,
+    @Ignore
+    public ArmorTemplateAdditionalFields(
             String armorClass,
             String armorCategory,
             Boolean givesDisadvantageOnStealthChecks,
             Boolean requiresMinimumStrength,
             Integer minimumStrength) {
 
-        super(name, description, costInGp, weightInPounds);
         this.armorClass = armorClass;
         this.armorCategory = armorCategory;
         this.givesDisadvantageOnStealthChecks = givesDisadvantageOnStealthChecks;
         this.requiresMinimumStrength = requiresMinimumStrength;
         this.minimumStrength = minimumStrength;
+    }
+
+    public Long getArmorTemplateAdditionalFieldsId() {
+        return armorTemplateAdditionalFieldsId;
+    }
+
+    public void setArmorTemplateAdditionalFieldsId(Long armorTemplateAdditionalFieldsId) {
+        this.armorTemplateAdditionalFieldsId = armorTemplateAdditionalFieldsId;
     }
 
     public String getArmorClass() {

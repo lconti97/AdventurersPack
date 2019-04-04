@@ -5,14 +5,11 @@ import android.util.Log;
 
 import com.kirodinstudios.dungeoneerspack.AppExecutors;
 import com.kirodinstudios.dungeoneerspack.InitialEquipmentTemplateRepository;
-import com.kirodinstudios.dungeoneerspack.model.ArmorTemplate;
-import com.kirodinstudios.dungeoneerspack.model.ArmorTemplateEntity;
+import com.kirodinstudios.dungeoneerspack.model.ArmorTemplateAdditionalFields;
 import com.kirodinstudios.dungeoneerspack.model.EquipmentStack;
 import com.kirodinstudios.dungeoneerspack.model.EquipmentTemplate;
-import com.kirodinstudios.dungeoneerspack.model.WeaponTemplate;
-import com.kirodinstudios.dungeoneerspack.model.WeaponTemplateEntity;
+import com.kirodinstudios.dungeoneerspack.model.WeaponTemplateAdditionalFields;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
@@ -21,7 +18,6 @@ import java.util.concurrent.Executors;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -33,8 +29,8 @@ import static com.kirodinstudios.dungeoneerspack.Constants.LOG_TAG;
 @Database(entities = {
         EquipmentStack.class,
         EquipmentTemplate.class,
-        ArmorTemplateEntity.class,
-        WeaponTemplateEntity.class,
+        ArmorTemplateAdditionalFields.class,
+        WeaponTemplateAdditionalFields.class
     }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     @VisibleForTesting
@@ -63,16 +59,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public LiveData<List<EquipmentTemplate>> getEquipmentTemplates() {
-        MediatorLiveData<List<EquipmentTemplate>> liveData = new MediatorLiveData<>();
-
-        liveData.addSource(equipmentTemplateDao().getAllEquipmentTemplates(), equipmentTemplates ->
-                addEquipmentTemplatesToLiveData(equipmentTemplates, liveData));
-        liveData.addSource(equipmentTemplateDao().getAllArmorTemplates(), armorTemplates ->
-                addEquipmentTemplatesToLiveData(new ArrayList<>(armorTemplates), liveData));
-        liveData.addSource(equipmentTemplateDao().getAllWeaponTemplates(), weaponTemplates ->
-                addEquipmentTemplatesToLiveData(new ArrayList<>(weaponTemplates), liveData));
-
-        return liveData;
+        return equipmentTemplateDao().getAllEquipmentTemplates();
     }
 
     public LiveData<List<EquipmentStack>> getEquipmentStacks() {
@@ -84,16 +71,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private Long insertEquipmentTemplateInForeground(EquipmentTemplate equipmentTemplate) {
-        Class<? extends EquipmentTemplate> equipmentTemplateClass = equipmentTemplate.getClass();
-
-        if (equipmentTemplateClass == ArmorTemplate.class)
-            return equipmentTemplateDao().insertArmorTemplate((ArmorTemplate) equipmentTemplate);
-        else if (equipmentTemplateClass == WeaponTemplate.class)
-            return equipmentTemplateDao().insertWeaponTemplate((WeaponTemplate) equipmentTemplate);
-        else if (equipmentTemplateClass == EquipmentTemplate.class)
-            return equipmentTemplateDao().insertEquipmentTemplate(equipmentTemplate);
-
-        return null;
+        return equipmentTemplateDao().insertEquipmentTemplate(equipmentTemplate);
     }
 
     public void insertEquipmentTemplateAndEquipmentStackInBackground(EquipmentTemplate equipmentTemplate, EquipmentStack equipmentStack) {
@@ -135,13 +113,6 @@ public abstract class AppDatabase extends RoomDatabase {
         executeQuery(callable);
     }
 
-    private static void addEquipmentTemplatesToLiveData(List<EquipmentTemplate> equipmentTemplates, MediatorLiveData<List<EquipmentTemplate>> liveData) {
-        if (liveData.getValue() == null)
-            liveData.setValue(equipmentTemplates);
-        else
-            liveData.getValue().addAll(equipmentTemplates);
-    }
-
     private static AppDatabase buildDatabase(final Context context, final AppExecutors executors) {
         AppDatabase appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
             .addCallback(new Callback() {
@@ -161,6 +132,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 }
             })
             .build();
+
         return appDatabase;
     }
 
