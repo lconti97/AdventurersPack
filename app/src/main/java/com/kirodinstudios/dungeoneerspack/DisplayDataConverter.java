@@ -2,8 +2,6 @@ package com.kirodinstudios.dungeoneerspack;
 
 import android.annotation.SuppressLint;
 
-import com.kirodinstudios.dungeoneerspack.model.EquipmentStack;
-
 public class DisplayDataConverter {
 
     @SuppressLint("DefaultLocale")
@@ -14,10 +12,4 @@ public class DisplayDataConverter {
         else
             return String.format("%s",d);
     }
-
-    public static String getA(EquipmentStack stack) {
-        return "";
-    }
-
-
 }
