@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/equipment_stack_detail_armor_coordinator">
+        android:id="@+id/equipment_stack_detail_armor_coordinator"
+        app:visibleGone="@{armorFields != null}">
 
         <TextView
             android:id="@+id/equipment_stack_detail_armor_class"

@@ -96,33 +96,46 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/equipment_stack_detail_cost" />
 
-        <ViewFlipper
-            android:id="@+id/viewFlipper"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/equipment_stack_detail_additional_fields"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/equipment_stack_detail_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/equipment_stack_detail_weight"
-            app:layout_constraintVertical_chainStyle="spread_inside">
+            app:layout_constraintTop_toBottomOf="@+id/equipment_stack_detail_cost">
 
             <include
                 android:id="@+id/equipment_stack_detail_additional_fields_armor"
                 layout="@layout/equipment_stack_detail_armor"
-                app:armorFields="@{equipmentStack.getEquipmentTemplate().getArmorTemplateAdditionalFields()}" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                app:armorFields="@{equipmentStack.getEquipmentTemplate().getArmorTemplateAdditionalFields()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <include
                 android:id="@+id/equipment_stack_detail_additional_fields_weapon"
                 layout="@layout/equipment_stack_detail_weapon"
-                app:weaponFields="@{equipmentStack.getEquipmentTemplate().getWeaponTemplateAdditionalFields()}" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/equipment_stack_detail_additional_fields_armor"
+                app:weaponFields="@{equipmentStack.getEquipmentTemplate().getWeaponTemplateAdditionalFields()}"
+                />
 
-        </ViewFlipper>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/equipment_stack_detail_description"
@@ -139,7 +152,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewFlipper" />
+            app:layout_constraintTop_toBottomOf="@+id/equipment_stack_detail_additional_fields" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
