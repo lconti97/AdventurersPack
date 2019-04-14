@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="weaponFields"
             type="com.kirodinstudios.dungeoneerspack.model.WeaponTemplateAdditionalFields"/>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/equipment_stack_detail_weapon_coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:visibleGone="@{weaponFields != null}">
 
         <TextView
             android:id="@+id/equipment_stack_detail_weapon_damage"
